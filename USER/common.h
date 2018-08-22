@@ -1,11 +1,13 @@
 #ifndef __COMMON_H
 #define __COMMON_H
+
 #include "stm32f10x.h"
 #include "string.h"
 #include "sys.h"
 #include "delay.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "string.h"
 #include "malloc.h"
 
 #include "FreeRTOS.h"
@@ -14,6 +16,8 @@
 #include "croutine.h"
 #include "semphr.h"
 #include "event_groups.h"
+
+#include <time.h>
 
 /*---------------------------------------------------------------------------*/
 /* Type Definition Macros                                                    */
@@ -38,15 +42,63 @@
     typedef long long int           int64;
 
 
-#define SOFT_WARE_VRESION			101
+#define SOFT_WARE_VRESION			101			//软件版本号
 
-#define DEBUG_LOG
+#define DEBUG_LOG								//是否打印调试信息
 
-#define HOLD_REG_LEN	256
-#define EEP_REG_LEN		256
+#define HOLD_REG_LEN				256
+
+#define MAX_UPLOAD_INVL				3600
 
 
-extern SemaphoreHandle_t  xMutex_IIC1;
+#define BOOT_SW_VER_ADD				0			//BootLoader软件版本存储地址
+#define BOOT_SW_VER_LEN				4			//BootLoader软件版本存储长度
+
+#define APP_SW_VER_ADD				4			//应用软件版本存储地址
+#define APP_SW_VER_LEN				4
+
+#define HW_VER_ADD					8			//硬件版本存储地址
+#define HW_VER_LEN					4
+
+#define DEVICE_NAME_ADD				12			//设备名称存储地址
+#define DEVICE_NAME_LEN				35
+
+#define DEVICE_ID_ADD				47			//设备ID存储地址
+#define DEVICE_ID_LEN				8
+
+#define UU_ID_ADD					55			//UUID存储地址
+#define UU_ID_LEN					8
+
+#define OPERATORS_ADD				96			//运营商编号存储地址
+#define OPERATORS_LEN				3
+
+#define APN_ADD						99			//APN接入点名称存储地址
+#define APN_LEN						19
+
+#define SERVER_DOMAIN_ADD			118			//服务器域名存储地址
+#define SERVER_DOMAIN_LEN			35
+
+#define SERVER_IP_ADD				153			//服务器IP存储地址
+#define SERVER_IP_LEN				18
+
+#define SERVER_PORT_ADD				171			//服务器端口号存储地址
+#define SERVER_PORT_LEN				8
+
+#define UPLOAD_INVL_ADD				208			//数据上传周期存储地址
+#define UPLOAD_INVL_LEN				4
+
+#define POWER_INTFC_ADD				212			//电源控制接口编号存储地址
+#define POWER_INTFC_LEN				3
+
+#define TIME_ZONE_ADD				215			//时区偏移量存储地址
+#define TIME_ZONE_LEN				3
+
+#define OTA_INFO_ADD				224			//OTA信息存储地址
+#define OTA_INFO_LEN				9
+
+
+#define TIME_RULE_ADD				512			//时间策略存储地址
+#define TIME_RULE_LEN				9
 
 
 static const uint32_t crc32tab[] = 
@@ -177,12 +229,44 @@ static u8 auchCRCLo[] =
     0x43,0x83,0x41,0x81,0x80,0x40
 };
 
-extern u32 SysTick1ms;
-extern u32 SysTick1s;
-
+extern SemaphoreHandle_t  xMutex_IIC1;			//IIC1的互斥量
 extern u8 HoldReg[HOLD_REG_LEN];
-extern u8 EepReg[EEP_REG_LEN];
 
+/***************************固件升级相关*****************************/
+extern u8 NeedUpDateFirmWare;			//有新固件需要加载
+extern u8 HaveNewFirmWare;				//0xAA有新固件 others无新固件
+extern u8 NewFirmWareAdd;				//0xAA新固件地址0x0800C000 0x55新固件地址0x08026000
+extern u16 NewFirmWareBagNum;			//固件包的数量（一个固件包含多个小包）
+extern u16 NewFirmWareVer;				//固件包的版本
+extern u8 LastBagByteNum;				//最后一包的字节数
+
+/***************************系统心跳相关*****************************/
+extern u32 SysTick1ms;					//1ms滴答时钟
+extern u32 SysTick10ms;					//10ms滴答时钟
+extern u32 SysTick100ms;				//10ms滴答时钟
+extern time_t SysTick1s;				//1s滴答时钟
+
+/***************************版本相关*********************************/
+extern u8 *BootLoaderVersion;			//BootLoader版本号
+extern u8 *SoftWareVersion;				//应用程序版本号
+extern u8 *HardWareVersion;				//硬件版本号
+
+/***************************设备相关*********************************/
+extern u8 *DeviceName;					//设备名称
+extern u8 *DeviceID;					//设备ID
+extern u8 *UUID;						//设备UUID
+
+/***************************网络相关*********************************/
+extern u8 Operators;					//运营商编号
+extern u8 *APN;							//私有APN，不同客户APN不同
+extern u8 *ServerDomain;				//服务器域名
+extern u8 *ServerIP;					//服务器IP地址
+extern u8 *ServerPort;					//服务器端口号
+
+/***************************运行参数相关*****************************/
+extern u16 UpLoadINCL;					//数据上传时间间隔0~65535秒
+extern u8 PowerINTFC;					//电源控制接口编号 0:0~10V  1:PWM  2:UART
+extern u8 TimeZone;						//时区偏移量
 
 
 u16 MyStrstr(u8 *str1, u8 *str2, u16 str1_len, u16 str2_len);
@@ -195,10 +279,41 @@ u16 CRC16(u8 *puchMsgg,u8 usDataLen);
 
 void SysTick1msAdder(void);
 u32 GetSysTick1ms(void);
+void SysTick10msAdder(void);
+u32 GetSysTick10ms(void);
+void SysTick100msAdder(void);
+u32 GetSysTick100ms(void);
+void SetSysTick1s(time_t sec);
+time_t GetSysTick1s(void);
 
 
+u8 ReadDataFromEepromToHoldBuf(u8 *inbuf,u16 s_add, u16 len);
+u8 GetMemoryForString(u8 **str, u8 type, u32 id, u16 add, u16 size, u8 *hold_reg);
 
+u8 GetDeviceName(void);
+u8 GetDeviceID(void);
+u8 GetDeviceUUID(void);
+u8 GetAPN(void);
+u8 GetServerDomain(void);
+u8 GetServerIP(void);
+u8 GetServerPort(void);
 
+u8 ReadBootLoaderVersion(void);
+u8 ReadSoftWareVersion(void);
+u8 ReadHardWareVersion(void);
+u8 ReadDeviceName(void);
+u8 ReadDeviceID(void);
+u8 ReadDeviceUUID(void);
+u8 ReadOperators(void);
+u8 ReadAPN(void);
+u8 ReadServerDomain(void);
+u8 ReadServerIP(void);
+u8 ReadServerPort(void);
+u8 ReadUpLoadINVL(void);
+u8 ReadPowerINTFCC(void);
+u8 ReadTimeZone(void);
+
+void ReadParametersFromEEPROM(void);
 
 
 

@@ -162,12 +162,12 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <Capability>1</Capability>
+            <DriverSelection>4099</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
-          <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash2>Segger\JL2CM3.dll</Flash2>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
         </Utilities>
         <TargetArmAds>
@@ -351,7 +351,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\DEVICEDRIVER;..\FREERTOS\inc;..\MALLOC;..\JSON;..\FWLIB\inc;..\POROTROL;..\SYSTEM\delay;..\SYSTEM\sys;..\USER;..\PERIPHERAL\iic1;..\DEVICEDRIVER\24cxx;..\DEVICEDRIVER\sht2x;..\DEVICEDRIVER\bh1750;..\PERIPHERAL\iic2;..\DEVICEDRIVER\led</IncludePath>
+              <IncludePath>..\CORE;..\DEVICEDRIVER;..\FREERTOS\inc;..\MALLOC;..\JSON;..\FWLIB\inc;..\POROTROL;..\SYSTEM\delay;..\SYSTEM\sys;..\USER;..\PERIPHERAL\iic1;..\DEVICEDRIVER\24cxx;..\DEVICEDRIVER\sht2x;..\DEVICEDRIVER\bh1750;..\PERIPHERAL\iic2;..\DEVICEDRIVER\led;..\PERIPHERAL\rtc;..\PERIPHERAL\usart</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -402,6 +402,36 @@
               <FileType>1</FileType>
               <FilePath>..\USER\common.c</FilePath>
             </File>
+            <File>
+              <FileName>rtos_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\rtos_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\task_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_hci.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\task_hci.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\task_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_net.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\task_net.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\task_main.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -451,6 +481,16 @@
               <FileName>iic2.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\PERIPHERAL\iic2\iic2.c</FilePath>
+            </File>
+            <File>
+              <FileName>rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\PERIPHERAL\rtc\rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\PERIPHERAL\usart\usart.c</FilePath>
             </File>
           </Files>
         </Group>

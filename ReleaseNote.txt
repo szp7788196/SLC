@@ -1,2 +1,3 @@
 ﻿20180820 git测试
 20180821 搭建程序框架，移植FREERTOS，增加AT24C64、SHT20、BH1750、指示灯驱动代码
+20180822 增加RTC、UART驱动程序，增加task_main/task_net/task_sensor/task_hci/task_led，完善common文件，增加了设备参数读取以及冗余功能

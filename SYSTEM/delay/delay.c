@@ -38,7 +38,7 @@ void delay_ostimedly(u32 ticks)
 
 void SysTick_Handler(void)
 {
-	SysTick1msAdder();
+	SysTick1msAdder();			//1msµÎ´ð¼ÆÊýÆ÷ÀÛ¼Ó
 
 	if(xSchedulerRunning == 1)
 	{
