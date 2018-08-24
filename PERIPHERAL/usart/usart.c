@@ -88,7 +88,7 @@ void USART1_Init(u32 bound)
 	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);									//开启中断
 	USART_Cmd(USART1, ENABLE);                    									//使能串口
 }
-
+ 
 void USART2_Init(u32 bound)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;

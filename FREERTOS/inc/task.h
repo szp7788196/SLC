@@ -1247,7 +1247,7 @@ TaskHandle_t xTaskGetIdleTaskHandle( void ) PRIVILEGED_FUNCTION;
 
 		// Allocate a TaskStatus_t structure for each task.  An array could be
 		// allocated statically at compile time.
-		pxTaskStatusArray = pvPortMalloc( uxArraySize * sizeof( TaskStatus_t ) );
+		pxTaskStatusArray = mymalloc( uxArraySize * sizeof( TaskStatus_t ) );
 
 		if( pxTaskStatusArray != NULL )
 		{
@@ -2027,8 +2027,6 @@ eSleepModeStatus eTaskConfirmSleepModeStatus( void ) PRIVILEGED_FUNCTION;
  * taken and return the handle of the task that has taken the mutex.
  */
 void *pvTaskIncrementMutexHeldCount( void ) PRIVILEGED_FUNCTION;
-
-extern volatile BaseType_t xSchedulerRunning;
 
 #ifdef __cplusplus
 }

@@ -95,8 +95,7 @@ extern "C" {
 #endif
 
 /* Application specific configuration options. */
-#include "FreeRTOSConfig.h"
-#include "malloc.h"	   
+#include "FreeRTOSConfig.h" 
 
 /* Basic FreeRTOS definitions. */
 #include "projdefs.h"
@@ -161,6 +160,11 @@ extern "C" {
 #ifndef configMAX_PRIORITIES
 	#error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
 #endif
+	
+/* Configuration sanity check. */
+#if ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
+     #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
+#endif	
 
 #ifndef configUSE_CO_ROUTINES
 	#define configUSE_CO_ROUTINES 0
@@ -201,11 +205,11 @@ extern "C" {
 #endif
 
 #ifndef INCLUDE_uxTaskGetStackHighWaterMark
-	#define INCLUDE_uxTaskGetStackHighWaterMark 1
+	#define INCLUDE_uxTaskGetStackHighWaterMark 0
 #endif
 
 #ifndef INCLUDE_eTaskGetState
-	#define INCLUDE_eTaskGetState 1
+	#define INCLUDE_eTaskGetState 0
 #endif
 
 #ifndef configUSE_RECURSIVE_MUTEXES
@@ -213,7 +217,7 @@ extern "C" {
 #endif
 
 #ifndef configUSE_MUTEXES
-	#define configUSE_MUTEXES 1
+	#define configUSE_MUTEXES 0
 #endif
 
 #ifndef configUSE_TIMERS
@@ -701,7 +705,7 @@ extern "C" {
 #endif
 
 #ifndef configUSE_TICKLESS_IDLE
-	#define configUSE_TICKLESS_IDLE 1
+	#define configUSE_TICKLESS_IDLE 0
 #endif
 
 #ifndef configPRE_SLEEP_PROCESSING
@@ -831,6 +835,9 @@ point support. */
 #ifdef __cplusplus
 }
 #endif
+
+extern volatile BaseType_t xSchedulerRunning;
+void xPortSysTickHandler( void );
 
 #endif /* INC_FREERTOS_H */
 

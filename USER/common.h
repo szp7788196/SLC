@@ -46,7 +46,7 @@
 
 #define DEBUG_LOG								//是否打印调试信息
 
-#define HOLD_REG_LEN				256
+#define HOLD_REG_LEN				512
 
 #define MAX_UPLOAD_INVL				3600
 
@@ -67,33 +67,33 @@
 #define DEVICE_ID_LEN				8
 
 #define UU_ID_ADD					55			//UUID存储地址
-#define UU_ID_LEN					8
+#define UU_ID_LEN					66
 
-#define OPERATORS_ADD				96			//运营商编号存储地址
+#define OPERATORS_ADD				151			//运营商编号存储地址
 #define OPERATORS_LEN				3
 
-#define APN_ADD						99			//APN接入点名称存储地址
+#define APN_ADD						154			//APN接入点名称存储地址
 #define APN_LEN						19
 
-#define SERVER_DOMAIN_ADD			118			//服务器域名存储地址
+#define SERVER_DOMAIN_ADD			173			//服务器域名存储地址
 #define SERVER_DOMAIN_LEN			35
 
-#define SERVER_IP_ADD				153			//服务器IP存储地址
+#define SERVER_IP_ADD				208			//服务器IP存储地址
 #define SERVER_IP_LEN				18
 
-#define SERVER_PORT_ADD				171			//服务器端口号存储地址
+#define SERVER_PORT_ADD				226			//服务器端口号存储地址
 #define SERVER_PORT_LEN				8
 
-#define UPLOAD_INVL_ADD				208			//数据上传周期存储地址
+#define UPLOAD_INVL_ADD				256			//数据上传周期存储地址
 #define UPLOAD_INVL_LEN				4
 
-#define POWER_INTFC_ADD				212			//电源控制接口编号存储地址
+#define POWER_INTFC_ADD				260			//电源控制接口编号存储地址
 #define POWER_INTFC_LEN				3
 
-#define TIME_ZONE_ADD				215			//时区偏移量存储地址
+#define TIME_ZONE_ADD				263			//时区偏移量存储地址
 #define TIME_ZONE_LEN				3
 
-#define OTA_INFO_ADD				224			//OTA信息存储地址
+#define OTA_INFO_ADD				301			//OTA信息存储地址
 #define OTA_INFO_LEN				9
 
 
@@ -245,6 +245,10 @@ extern u32 SysTick1ms;					//1ms滴答时钟
 extern u32 SysTick10ms;					//10ms滴答时钟
 extern u32 SysTick100ms;				//10ms滴答时钟
 extern time_t SysTick1s;				//1s滴答时钟
+
+
+/***********************MCU厂商唯一序列号*****************************/
+extern u8 *UniqueChipID;
 
 /***************************版本相关*********************************/
 extern u8 *BootLoaderVersion;			//BootLoader版本号

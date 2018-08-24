@@ -546,10 +546,12 @@ u8 ReadDeviceUUID(void)
 	{
 		if(UUID == NULL)
 		{
-			UUID = (u8 *)mymalloc(sizeof(u8) * 6);
+			UUID = (u8 *)mymalloc(sizeof(u8) * 65);
 		}
 		
-		memset(UUID,0,6);
+		memset(UUID,0,65);
+		
+		sprintf((char *)UUID, "0123456789012345678901234567890123456789012345678901234567890123");
 	}
 	
 	return ret;

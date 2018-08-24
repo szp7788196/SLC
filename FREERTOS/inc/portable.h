@@ -153,9 +153,9 @@ typedef struct HeapRegion
 
 /*
  * Used to define multiple heap regions for use by heap_5.c.  This function
- * must be called before any calls to pvPortMalloc() - not creating a task,
+ * must be called before any calls to mymalloc() - not creating a task,
  * queue, semaphore, mutex, software timer, event group, etc. will result in
- * pvPortMalloc being called.
+ * mymalloc being called.
  *
  * pxHeapRegions passes in an array of HeapRegion_t structures - each of which
  * defines a region of memory that can be used as the heap.  The array is
@@ -168,8 +168,8 @@ void vPortDefineHeapRegions( const HeapRegion_t * const pxHeapRegions ) PRIVILEG
 /*
  * Map to the memory management routines required for the port.
  */
-void *pvPortMalloc( size_t xSize ) PRIVILEGED_FUNCTION;
-void vPortFree( void *pv ) PRIVILEGED_FUNCTION;
+void *mymalloc( size_t xSize ) PRIVILEGED_FUNCTION;
+void myfree( void *pv ) PRIVILEGED_FUNCTION;
 void vPortInitialiseBlocks( void ) PRIVILEGED_FUNCTION;
 size_t xPortGetFreeHeapSize( void ) PRIVILEGED_FUNCTION;
 size_t xPortGetMinimumEverFreeHeapSize( void ) PRIVILEGED_FUNCTION;
