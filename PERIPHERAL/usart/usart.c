@@ -1,6 +1,7 @@
 #include "sys.h"
 #include "usart.h"
 #include "common.h"
+#include "bg96.h"
 
 
 u16 Usart1RxCnt = 0;
@@ -218,12 +219,13 @@ void USART2_IRQHandler(void)
 
     if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
   	{
-		rxdata =USART_ReceiveData(USART2);
-
-		if(Usart2RxCnt<Usart2RxLen && Usart2Busy == 0)
+		if(bg96->init_ok == 1)
 		{
-			Usart2RxBuf[Usart2RxCnt]=rxdata;
-			Usart2RxCnt++;
+			bg96->uart_interrupt_event(&bg96);
+		}
+		else
+		{
+			rxdata =USART_ReceiveData(USART2);
 		}
   	}
 
