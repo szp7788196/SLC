@@ -351,7 +351,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\DEVICEDRIVER;..\FREERTOS\inc;..\MALLOC;..\JSON;..\FWLIB\inc;..\POROTROL;..\SYSTEM\delay;..\SYSTEM\sys;..\USER;..\PERIPHERAL\iic1;..\DEVICEDRIVER\24cxx;..\DEVICEDRIVER\sht2x;..\DEVICEDRIVER\bh1750;..\PERIPHERAL\iic2;..\DEVICEDRIVER\led;..\PERIPHERAL\rtc;..\PERIPHERAL\usart;..\DEVICEDRIVER\bg96;..\NET</IncludePath>
+              <IncludePath>..\CORE;..\DEVICEDRIVER;..\FREERTOS\inc;..\MALLOC;..\JSON;..\FWLIB\inc;..\POROTROL;..\SYSTEM\delay;..\SYSTEM\sys;..\USER;..\PERIPHERAL\iic1;..\DEVICEDRIVER\24cxx;..\DEVICEDRIVER\sht2x;..\DEVICEDRIVER\bh1750;..\PERIPHERAL\iic2;..\DEVICEDRIVER\led;..\PERIPHERAL\rtc;..\PERIPHERAL\usart;..\DEVICEDRIVER\bg96;..\NET;..\DEVICEDRIVER\power</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -521,6 +521,11 @@
               <FileName>bg96.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\DEVICEDRIVER\bg96\bg96.c</FilePath>
+            </File>
+            <File>
+              <FileName>inventr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\DEVICEDRIVER\power\inventr.c</FilePath>
             </File>
           </Files>
         </Group>

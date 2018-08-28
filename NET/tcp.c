@@ -36,7 +36,7 @@ void Tcp_UnInit(pTcp *tcp)
 	* @retval true - success.
 	* @retval false - failure.
 */
-unsigned char tcp_connect(pTcp *tcp,char *remote_ip, unsigned short remote_port)
+unsigned char tcp_connect(pTcp *tcp,char *remote_ip, char *remote_port)
 {
 	unsigned char ret = 0;
 	ret = (*tcp)->bg96->create_TCP(&((*tcp)->bg96),remote_ip,remote_port);

@@ -83,6 +83,7 @@ unsigned char BG96_InitStep1(pBg96 *bg96)
     (*bg96)->set_AT_QIOPEN 					= bg96_set_AT_QIOPEN;
     (*bg96)->set_AT_QICLOSE 				= bg96_set_AT_QICLOSE;
     (*bg96)->set_AT_QISEND 					= bg96_set_AT_QISEND;
+	(*bg96)->get_AT_QISEND					= bg96_get_AT_QISEND;
 	(*bg96)->get_AT_QIDNSGIP 				= bg96_get_AT_QIDNSGIP;
     (*bg96)->get_AT_QPING 					= bg96_get_AT_QPING;
 	
@@ -138,7 +139,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	RE_HARD_RESET:
 	
 	(*bg96)->hard_reset(bg96);
-	delay_ms(5000);
+	delay_ms(10000);
 
 	(*bg96)->clear_rx_cmd_buffer(bg96);
 	(*bg96)->net_buf->clear(&(*bg96)->net_buf);
@@ -157,7 +158,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->set_AT(bg96))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
@@ -168,7 +169,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->set_AT_ATE(bg96, 0))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
@@ -179,7 +180,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->get_AT_CPIN(bg96))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
@@ -190,7 +191,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->set_AT_QCFG1(bg96))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
@@ -201,7 +202,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->set_AT_QCFG2(bg96))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
@@ -212,7 +213,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->set_AT_QCFG3(bg96))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
@@ -223,7 +224,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->set_AT_QCFG4(bg96,Operators))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
@@ -234,7 +235,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->set_AT_QCFG5(bg96))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
@@ -256,12 +257,12 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	while(!(*bg96)->set_AT_QICSGP(bg96,Operators))
 	{
 		fail_time ++;
-		if(fail_time >= 1)
+		if(fail_time >= 3)
 		{
 			goto RE_HARD_RESET;
 		}
 	}
-	delay_ms(1000);
+	delay_ms(100);
 	
 	fail_time = 0;
 	while(!(*bg96)->set_AT_QIACT(bg96))
@@ -425,7 +426,7 @@ unsigned short bg96_read(pBg96 *bg96,unsigned char *buf)
     }
     else
     {
-        buf[0] = 0;
+//        buf[0] = 0;
         len = 0;
     }
     return len;
@@ -495,7 +496,7 @@ unsigned char bg96_get_local_ip(pBg96 *bg96,char *msg)
     return ret;
 }
 
-unsigned char bg96_create_TCP(pBg96 *bg96,char *addr, unsigned short port)
+unsigned char bg96_create_TCP(pBg96 *bg96,char *addr, char *port)
 {
 	return (*bg96)->set_AT_QIOPEN(bg96,"TCP", addr, port);
 }
@@ -505,7 +506,7 @@ unsigned char bg96_release_TCP(pBg96 *bg96)
 	return (*bg96)->set_AT_QICLOSE(bg96);
 }
 
-unsigned char bg96_register_UDP(pBg96 *bg96,char *addr, unsigned short port)
+unsigned char bg96_register_UDP(pBg96 *bg96,char *addr, char *port)
 {
 	return (*bg96)->set_AT_QIOPEN(bg96,"UDP", addr, port);
 }
@@ -926,14 +927,14 @@ BG96_STATE_E bg96_get_AT_QISTATE(pBg96 *bg96)
 }
 
 //和远端服务器建立单链接
-unsigned char bg96_set_AT_QIOPEN(pBg96 *bg96,char *type, char *addr, unsigned short port)
+unsigned char bg96_set_AT_QIOPEN(pBg96 *bg96,char *type, char *addr, char *port)
 {
 	unsigned char ret = 0;
 	char buff[128];
 	memset(buff,0,128);
     (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
     (*bg96)->clear_rx_cmd_buffer(bg96);
-    printf("AT+QIOPEN=1,0,\"%s\",\"%s\",%d,0,1\r\n", type, addr, port);
+    printf("AT+QIOPEN=1,0,\"%s\",\"%s\",%s,0,1\r\n", type, addr, port);
     if((*bg96)->wait_cmd2(bg96,"+QIOPEN:", TIMEOUT_160S) == RECEIVED)
     {
         if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, " 0,0") != -1)
@@ -959,7 +960,7 @@ unsigned char bg96_set_AT_QICLOSE(pBg96 *bg96)
     (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
     (*bg96)->clear_rx_cmd_buffer(bg96);
     printf("AT+QICLOSE=0\r\n");
-    if((*bg96)->wait_cmd2(bg96,"OK", TIMEOUT_15S) == RECEIVED)
+    if((*bg96)->wait_cmd1(bg96,TIMEOUT_11S) == RECEIVED)
     {
         if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "OK") != -1)
 		{
@@ -978,7 +979,7 @@ unsigned char bg96_set_AT_QISEND(pBg96 *bg96,unsigned char *buffer, unsigned int
 {
 	unsigned char ret = 0;
     u8 state = 0;
-	u8 pos1 = 0;
+	u8 fail_time = 0;
     (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
     (*bg96)->clear_rx_cmd_buffer(bg96);
     printf("AT+QISEND=0,%d\r\n", len);
@@ -1018,33 +1019,60 @@ unsigned char bg96_set_AT_QISEND(pBg96 *bg96,unsigned char *buffer, unsigned int
     }
 	if(state == 2)
 	{
-		(*bg96)->clear_rx_cmd_buffer(bg96);
-		printf("AT+QISEND=0,0\r\n");
-		if((*bg96)->wait_cmd2(bg96,"+QISEND", TIMEOUT_2S) == RECEIVED)
+		while(!(*bg96)->get_AT_QISEND(bg96))
 		{
-			if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "OK") != -1)
+			fail_time ++;
+			if(fail_time >= 20)
 			{
-				pos1 = MyStrstr((u8 *)(*bg96)->rx_cmd_buf, "OK", (*bg96)->rx_cnt, 2);
-				
-				if((*bg96)->rx_cmd_buf[pos1 - 3] == 0x30)
-				{
-					ret = 1;
-				}
+				ret = 254;
+				goto SEND_END;
 			}
+			
+			delay_ms(500);
 		}
-		else
-		{
-			ret = 255;
-#ifdef DEBUG_LOG
-
-#endif
-		}
+		
+		ret = 1;
 	}
 	
+	SEND_END:
     (*bg96)->bg96_mode = NET_MODE;
 #ifdef BG96_PRINTF_RX_BUF
 	(*bg96)->print_rx_buf(bg96);
 #endif
+    return ret;
+}
+
+//检查缓冲区当中的数据是否已经成功发送到服务器
+unsigned char bg96_get_AT_QISEND(pBg96 *bg96)
+{
+	unsigned char ret = 0;
+	u8 pos1 = 0;
+	(*bg96)->wait_bg96_mode(bg96,CMD_MODE);
+    (*bg96)->clear_rx_cmd_buffer(bg96);
+	printf("AT+QISEND=0,0\r\n");
+	if((*bg96)->wait_cmd2(bg96,"+QISEND", TIMEOUT_2S) == RECEIVED)
+	{
+		if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "OK") != -1)
+		{
+			pos1 = MyStrstr((u8 *)(*bg96)->rx_cmd_buf, "OK", (*bg96)->rx_cnt, 2);
+			
+			if((*bg96)->rx_cmd_buf[pos1 - 5] == 0x30 && (*bg96)->rx_cmd_buf[pos1 - 6] == ',')
+			{
+				ret = 1;
+			}
+		}
+	}
+	else
+	{
+//		ret = 255;
+#ifdef DEBUG_LOG
+
+#endif
+	}
+//    (*bg96)->bg96_mode = NET_MODE;
+//#ifdef BG96_PRINTF_RX_BUF
+//	(*bg96)->print_rx_buf(bg96);
+//#endif
     return ret;
 }
 
@@ -1417,58 +1445,91 @@ void bg96_net_data_state_process(pBg96 *bg96,char c)
 	{
 		case (unsigned char)NEED_PLUS:
 			if(c == '+')
+			{
 				net_data_state  = NEED_Q;
+				yin_cnt = 0;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_Q:
 			if(c == 'Q')
+			{
 				net_data_state = NEED_I;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_I:
 			if(c == 'I')
+			{
 				net_data_state = NEED_U;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_U:
 			if(c == 'U')
+			{
 				net_data_state = NEED_R;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_R:
 			if(c == 'R')
+			{
 				net_data_state = NEED_C;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_C:
 			if(c == 'C')
+			{
 				net_data_state = NEED_MAO;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 		
 		case (unsigned char)NEED_MAO:
 			if(c == ':')
+			{
 				net_data_state = NEED_KONG;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_KONG:
 			if(c == ' ')
+			{
 				net_data_state = NEED_YIN;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_YIN:
@@ -1484,7 +1545,6 @@ void bg96_net_data_state_process(pBg96 *bg96,char c)
 					net_data_state = NEED_DOU;
 				}
 			}
-				
 			else
 			{
 				net_data_state = NEED_PLUS;
@@ -1495,37 +1555,57 @@ void bg96_net_data_state_process(pBg96 *bg96,char c)
 			
 		case (unsigned char)NEED_r:
 			if(c == 'r')
+			{
 				net_data_state = NEED_e;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_e:
 			if(c == 'e')
+			{
 				net_data_state = NEED_c;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_c:
 			if(c == 'c')
+			{
 				net_data_state = NEED_v;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_v:
 			if(c == 'v')
+			{
 				net_data_state = NEED_YIN;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 				
 		case (unsigned char)NEED_DOU:
 			if(c == ',')
+			{
 				net_data_state = NEED_LEN_DATA;
+			}
 			else
+			{
 				net_data_state = NEED_PLUS;
+			}
 			break;
 			
 		case (unsigned char)NEED_LEN_DATA:

@@ -11,7 +11,8 @@ void vTaskNET(void *pvParameters);
 
 
 
-
+u8 TryToConnectToServer(void);
+void OnServerHandle(void);
 
 
 

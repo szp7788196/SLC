@@ -4,7 +4,9 @@
 
 u8 HoldReg[HOLD_REG_LEN];				//保持寄存器
 
-SemaphoreHandle_t  xMutex_IIC1 = NULL;	//IIC总线1的互斥量
+SemaphoreHandle_t  xMutex_IIC1 		= NULL;	//IIC总线1的互斥量
+SemaphoreHandle_t  xMutex_INVENTR 	= NULL;	//英飞特电源的互斥量
+
 
 /***************************固件升级相关*****************************/
 u8 NeedUpDateFirmWare = 0;			//有新固件需要加载
@@ -651,7 +653,7 @@ u8 ReadServerIP(void)
 		
 		memset(ServerIP,0,16);
 		
-		sprintf((char *)ServerIP, "47.105.38.215");
+		sprintf((char *)ServerIP, "103.48.232.123");
 	}
 	
 	return ret;

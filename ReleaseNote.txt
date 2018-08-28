@@ -3,3 +3,4 @@
 20180822 增加RTC、UART驱动程序，增加task_main/task_net/task_sensor/task_hci/task_led，完善common文件，增加了设备参数读取以及冗余功能
 20180824 解决DBUGE时WATCH窗口的值乱跳问题（更换了malloc函数）
 20180827 移植BG96驱动，还未完成
+20180828 完善BG96驱动以及网络任务，完成英飞特电源驱动

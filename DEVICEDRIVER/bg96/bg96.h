@@ -29,6 +29,10 @@
 #define TIMEOUT_6S 6000
 #define TIMEOUT_7S 7000
 #define TIMEOUT_10S 10000
+#define TIMEOUT_11S 10000
+#define TIMEOUT_12S 10000
+#define TIMEOUT_13S 10000
+#define TIMEOUT_14S 10000
 #define TIMEOUT_15S 15000
 #define TIMEOUT_20S 20000
 #define TIMEOUT_25S 25000
@@ -175,9 +179,9 @@ struct BG96
 	CONNECT_STATE_E (*get_connect_state)(pBg96 *bg96);
 	unsigned char	(*get_local_ip)(pBg96 *bg96,char *msg);
 
-	unsigned char	(*create_TCP)(pBg96 *bg96,char *addr, unsigned short port);
+	unsigned char	(*create_TCP)(pBg96 *bg96,char *addr, char *port);
 	unsigned char	(*release_TCP)(pBg96 *bg96);
-	unsigned char	(*register_UDP)(pBg96 *bg96,char *addr, unsigned short port);
+	unsigned char	(*register_UDP)(pBg96 *bg96,char *addr, char *port);
 	unsigned char	(*unregister_UDP)(pBg96 *bg96);
 
 	unsigned char	(*set_AT)(pBg96 *bg96);
@@ -197,9 +201,10 @@ struct BG96
 	unsigned char   (*get_AT_QIACT)(pBg96 *bg96,char *list);
 
 	BG96_STATE_E 	(*get_AT_QISTATE)(pBg96 *bg96);
-	unsigned char 	(*set_AT_QIOPEN)(pBg96 *bg96,char *type, char *addr, unsigned short port);
+	unsigned char 	(*set_AT_QIOPEN)(pBg96 *bg96,char *type, char *addr, char *port);
 	unsigned char 	(*set_AT_QICLOSE)(pBg96 *bg96);
 	unsigned char 	(*set_AT_QISEND)(pBg96 *bg96,unsigned char *buffer, unsigned int len);
+	unsigned char 	(*get_AT_QISEND)(pBg96 *bg96);
 	unsigned char 	(*get_AT_QIDNSGIP)(pBg96 *bg96,const char *domain, unsigned char **ip);
 	unsigned char 	(*get_AT_QPING)(pBg96 *bg96,const char *host, char *msg);
 
@@ -264,9 +269,9 @@ unsigned char	bg96_restart(pBg96 *bg96);
 CONNECT_STATE_E bg96_get_connect_state(pBg96 *bg96);
 unsigned char	bg96_get_local_ip(pBg96 *bg96,char *msg);
 
-unsigned char	bg96_create_TCP(pBg96 *bg96,char *addr, unsigned short port);
+unsigned char	bg96_create_TCP(pBg96 *bg96,char *addr, char *port);
 unsigned char	bg96_release_TCP(pBg96 *bg96);
-unsigned char	bg96_register_UDP(pBg96 *bg96,char *addr, unsigned short port);
+unsigned char	bg96_register_UDP(pBg96 *bg96,char *addr, char *port);
 unsigned char	bg96_unregister_UDP(pBg96 *bg96);
 
 
@@ -285,9 +290,10 @@ unsigned char   bg96_set_AT_QIACT(pBg96 *bg96);
 unsigned char   bg96_get_AT_QIACT(pBg96 *bg96,char *list);
 
 BG96_STATE_E 	bg96_get_AT_QISTATE(pBg96 *bg96);
-unsigned char 	bg96_set_AT_QIOPEN(pBg96 *bg96,char *type, char *addr, unsigned short port);
+unsigned char 	bg96_set_AT_QIOPEN(pBg96 *bg96,char *type, char *addr, char *port);
 unsigned char 	bg96_set_AT_QICLOSE(pBg96 *bg96);
 unsigned char 	bg96_set_AT_QISEND(pBg96 *bg96,unsigned char *buffer, unsigned int len);
+unsigned char 	bg96_get_AT_QISEND(pBg96 *bg96);
 unsigned char 	bg96_get_AT_QIDNSGIP(pBg96 *bg96,const char *domain, unsigned char **ip);
 unsigned char 	bg96_get_AT_QPING(pBg96 *bg96,const char *host, char *msg);
 

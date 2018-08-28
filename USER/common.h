@@ -230,6 +230,7 @@ static u8 auchCRCLo[] =
 };
 
 extern SemaphoreHandle_t  xMutex_IIC1;			//IIC1的互斥量
+extern SemaphoreHandle_t  xMutex_INVENTR;		//英飞特电源的互斥量
 extern u8 HoldReg[HOLD_REG_LEN];
 
 /***************************固件升级相关*****************************/
