@@ -3,8 +3,16 @@
 
 #include "sys.h"
 #include "rtos_task.h"
+#include "bg96.h"
+#include "task_sensor.h"
 
 extern TaskHandle_t xHandleTaskNET;
+
+
+extern CONNECT_STATE_E ConnectState;	//bg96的连接状态
+extern u8 SignalIntensity;				//bg96的信号强度
+
+extern SensorMsg_S *p_tSensorMsgNet;
 
 void vTaskNET(void *pvParameters);
 
@@ -13,6 +21,7 @@ void vTaskNET(void *pvParameters);
 
 u8 TryToConnectToServer(void);
 void OnServerHandle(void);
+void SendSensorData_HeartBeatPacket(void);
 
 
 

@@ -1,8 +1,8 @@
 #include "task_net.h"
 #include "common.h"
 #include "delay.h"
-#include "bg96.h"
 #include "tcp.h"
+#include "net_protocol.h"
 
 
 TaskHandle_t xHandleTaskNET = NULL;
@@ -10,32 +10,21 @@ TaskHandle_t xHandleTaskNET = NULL;
 CONNECT_STATE_E ConnectState = UNKNOW_ERROR;	//bg96的连接状态
 u8 SignalIntensity = 99;						//bg96的信号强度
 
+SensorMsg_S *p_tSensorMsgNet = NULL;			//用于装在传感器数据的结构体变量
 
-u16 send_ok = 0;
-u16 rx_len = 0;
-u16 RxLen = 0;
-u8 rx_buf[255];
-void OnServerHandle(void)
-{
-	u8 ret = 0;
-	
-	ret = tcp->send(&tcp, (u8 *)"0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789", 100);
-	
-	if(ret == 10)
-	{
-		send_ok ++;
-	}
-}
+
+
 
 void vTaskNET(void *pvParameters)
 {
 	time_t times_sec = 0;
-	time_t times_sec1 = 0;
 	
 	BG96_InitStep1(&bg96);
 	BG96_InitStep2(&bg96);
 	
 	Tcp_Init(&bg96,&tcp);
+	
+	p_tSensorMsgNet = (SensorMsg_S *)mymalloc(sizeof(SensorMsg_S));
 	
 	while(1)
 	{
@@ -73,18 +62,8 @@ void vTaskNET(void *pvParameters)
 			break;
 
 			case (u8)ON_SERVER:						//已经连接到服务器
-				if(GetSysTick1s() - times_sec1 >= 5)
-				{
-					times_sec1 = GetSysTick1s();
-					OnServerHandle();
-				}
-				
-				rx_len = tcp->read(&tcp,rx_buf);
-	
-				if(rx_len > 0)
-				{
-					RxLen = rx_len;
-				}
+				OnServerHandle();
+
 				
 			break;
 
@@ -97,7 +76,7 @@ void vTaskNET(void *pvParameters)
 	}
 }
 
-
+//尝试连接服务器
 u8 TryToConnectToServer(void)
 {
 	u8 ret = 0;
@@ -106,6 +85,63 @@ u8 TryToConnectToServer(void)
 	
 	return ret;
 }
+
+//在线处理进程
+void OnServerHandle(void)
+{
+	u8 len = 0;
+	u8 out_buf[512];
+	
+	SendSensorData_HeartBeatPacket();		//向服务器定时发送传感器数据和心跳包
+	
+	len = NetDataFrameHandle(&tcp,out_buf,HoldReg,ConnectState);
+	
+	if(len > 0)
+	{
+		len = tcp->send(&tcp, out_buf, len);
+	}
+}
+
+//向服务器定时发送传感器数据和心跳包
+void SendSensorData_HeartBeatPacket(void)
+{
+	static time_t times_sec = 0;
+	BaseType_t xResult;
+	u8 send_len = 0;
+	u8 sensor_data_len = 0;
+	
+	u8 sensor_buf[128];
+	u8 send_buf[512];
+	
+	xResult = xQueueReceive(xQueue_sensor,
+							(void *)p_tSensorMsgNet,
+							(TickType_t)pdMS_TO_TICKS(50));
+	if(xResult == pdPASS)
+	{
+		memset(send_buf,0,512);
+		memset(sensor_buf,0,128);
+		
+		sensor_data_len = UnPackSensorData(p_tSensorMsgNet,sensor_buf);
+		
+		send_len = PackNetData(0xE0,sensor_buf,sensor_data_len,send_buf);
+	}
+	else if(GetSysTick1s() - times_sec >= 20)
+	{
+		times_sec = GetSysTick1s();
+		
+		memset(send_buf,0,512);
+		memset(sensor_buf,0,128);
+		
+		send_len = PackNetData(0xE1,sensor_buf,0,send_buf);
+	}
+	
+	send_len = tcp->send(&tcp, send_buf, send_len);
+	
+	send_len = send_len;
+}
+
+
+
 
 
 

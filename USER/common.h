@@ -19,6 +19,8 @@
 
 #include <time.h>
 
+#include "task_sensor.h"
+
 /*---------------------------------------------------------------------------*/
 /* Type Definition Macros                                                    */
 /*---------------------------------------------------------------------------*/
@@ -49,6 +51,8 @@
 #define HOLD_REG_LEN				512
 
 #define MAX_UPLOAD_INVL				3600
+
+#define INIT_LIGHT_LEVEL			0
 
 
 #define BOOT_SW_VER_ADD				0			//BootLoader软件版本存储地址
@@ -231,6 +235,9 @@ static u8 auchCRCLo[] =
 
 extern SemaphoreHandle_t  xMutex_IIC1;			//IIC1的互斥量
 extern SemaphoreHandle_t  xMutex_INVENTR;		//英飞特电源的互斥量
+
+extern QueueHandle_t xQueue_sensor;				//用于存储传感器的数据
+
 extern u8 HoldReg[HOLD_REG_LEN];
 
 /***************************固件升级相关*****************************/
@@ -273,6 +280,9 @@ extern u16 UpLoadINCL;					//数据上传时间间隔0~65535秒
 extern u8 PowerINTFC;					//电源控制接口编号 0:0~10V  1:PWM  2:UART
 extern u8 TimeZone;						//时区偏移量
 
+extern u8 LightLevelPercent;			//灯的亮度级别
+extern u8 NeedToReset;					//复位/重启标志
+
 
 u16 MyStrstr(u8 *str1, u8 *str2, u16 str1_len, u16 str2_len);
 u8 GetDatBit(u32 dat);
@@ -281,6 +291,7 @@ void IntToString(u8 *DString,u32 Dint,u8 zero_num);
 u32 StringToInt(u8 *String);
 u32 CRC32( const u8 *buf, u32 size);
 u16 CRC16(u8 *puchMsgg,u8 usDataLen);
+u8 CalCheckSum(u8 *buf, u16 len);
 
 void SysTick1msAdder(void);
 u32 GetSysTick1ms(void);
@@ -321,6 +332,8 @@ u8 ReadTimeZone(void);
 void ReadParametersFromEEPROM(void);
 
 
+u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf);
+u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf);
 
 
 

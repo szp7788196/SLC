@@ -14,6 +14,7 @@
 *********************************************************************************************************/
 void AppObjCreate(void)
 {
+	//创建互斥量
 	xMutex_IIC1 = xSemaphoreCreateMutex();
 	if(xMutex_IIC1 == NULL)
     {
@@ -22,6 +23,14 @@ void AppObjCreate(void)
 	
 	xMutex_INVENTR = xSemaphoreCreateMutex();
 	if(xMutex_INVENTR == NULL)
+    {
+        /* 没有创建成功，用户可以在这里加入创建失败的处理机制 */
+    }
+	
+	
+	//创建消息队列
+	xQueue_sensor = xQueueCreate(10, sizeof(SensorMsg_S));
+    if( xQueue_sensor == 0 )
     {
         /* 没有创建成功，用户可以在这里加入创建失败的处理机制 */
     }
@@ -58,7 +67,7 @@ void AppTaskCreate(void)
 	
 	xTaskCreate(vTaskNET,
 				"vTaskNET",
-				128,
+				1500,
 				NULL,
 				6,
 				&xHandleTaskNET);		//网络任务

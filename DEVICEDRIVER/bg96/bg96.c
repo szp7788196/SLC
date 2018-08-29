@@ -869,7 +869,6 @@ BG96_STATE_E bg96_get_AT_QISTATE(pBg96 *bg96)
     (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
     (*bg96)->clear_rx_cmd_buffer(bg96);
     printf("AT+QISTATE?\r\n");
-//	pos1 = MyStrstr((u8 *)buf, "+CIPDOMAIN:", 128, 11);
     if((*bg96)->wait_cmd2(bg96,"OK", TIMEOUT_2S) == RECEIVED)
     {
         if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "+QISTATE") != -1)
@@ -1181,25 +1180,71 @@ unsigned char bg96_get_AT_QPING(pBg96 *bg96,const char *host, char *msg)
 unsigned char bg96_set_AT_QGPS(pBg96 *bg96)
 {
 	unsigned char ret = 0;
-	
-	
-	return ret;
+    (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
+    (*bg96)->clear_rx_cmd_buffer(bg96);
+    printf("AT+QGPS=1,30,50,0,1\r\n");
+    if((*bg96)->wait_cmd1(bg96,TIMEOUT_2S) == RECEIVED)
+    {
+		if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "OK") != -1)
+		{
+			ret = 1;
+		}
+		else if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "ERROR: 504") != -1)
+		{
+			ret = 1;
+		}
+    }
+    (*bg96)->bg96_mode = NET_MODE;
+#ifdef BG96_PRINTF_RX_BUF
+	(*bg96)->print_rx_buf(bg96);
+#endif
+    return ret;
 }
 
 unsigned char bg96_set_AT_QGPSLOC(pBg96 *bg96,u8 *msg)
 {
 	unsigned char ret = 0;
 	
-	
-	return ret;
+    (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
+    (*bg96)->clear_rx_cmd_buffer(bg96);
+    printf("AT+QGPSLOC=0\r\n");
+    if((*bg96)->wait_cmd1(bg96,TIMEOUT_2S) == RECEIVED)
+    {
+        if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "OK") != -1)
+		{
+			if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "QGPSLOC: ") != -1)
+			{
+				
+			}
+			
+			ret = 1;
+		}
+    }
+    (*bg96)->bg96_mode = NET_MODE;
+#ifdef BG96_PRINTF_RX_BUF
+	(*bg96)->print_rx_buf(bg96);
+#endif
+    return ret;
 }
 
 unsigned char bg96_set_AT_QGPSEND(pBg96 *bg96)
 {
 	unsigned char ret = 0;
-	
-	
-	return ret;
+    (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
+    (*bg96)->clear_rx_cmd_buffer(bg96);
+    printf("AT+QGPSEND\r\n");
+    if((*bg96)->wait_cmd1(bg96,TIMEOUT_2S) == RECEIVED)
+    {
+        if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "OK") != -1)
+		{
+			ret = 1;
+		}
+    }
+    (*bg96)->bg96_mode = NET_MODE;
+#ifdef BG96_PRINTF_RX_BUF
+	(*bg96)->print_rx_buf(bg96);
+#endif
+    return ret;
 }
 
 //清空AT指令接收缓存

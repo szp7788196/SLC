@@ -1,35 +1,42 @@
 #include "task_main.h"
+#include "common.h"
 #include "delay.h"
 #include "inventr.h"
 
 
 TaskHandle_t xHandleTaskMAIN = NULL;
 
-u8 LightLevel = 0;
+u8 MirrorLightLevelPercent = 0;
+
+struct tm tm_time;
+
+time_t timesss = 0;
+
+
 
 void vTaskMAIN(void *pvParameters)
 {
+	InventrSetLightLevel(INIT_LIGHT_LEVEL);					//ÉÏµçÄ¬ÈÏÃðµÆ
+	
+	tm_time.tm_sec = 10;
+	tm_time.tm_min = 10;
+	tm_time.tm_hour = 10;
+	tm_time.tm_mday = 10;
+	tm_time.tm_mon = 9;
+	tm_time.tm_year = 118;
+	
+	timesss = mktime(&tm_time);
+	
 	while(1)
 	{
-		delay_ms(500);
-		
-		InventrSetMaxPowerCurrent(100);
-		
-		LightLevel += 20;
-		
-		if(LightLevel > 200)
+		if(MirrorLightLevelPercent != LightLevelPercent)
 		{
-			LightLevel = 20;
+			MirrorLightLevelPercent = LightLevelPercent;
+			
+			InventrSetLightLevel(LightLevelPercent);
 		}
 		
-		InventrSetLightLevel(20);
-		
-		delay_ms(500);
-		InventrOutPutCurrent = InventrGetOutPutCurrent();
-		delay_ms(500);
-		InventrOutPutVoltage = InventrGetOutPutVoltage();
-		delay_ms(500);
-		InventrGetDeviceInfo();
+		delay_ms(100);
 	}
 }
 

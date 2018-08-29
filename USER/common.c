@@ -4,8 +4,12 @@
 
 u8 HoldReg[HOLD_REG_LEN];				//保持寄存器
 
+/****************************互斥量相关******************************/
 SemaphoreHandle_t  xMutex_IIC1 		= NULL;	//IIC总线1的互斥量
 SemaphoreHandle_t  xMutex_INVENTR 	= NULL;	//英飞特电源的互斥量
+
+/***************************消息队列相关*****************************/
+QueueHandle_t xQueue_sensor 		= NULL;	//用于存储传感器的数据
 
 
 /***************************固件升级相关*****************************/
@@ -43,6 +47,10 @@ u8 *ServerPort = NULL;				//服务器端口号
 u16 UpLoadINCL = 10;				//数据上传时间间隔0~65535秒
 u8 PowerINTFC = 2;					//电源控制接口编号 0:0~10V  1:PWM  2:UART
 u8 TimeZone = 8;					//时区偏移量
+
+/***************************其他*****************************/
+u8 LightLevelPercent = 0;			//灯的亮度级别
+u8 NeedToReset = 0;					//复位/重启标志
 
 
 //在str1中查找str2，失败返回0xFF,成功返回str2首个元素在str1中的位置
@@ -170,6 +178,20 @@ u16 CRC16(u8 *puchMsgg,u8 usDataLen)
 		uchCRCLo = auchCRCLo[uIndex];
     }
     return ((uchCRCHi << 8) | uchCRCLo);
+}
+
+//计算校验和
+u8 CalCheckSum(u8 *buf, u16 len)
+{
+	u8 sum = 0;
+	u16 i = 0;
+	
+	for(i = 0; i < len; i ++)
+	{
+		sum += *(buf + i);
+	}
+	
+	return sum;
 }
 
 //产生一个系统1毫秒滴答时钟.
@@ -765,6 +787,74 @@ void ReadParametersFromEEPROM(void)
 	ReadUpLoadINVL();
 	ReadPowerINTFCC();
 	ReadTimeZone();
+}
+
+//将数据打包成网络格式的数据
+u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf)
+{
+	u16 len = 0;
+	
+	*(outbuf + 0) = 0x68;
+	
+	if(DeviceID != NULL)
+	{
+		memcpy(outbuf + 1,DeviceID,6);
+		
+		*(outbuf + 7) = 0x68;
+		*(outbuf + 8) = fun_code;
+		*(outbuf + 9) = inbuf_len;
+		
+		memcpy(outbuf + 10,inbuf,inbuf_len);
+		
+		*(outbuf + 10 + inbuf_len) = CalCheckSum(outbuf, 10 + inbuf_len);
+		
+		*(outbuf + 10 + inbuf_len + 1) = 0x16;
+		
+		*(outbuf + 10 + inbuf_len + 2) = 0xFE;
+		*(outbuf + 10 + inbuf_len + 3) = 0xFD;
+		*(outbuf + 10 + inbuf_len + 4) = 0xFC;
+		*(outbuf + 10 + inbuf_len + 5) = 0xFB;
+		*(outbuf + 10 + inbuf_len + 6) = 0xFA;
+		*(outbuf + 10 + inbuf_len + 7) = 0xF9;
+		
+		len = 10 + inbuf_len + 7 + 1;
+	}
+	else
+	{
+		return 0;
+	}
+	
+	return len;
+}
+
+//将传感器数据解包到指定缓冲区
+u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf)
+{
+	u16 len = 0;
+	
+	if(msg != NULL)
+	{
+		*(buf + 0) = (u8)(msg->temperature >> 8);
+		*(buf + 1) = (u8)(msg->temperature & 0x00FF);
+		*(buf + 2) = (u8)(msg->humidity >> 8);
+		*(buf + 3) = (u8)(msg->humidity & 0x00FF);
+		*(buf + 4) = (u8)(msg->illumination >> 8);
+		*(buf + 5) = (u8)(msg->illumination & 0x00FF);
+		*(buf + 6) = msg->out_put_current;
+		*(buf + 7) = msg->out_put_voltage;
+		*(buf + 8) = msg->signal_intensity;
+		*(buf + 9) = msg->hour;
+		*(buf + 10) = msg->minute;
+		*(buf + 11) = msg->second;
+		
+		len = strlen(msg->gps);
+		
+		memcpy(buf + 12,msg->gps,len);
+		
+		len = len + 12;
+	}
+	
+	return len;
 }
 
 
