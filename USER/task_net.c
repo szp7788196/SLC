@@ -3,6 +3,7 @@
 #include "delay.h"
 #include "tcp.h"
 #include "net_protocol.h"
+#include "rtc.h"
 
 
 TaskHandle_t xHandleTaskNET = NULL;
@@ -35,6 +36,8 @@ void vTaskNET(void *pvParameters)
 				times_sec = GetSysTick1s();
 				ConnectState = bg96->get_connect_state(&bg96);
 				SignalIntensity = bg96->get_AT_CSQ(&bg96);
+				GetGpsInfo(&GpsInfo,&GetGPSOK,&GetTimeOK);
+//				GetTimeInfo("cn.ntp.org.cn",123, &GetTimeOK);
 			}
 		}
 		else
@@ -63,8 +66,6 @@ void vTaskNET(void *pvParameters)
 
 			case (u8)ON_SERVER:						//已经连接到服务器
 				OnServerHandle();
-
-				
 			break;
 
 			default:
@@ -135,9 +136,122 @@ void SendSensorData_HeartBeatPacket(void)
 		send_len = PackNetData(0xE1,sensor_buf,0,send_buf);
 	}
 	
-	send_len = tcp->send(&tcp, send_buf, send_len);
+	if(send_len >= 1)
+	{
+		send_len = tcp->send(&tcp, send_buf, send_len);
+	}
+}
+
+//获取GPS信息
+u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
+{
+	u8 ret = 0;
+	char buf[80];
+	char jing[16];
+	char wei[16];
+	u16 len = 0;
 	
-	send_len = send_len;
+	struct tm tm_time;
+	time_t time_s = 0;
+	u8 buf_len = 0;
+	
+	if(*gps_flag != 1)
+	{
+		memset(buf,0,80);
+		
+		if(bg96->set_AT_QGPS(&bg96))				//开启GPS
+		{
+			if(bg96->set_AT_QGPSLOC(&bg96,buf))		//获取信息
+			{
+				bg96_set_AT_QGPSEND(&bg96);			//关闭GPS
+
+				memset(jing,0,16);
+				memset(wei,0,16);
+				bg96->get_str1(&bg96,buf, ",", 1, ",", 2, jing);
+				bg96->get_str1(&bg96,buf, ",", 2, ",", 3, wei);
+				
+				len = strlen(jing) + strlen(wei);
+				
+				if(*gps_info == NULL)
+				{
+					*gps_info = (u8 *)mymalloc(len + 1);
+				}
+				else if(*gps_info != NULL)
+				{
+					myfree(*gps_info);
+					*gps_info = (u8 *)mymalloc(sizeof(u8) * len + 1);
+				}
+				
+				if(*gps_info != NULL)
+				{
+					memset(*gps_info,0,len + 1);
+					
+					strcat((char *)*gps_info,jing);
+					strcat((char *)*gps_info,wei);
+					
+					*gps_flag = 1;
+					
+					ret = 1;
+				}
+				
+				buf_len = strlen(buf);
+				
+				tm_time.tm_year = 2000 + (buf[buf_len - 5] - 0x30) * 10 + buf[buf_len - 4] - 0x30 - 1900;
+				tm_time.tm_mon = (buf[buf_len - 7] - 0x30) * 10 + buf[buf_len - 6] - 0x30 - 1;
+				tm_time.tm_mday = (buf[buf_len - 9] - 0x30) * 10 + buf[buf_len - 8] - 0x30;
+				
+				tm_time.tm_hour = (buf[0] - 0x30) * 10 + buf[1] - 0x30;
+				tm_time.tm_min = (buf[2] - 0x30) * 10 + buf[3] - 0x30;
+				tm_time.tm_sec = (buf[4] - 0x30) * 10 + buf[5] - 0x30;
+				
+				time_s = mktime(&tm_time);
+				
+				time_s = time_s + (8 * 3600);
+				
+				SyncTimeFromNet(time_s);
+				
+				*time_flag = 1;
+			}
+		}
+	}
+	
+	return ret;
+}
+
+//从指定的NTP服务器获取时间
+u8 GetTimeInfo(char *server,u8 port, u8 *flag)
+{
+	u8 ret = 0;
+	struct tm tm_time;
+	time_t time_s = 0;
+	char buf[32];
+	
+	if(*flag != 1)
+	{
+		memset(buf,0,32);
+		
+		if(bg96->set_AT_QNTP(&bg96,server,port,buf))
+		{
+			tm_time.tm_year = (buf[0] - 0x30) * 1000 + (buf[1] - 0x30) * 100 + (buf[2] - 0x30) * 10 + buf[3] - 0x30 - 1990;
+			tm_time.tm_mon = (buf[5] - 0x30) * 10 + buf[6] - 0x30 - 1;
+			tm_time.tm_mday = (buf[8] - 0x30) * 10 + buf[9] - 0x30;
+			
+			tm_time.tm_hour = (buf[11] - 0x30) * 10 + buf[12] - 0x30;
+			tm_time.tm_min = (buf[14] - 0x30) * 10 + buf[15] - 0x30;
+			tm_time.tm_sec = (buf[17] - 0x30) * 10 + buf[18] - 0x30;
+			
+			time_s = mktime(&tm_time);
+			
+			time_s += 57600;
+			
+			SyncTimeFromNet(time_s);
+			
+			*flag = 1;
+			ret = 1;
+		}
+	}
+	
+	return ret;
 }
 
 

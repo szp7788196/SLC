@@ -91,6 +91,8 @@ unsigned char BG96_InitStep1(pBg96 *bg96)
 	(*bg96)->set_AT_QGPS					= bg96_set_AT_QGPS;
 	(*bg96)->set_AT_QGPSLOC 				= bg96_set_AT_QGPSLOC;
 	(*bg96)->set_AT_QGPSEND					= bg96_set_AT_QGPSEND;
+	
+	(*bg96)->set_AT_QNTP					= bg96_set_AT_QNTP;
 
     (*bg96)->clear_rx_cmd_buffer 			= bg96_clear_rx_cmd_buffer;
     (*bg96)->get_char 						= bg96_get_char;
@@ -978,7 +980,7 @@ unsigned char bg96_set_AT_QISEND(pBg96 *bg96,unsigned char *buffer, unsigned int
 {
 	unsigned char ret = 0;
     u8 state = 0;
-	u8 fail_time = 0;
+//	u8 fail_time = 0;
     (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
     (*bg96)->clear_rx_cmd_buffer(bg96);
     printf("AT+QISEND=0,%d\r\n", len);
@@ -1016,24 +1018,24 @@ unsigned char bg96_set_AT_QISEND(pBg96 *bg96,unsigned char *buffer, unsigned int
 #endif
 		}
     }
-	if(state == 2)
-	{
-		while(!(*bg96)->get_AT_QISEND(bg96))
-		{
-			fail_time ++;
-			if(fail_time >= 20)
-			{
-				ret = 254;
-				goto SEND_END;
-			}
-			
-			delay_ms(500);
-		}
-		
-		ret = 1;
-	}
+//	if(state == 2)
+//	{
+//		while(!(*bg96)->get_AT_QISEND(bg96))
+//		{
+//			fail_time ++;
+//			if(fail_time >= 20)
+//			{
+//				ret = 254;
+//				goto SEND_END;
+//			}
+//			
+//			delay_ms(500);
+//		}
+//		
+//		ret = 1;
+//	}
 	
-	SEND_END:
+//	SEND_END:
     (*bg96)->bg96_mode = NET_MODE;
 #ifdef BG96_PRINTF_RX_BUF
 	(*bg96)->print_rx_buf(bg96);
@@ -1201,7 +1203,7 @@ unsigned char bg96_set_AT_QGPS(pBg96 *bg96)
     return ret;
 }
 
-unsigned char bg96_set_AT_QGPSLOC(pBg96 *bg96,u8 *msg)
+unsigned char bg96_set_AT_QGPSLOC(pBg96 *bg96,char *msg)
 {
 	unsigned char ret = 0;
 	
@@ -1214,10 +1216,10 @@ unsigned char bg96_set_AT_QGPSLOC(pBg96 *bg96,u8 *msg)
 		{
 			if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "QGPSLOC: ") != -1)
 			{
+				(*bg96)->get_str1(bg96,(*bg96)->rx_cmd_buf, "+QGPSLOC: ", 1, "\r\n\r\nOK", 1, msg);
 				
+				ret = 1;
 			}
-			
-			ret = 1;
 		}
     }
     (*bg96)->bg96_mode = NET_MODE;
@@ -1237,6 +1239,29 @@ unsigned char bg96_set_AT_QGPSEND(pBg96 *bg96)
     {
         if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, "OK") != -1)
 		{
+			ret = 1;
+		}
+    }
+    (*bg96)->bg96_mode = NET_MODE;
+#ifdef BG96_PRINTF_RX_BUF
+	(*bg96)->print_rx_buf(bg96);
+#endif
+    return ret;
+}
+
+unsigned char bg96_set_AT_QNTP(pBg96 *bg96,char *server,unsigned short port,char *msg)
+{
+	unsigned char ret = 0;
+    (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
+    (*bg96)->clear_rx_cmd_buffer(bg96);
+//    printf("AT+QNTP=1,\"%s\",%d,0\r\n",server,port);
+	printf("AT+QNTP=1,\"cn.ntp.org.cn\",123,0\r\n");
+    if((*bg96)->wait_cmd2(bg96,"+QNTP:",TIMEOUT_2S) == RECEIVED)
+    {
+        if((*bg96)->search_str(bg96,(*bg96)->rx_cmd_buf, ",\"20") != -1)
+		{
+			(*bg96)->get_str1(bg96,(*bg96)->rx_cmd_buf, "\"", 1, "\"", 2, msg);
+			
 			ret = 1;
 		}
     }

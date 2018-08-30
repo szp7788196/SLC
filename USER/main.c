@@ -9,11 +9,11 @@
 //u8 eepbuf[256];
 u16 cnt = 0;
 u8 led_s = 0;
-//RCC_ClocksTypeDef RCC_Clocks;
+RCC_ClocksTypeDef RCC_Clocks;
 int main(void)
 {
 //	IWDG_Init(IWDG_Prescaler_128,3750);	//128分频 312.5HZ 3750为12秒
-//	RCC_GetClocksFreq(&RCC_Clocks);		//查看各个总线的时钟频率
+	RCC_GetClocksFreq(&RCC_Clocks);		//查看各个总线的时钟频率
 	__set_PRIMASK(1);	//关闭全局中断
 
 	NVIC_Configuration();

@@ -138,6 +138,7 @@ u8 SyncTimeFromNet(u32 sec_num)
 	u8 ret = 0;
 	u32 temp = 0;
 	u16 temp1 = 0;
+	_calendar_obj calen;
 
 	temp1 = 1970;
 	temp = sec_num / 86400;
@@ -161,12 +162,12 @@ u8 SyncTimeFromNet(u32 sec_num)
 		temp1 ++;
 	}
 
-	calendar.w_year = temp1;
+	calen.w_year = temp1;
 	temp1 = 0;
 
 	while(temp >= 28)
 	{
-		if(Is_Leap_Year(calendar.w_year) && temp1 == 1)
+		if(Is_Leap_Year(calen.w_year) && temp1 == 1)
 		{
 			if(temp >= 29)
 				temp -= 29;
@@ -182,15 +183,15 @@ u8 SyncTimeFromNet(u32 sec_num)
 		}
 		temp1 ++;
 	}
-	calendar.w_month = temp1 + 1;
-	calendar.w_date = temp + 1;
+	calen.w_month = temp1 + 1;
+	calen.w_date = temp + 1;
 
 	temp = sec_num % 86400;
-	calendar.hour = temp / 3600;
-	calendar.min = (temp % 3600) / 60;
-	calendar.sec = (temp % 3600) % 60;
+	calen.hour = temp / 3600;
+	calen.min = (temp % 3600) / 60;
+	calen.sec = (temp % 3600) % 60;
 
-	RTC_Set(calendar.w_year,calendar.w_month,calendar.w_date,calendar.hour,calendar.min,calendar.sec);
+	RTC_Set(calen.w_year,calen.w_month,calen.w_date,calen.hour,calen.min,calen.sec);
 
 	return ret;
 }

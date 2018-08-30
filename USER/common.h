@@ -49,6 +49,7 @@
 #define DEBUG_LOG								//是否打印调试信息
 
 #define HOLD_REG_LEN				512
+#define TIME_BUF_LEN				255
 
 #define MAX_UPLOAD_INVL				3600
 
@@ -103,6 +104,23 @@
 
 #define TIME_RULE_ADD				512			//时间策略存储地址
 #define TIME_RULE_LEN				9
+
+
+#define RegularTime_S struct RegularTime
+typedef struct RegularTime *pRegularTime;
+struct RegularTime
+{
+	u8 type;
+	u8 year;
+	u8 month;
+	u8 data;
+	u8 hour;
+	u8 minute;
+	u8 percent;
+	
+	RegularTime_S *prev;
+	RegularTime_S *next;
+};
 
 
 static const uint32_t crc32tab[] = 
@@ -239,6 +257,7 @@ extern SemaphoreHandle_t  xMutex_INVENTR;		//英飞特电源的互斥量
 extern QueueHandle_t xQueue_sensor;				//用于存储传感器的数据
 
 extern u8 HoldReg[HOLD_REG_LEN];
+extern u8 RegularTimeGroups[TIME_BUF_LEN];
 
 /***************************固件升级相关*****************************/
 extern u8 NeedUpDateFirmWare;			//有新固件需要加载
@@ -282,6 +301,10 @@ extern u8 TimeZone;						//时区偏移量
 
 extern u8 LightLevelPercent;			//灯的亮度级别
 extern u8 NeedToReset;					//复位/重启标志
+extern u8 GetGPSOK;						//成功获取位置信息标志
+extern u8 GetTimeOK;					//成功获时间标志
+
+extern u8 *GpsInfo;						//设备的位置信息
 
 
 u16 MyStrstr(u8 *str1, u8 *str2, u16 str1_len, u16 str2_len);

@@ -59,8 +59,15 @@ void vTaskSENSOR(void *pvParameters)
 				
 				memset(p_tSensorMsg->gps,0,32);
 				
-				memcpy(p_tSensorMsg->gps,"3948.0975N11632.7539E",21);
-				
+				if(GpsInfo != NULL && strlen((char *)GpsInfo) <= 32)
+				{
+					memcpy(p_tSensorMsg->gps,GpsInfo,strlen((char *)GpsInfo));
+				}
+				else
+				{
+					memcpy(p_tSensorMsg->gps,"3948.0975N11632.7539E",21);
+				}
+
 				if(xQueueSend(xQueue_sensor,(void *)p_tSensorMsg,(TickType_t)10) != pdPASS)
 				{
 #ifdef DEBUG_LOG

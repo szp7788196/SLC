@@ -3,6 +3,7 @@
 
 
 u8 HoldReg[HOLD_REG_LEN];				//保持寄存器
+u8 RegularTimeGroups[TIME_BUF_LEN];		//时间策略缓存
 
 /****************************互斥量相关******************************/
 SemaphoreHandle_t  xMutex_IIC1 		= NULL;	//IIC总线1的互斥量
@@ -51,6 +52,10 @@ u8 TimeZone = 8;					//时区偏移量
 /***************************其他*****************************/
 u8 LightLevelPercent = 0;			//灯的亮度级别
 u8 NeedToReset = 0;					//复位/重启标志
+u8 GetGPSOK = 0;					//成功获取位置信息和时间标志
+u8 GetTimeOK = 0;					//成功获取时间标志
+
+u8 *GpsInfo = NULL;					//设备的位置信息
 
 
 //在str1中查找str2，失败返回0xFF,成功返回str2首个元素在str1中的位置

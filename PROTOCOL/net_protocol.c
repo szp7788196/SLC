@@ -199,7 +199,30 @@ u16 ControlDeviceReset(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 	return out_len;
 }
 
-
+//设置策略时间
+u16 SetRegularTimeGroups(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf,u8 *time_buf)
+{
+	u8 out_len = 0;
+	u8 group_num = 0;
+	u8 i = 0;
+	u8 data_buf[2] = {0,0};
+	data_buf[0] = cmd_code;
+	
+	if(len % 7 == 0)
+	{
+		group_num = len / 7;
+		
+		
+	}
+	else
+	{
+		data_buf[1] = 2;
+	}
+	
+	out_len = PackAckPacket(cmd_code,data_buf,outbuf);
+	
+	return out_len;
+}
 
 
 
