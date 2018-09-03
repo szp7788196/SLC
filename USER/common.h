@@ -20,6 +20,7 @@
 #include <time.h>
 
 #include "task_sensor.h"
+#include "rtc.h"
 
 /*---------------------------------------------------------------------------*/
 /* Type Definition Macros                                                    */
@@ -48,12 +49,21 @@
 
 #define DEBUG_LOG								//是否打印调试信息
 
+
+#define MAX_GROUP_NUM				36
 #define HOLD_REG_LEN				512
 #define TIME_BUF_LEN				255
 
 #define MAX_UPLOAD_INVL				3600
 
 #define INIT_LIGHT_LEVEL			0
+
+#define TYPE_WEEKDAY				0x01
+#define TYPE_WEEKEND				0x02
+#define TYPE_HOLIDAY				0x04
+
+#define MODE_AUTO					0
+#define MODE_MANUAL					1
 
 
 #define BOOT_SW_VER_ADD				0			//BootLoader软件版本存储地址
@@ -101,6 +111,8 @@
 #define OTA_INFO_ADD				301			//OTA信息存储地址
 #define OTA_INFO_LEN				9
 
+#define TIME_GROUP_NUM_ADD			361			//策略组数存储地址
+#define TIME_GROUP_NUM_LEN			3
 
 #define TIME_RULE_ADD				512			//时间策略存储地址
 #define TIME_RULE_LEN				9
@@ -110,14 +122,24 @@
 typedef struct RegularTime *pRegularTime;
 struct RegularTime
 {
-	u8 type;
-	u8 year;
-	u8 month;
-	u8 data;
-	u8 hour;
-	u8 minute;
-	u8 percent;
+	u8 type;			//策略类别Bit0:1 工作日 Bit1:1 周末 Bit2:1节日
+
+	u8 s_year;
+	u8 s_month;
+	u8 s_date;
+	u8 s_hour;
+	u8 s_minute;
+	time_t s_seconds;
+
+	u8 e_year;
+	u8 e_month;
+	u8 e_date;
+	u8 e_hour;
+	u8 e_minute;
+	time_t e_seconds;
 	
+	u8 percent;
+
 	RegularTime_S *prev;
 	RegularTime_S *next;
 };
@@ -258,6 +280,8 @@ extern QueueHandle_t xQueue_sensor;				//用于存储传感器的数据
 
 extern u8 HoldReg[HOLD_REG_LEN];
 extern u8 RegularTimeGroups[TIME_BUF_LEN];
+extern u8 TimeGroupNumber;
+extern RegularTime_S RegularTimeStruct[MAX_GROUP_NUM];
 
 /***************************固件升级相关*****************************/
 extern u8 NeedUpDateFirmWare;			//有新固件需要加载
@@ -303,6 +327,7 @@ extern u8 LightLevelPercent;			//灯的亮度级别
 extern u8 NeedToReset;					//复位/重启标志
 extern u8 GetGPSOK;						//成功获取位置信息标志
 extern u8 GetTimeOK;					//成功获时间标志
+extern u8 DeviceWorkMode;				//运行模式，0：自动，1：手动
 
 extern u8 *GpsInfo;						//设备的位置信息
 
@@ -351,13 +376,14 @@ u8 ReadServerPort(void);
 u8 ReadUpLoadINVL(void);
 u8 ReadPowerINTFCC(void);
 u8 ReadTimeZone(void);
+u8 ReadTimeGroupNumber(void);
+u8 ReadRegularTimeGroups(void);
 
 void ReadParametersFromEEPROM(void);
 
 
 u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf);
 u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf);
-
 
 
 

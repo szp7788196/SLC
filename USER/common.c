@@ -2,8 +2,10 @@
 #include "24cxx.h"
 
 
-u8 HoldReg[HOLD_REG_LEN];				//保持寄存器
-u8 RegularTimeGroups[TIME_BUF_LEN];		//时间策略缓存
+u8 HoldReg[HOLD_REG_LEN];						//保持寄存器
+u8 RegularTimeGroups[TIME_BUF_LEN];				//时间策略缓存
+u8 TimeGroupNumber = 0;							//时间策略组数
+RegularTime_S RegularTimeStruct[MAX_GROUP_NUM];	//时间策略结构体数组
 
 /****************************互斥量相关******************************/
 SemaphoreHandle_t  xMutex_IIC1 		= NULL;	//IIC总线1的互斥量
@@ -54,6 +56,7 @@ u8 LightLevelPercent = 0;			//灯的亮度级别
 u8 NeedToReset = 0;					//复位/重启标志
 u8 GetGPSOK = 0;					//成功获取位置信息和时间标志
 u8 GetTimeOK = 0;					//成功获取时间标志
+u8 DeviceWorkMode = 0;				//运行模式，0：自动，1：手动
 
 u8 *GpsInfo = NULL;					//设备的位置信息
 
@@ -249,18 +252,18 @@ time_t GetSysTick1s(void)
 //从EEPROM中读取数据(带CRC16校验码)
 u8 ReadDataFromEepromToHoldBuf(u8 *inbuf,u16 s_add, u16 len)
 {
-	u8 i = 0;
+	u16 i = 0;
 	u16 ReadCrcCode;
 	u16 CalCrcCode = 0;
 
-	for(i = s_add; i < len; i ++)
+	for(i = s_add; i < s_add + len; i ++)
 	{
 		*(inbuf + i) = AT24CXX_ReadOneByte(i);
 	}
 
-	ReadCrcCode=(u16)(*(inbuf + len - 2));
+	ReadCrcCode=(u16)(*(inbuf + s_add + len - 2));
 	ReadCrcCode=ReadCrcCode<<8;
-	ReadCrcCode=ReadCrcCode|(u16)(u16)(*(inbuf + len - 1));
+	ReadCrcCode=ReadCrcCode|(u16)(u16)(*(inbuf + s_add + len - 1));
 
 	CalCrcCode = CRC16(inbuf + s_add,len - 2);
 
@@ -776,6 +779,101 @@ u8 ReadTimeZone(void)
 	return ret;
 }
 
+//读取时间策略组数
+u8 ReadTimeGroupNumber(void)
+{
+	u8 ret = 0;
+	
+	ret = ReadDataFromEepromToHoldBuf(HoldReg,TIME_GROUP_NUM_ADD, TIME_GROUP_NUM_LEN);
+	
+	if(ret)
+	{
+		if(HoldReg[TIME_GROUP_NUM_ADD] >= 2 && HoldReg[TIME_GROUP_NUM_ADD] <= MAX_GROUP_NUM)
+		{
+			TimeGroupNumber = HoldReg[TIME_GROUP_NUM_ADD];
+		}
+		else
+		{
+			TimeGroupNumber = 0;
+		}
+	}
+	
+	return ret;
+}
+
+//读取时间策略数组
+u8 ReadRegularTimeGroups(void)
+{
+	u8 ret = 0;
+	u16 i = 0;
+	u16 j = 0;
+	u16 read_crc = 0;
+	u16 cal_crc = 0;
+	u8 time_group[256];
+	u8 read_success_buf_flag[MAX_GROUP_NUM];
+	
+	ReadTimeGroupNumber();		//读取时间策略条数
+	
+	if(TimeGroupNumber != 0 && TimeGroupNumber % 2 == 0)
+	{
+		memset(time_group,0,256);
+		memset(read_success_buf_flag,0,MAX_GROUP_NUM);
+		
+		for(i = 0; i < TimeGroupNumber; i ++)
+		{
+			for(j = i * 9; j < i * 9 + 9; j ++)
+			{
+				time_group[j] = AT24CXX_ReadOneByte(TIME_RULE_ADD + j);
+			}
+			
+			cal_crc = CRC16(&time_group[j - 9],7);
+			read_crc = (((u16)time_group[j - 2]) << 8) + (u16)time_group[j - 1];
+			
+			if(cal_crc == read_crc)
+			{
+				read_success_buf_flag[i] = 1;
+			}
+		}
+		
+		for(i = 0; i <= TimeGroupNumber / 2; i += 2)
+		{
+			if(read_success_buf_flag[i + 0] == 1 && read_success_buf_flag[i + 1] == 1)
+			{
+				RegularTimeStruct[i / 2].type 		= time_group[(i + 0) * 9 + 0];
+				
+				RegularTimeStruct[i / 2].s_year 	= time_group[(i + 0) * 9 + 1];
+				RegularTimeStruct[i / 2].s_month 	= time_group[(i + 0) * 9 + 2];
+				RegularTimeStruct[i / 2].s_date 	= time_group[(i + 0) * 9 + 3];
+				RegularTimeStruct[i / 2].s_hour 	= time_group[(i + 0) * 9 + 4];
+				RegularTimeStruct[i / 2].s_minute 	= time_group[(i + 0) * 9 + 5];
+				
+				RegularTimeStruct[i / 2].percent 	= time_group[(i + 0) * 9 + 6];
+				
+				RegularTimeStruct[i / 2].e_year 	= time_group[(i + 1) * 9 + 1];
+				RegularTimeStruct[i / 2].e_month 	= time_group[(i + 1) * 9 + 2];
+				RegularTimeStruct[i / 2].e_date 	= time_group[(i + 1) * 9 + 3];
+				RegularTimeStruct[i / 2].e_hour 	= time_group[(i + 1) * 9 + 4];
+				RegularTimeStruct[i / 2].e_minute 	= time_group[(i + 1) * 9 + 5];
+				
+				RegularTimeStruct[i / 2].s_seconds = RegularTimeStruct[i / 2].s_hour * 3600 + RegularTimeStruct[i / 2].s_minute * 60;
+				RegularTimeStruct[i / 2].e_seconds = RegularTimeStruct[i / 2].e_hour * 3600 + RegularTimeStruct[i / 2].e_minute * 60;
+			}
+		}
+		
+		for(i = 0; i <= TimeGroupNumber / 2; i += 2)
+		{
+			if(read_success_buf_flag[i + 0] != 1 || read_success_buf_flag[i + 1] != 1)
+			{
+				memcpy(&RegularTimeStruct[i / 2],&RegularTimeStruct[i + 2 / 2],sizeof(RegularTime_S));
+				read_success_buf_flag[i + 2 + 0] = 0;
+				read_success_buf_flag[i + 2 + 1] = 0;
+			}
+		}
+	}
+	
+	return ret;
+}
+
 void ReadParametersFromEEPROM(void)
 {
 	ReadBootLoaderVersion();
@@ -792,6 +890,7 @@ void ReadParametersFromEEPROM(void)
 	ReadUpLoadINVL();
 	ReadPowerINTFCC();
 	ReadTimeZone();
+	ReadRegularTimeGroups();
 }
 
 //将数据打包成网络格式的数据

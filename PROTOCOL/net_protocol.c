@@ -86,7 +86,7 @@ u16 NetDataAnalysis(u8 *buf,u16 len,u8 *outbuf,u8 *hold_reg)
 						break;
 
 						case 0xE7:									//设置亮灭灯定时策略，下行
-							
+							ret = SetRegularTimeGroups(cmd_code,buf + 10,data_len,outbuf);
 						break;
 
 						case 0xE8:									//读取/发送设备配置信息，下行
@@ -116,7 +116,6 @@ u16 NetDataAnalysis(u8 *buf,u16 len,u8 *outbuf,u8 *hold_reg)
 	
 	return ret;
 }
-
 
 //解析ACK包
 u8 UnPackAckPacket(u8 cmd_code,u8 *buf,u8 len)
@@ -162,6 +161,8 @@ u16 ControlLightLevel(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 		if(level <= 100)
 		{
 			LightLevelPercent = 2 * level;
+			
+			DeviceWorkMode = MODE_MANUAL;		//强制转换为手动模式
 		}
 		else
 		{
@@ -200,19 +201,75 @@ u16 ControlDeviceReset(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 }
 
 //设置策略时间
-u16 SetRegularTimeGroups(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf,u8 *time_buf)
+u16 SetRegularTimeGroups(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 {
 	u8 out_len = 0;
 	u8 group_num = 0;
-	u8 i = 0;
+	u16 i = 0;
+	u16 j = 0;
+	u16 k = 0;
 	u8 data_buf[2] = {0,0};
+	u8 time_group[256];
+	u16 crc16 = 0;
+
 	data_buf[0] = cmd_code;
 	
-	if(len % 7 == 0)
+	if(len % 7 == 0)											//数据长度必须是7的倍数
 	{
-		group_num = len / 7;
+		group_num = len / 7;									//计算下发了几组数据
 		
-		
+		if(group_num % 2 == 0 || group_num <= MAX_GROUP_NUM)	//组数必须是2的倍数，并且要小于MAX_GROUP_NUM
+		{
+			TimeGroupNumber = group_num;
+			
+			crc16 = CRC16(&group_num,1);
+			
+			AT24CXX_WriteOneByte(TIME_GROUP_NUM_ADD + 0,TimeGroupNumber);
+			AT24CXX_WriteOneByte(TIME_GROUP_NUM_ADD + 1,(u8)(crc16 >> 8));
+			AT24CXX_WriteOneByte(TIME_GROUP_NUM_ADD + 2,(u8)(crc16 & 0x00FF));
+			
+			memset(time_group,0,256);
+			
+			for(i = 0; i < group_num; i ++)
+			{
+				for(j = i * 9; j < i * 9 + 7; j ++, k ++)
+				{
+					time_group[j] = *(buf + k);
+				}
+				
+				crc16 = CRC16(&time_group[j - 7],7);
+				
+				time_group[j + 0] = (u8)(crc16 >> 8);
+				time_group[j + 1] = (u8)(crc16 & 0x00FF);
+			}
+			
+			for(i = 0; i <= group_num / 2; i += 2)
+			{
+				RegularTimeStruct[i / 2].type 		= time_group[(i + 0) * 9 + 0];
+				
+				RegularTimeStruct[i / 2].s_year 	= time_group[(i + 0) * 9 + 1];
+				RegularTimeStruct[i / 2].s_month 	= time_group[(i + 0) * 9 + 2];
+				RegularTimeStruct[i / 2].s_date 	= time_group[(i + 0) * 9 + 3];
+				RegularTimeStruct[i / 2].s_hour 	= time_group[(i + 0) * 9 + 4];
+				RegularTimeStruct[i / 2].s_minute 	= time_group[(i + 0) * 9 + 5];
+				
+				RegularTimeStruct[i / 2].percent 	= time_group[(i + 0) * 9 + 6];
+				
+				RegularTimeStruct[i / 2].e_year 	= time_group[(i + 1) * 9 + 1];
+				RegularTimeStruct[i / 2].e_month 	= time_group[(i + 1) * 9 + 2];
+				RegularTimeStruct[i / 2].e_date 	= time_group[(i + 1) * 9 + 3];
+				RegularTimeStruct[i / 2].e_hour 	= time_group[(i + 1) * 9 + 4];
+				RegularTimeStruct[i / 2].e_minute 	= time_group[(i + 1) * 9 + 5];
+				
+				RegularTimeStruct[i / 2].s_seconds = RegularTimeStruct[i / 2].s_hour * 3600 + RegularTimeStruct[i / 2].s_minute * 60;
+				RegularTimeStruct[i / 2].e_seconds = RegularTimeStruct[i / 2].e_hour * 3600 + RegularTimeStruct[i / 2].e_minute * 60;
+			}
+			
+			for(i = 0; i < group_num * 9 + group_num * 2; i ++)				//每组7个字节+2个字节(CRC16)
+			{
+				AT24CXX_WriteOneByte(TIME_RULE_ADD + i,time_group[i]);
+			}
+		}
 	}
 	else
 	{

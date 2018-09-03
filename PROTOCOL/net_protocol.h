@@ -25,6 +25,7 @@ u8 UnPackAckPacket(u8 cmd_code,u8 *buf,u8 len);
 u16 PackAckPacket(u8 cmd_code,u8 *data,u8 *outbuf);
 u16 ControlLightLevel(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf);
 u16 ControlDeviceReset(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf);
+u16 SetRegularTimeGroups(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf);
 
 
 

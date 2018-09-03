@@ -136,7 +136,7 @@ float InventrGetOutPutCurrent(void)
 	u8 sum_recv = 0;
 	u8 send_buf[8];
 	u8 revc_buf[10];
-	u16 adc_val = 0;
+//	u16 adc_val = 0;
 	
 	if(xSchedulerRunning == 1)
 	{
@@ -192,14 +192,14 @@ float InventrGetOutPutCurrent(void)
 					
 					if(sum_cal == sum_recv)
 					{
-						adc_val = (((u16)revc_buf[4]) << 8) + (u16)revc_buf[5];
+						current = (float)((((u16)revc_buf[4]) << 8) + (u16)revc_buf[5]);			//新的通讯协议，读出来的值无需转换，直接是电流值ma
 						
-						if(adc_val > INVENTR_MAX_CURRENT_ADC_VAL)
-						{
-							adc_val = INVENTR_MAX_CURRENT_ADC_VAL;
-						}
-						
-						current = (float)INVENTR_MAX_CURRENT_MA * ((float)adc_val / (float)INVENTR_MAX_CURRENT_ADC_VAL);
+//						if(adc_val > INVENTR_MAX_CURRENT_ADC_VAL)
+//						{
+//							adc_val = INVENTR_MAX_CURRENT_ADC_VAL;
+//						}
+//						
+//						current = (float)INVENTR_MAX_CURRENT_MA * ((float)adc_val / (float)INVENTR_MAX_CURRENT_ADC_VAL);
 					}
 				}
 				
@@ -227,7 +227,7 @@ float InventrGetOutPutVoltage(void)
 	u8 sum_recv = 0;
 	u8 send_buf[8];
 	u8 revc_buf[10];
-	u16 adc_val = 0;
+//	u16 adc_val = 0;
 	
 	if(xSchedulerRunning == 1)
 	{
@@ -283,14 +283,14 @@ float InventrGetOutPutVoltage(void)
 					
 					if(sum_cal == sum_recv)
 					{
-						adc_val = (((u16)revc_buf[4]) << 8) + (u16)revc_buf[5];
+						voltage = (float)((((u16)revc_buf[4]) << 8) + (u16)revc_buf[5]);				//新的通讯协议，读出来的值无需转换，直接是电压值V
 						
-						if(adc_val > INVENTR_MAX_VOLTAGE_ADC_VAL)
-						{
-							adc_val = INVENTR_MAX_VOLTAGE_ADC_VAL;
-						}
-						
-						voltage = (float)INVENTR_MAX_VOLTAGE_V * ((float)adc_val / (float)INVENTR_MAX_VOLTAGE_ADC_VAL);
+//						if(adc_val > INVENTR_MAX_VOLTAGE_ADC_VAL)
+//						{
+//							adc_val = INVENTR_MAX_VOLTAGE_ADC_VAL;
+//						}
+//						
+//						voltage = (float)INVENTR_MAX_VOLTAGE_V * ((float)adc_val / (float)INVENTR_MAX_VOLTAGE_ADC_VAL);
 					}
 				}
 				

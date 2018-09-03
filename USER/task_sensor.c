@@ -40,7 +40,6 @@ void vTaskSENSOR(void *pvParameters)
 		InventrOutPutVoltage = InventrGetOutPutVoltage();	//读取电源输出电压
 		delay_ms(250);
 		
-		
 		if(push_data_to_net == 1)
 		{
 			push_data_to_net = 0;

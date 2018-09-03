@@ -126,7 +126,7 @@ void SendSensorData_HeartBeatPacket(void)
 		
 		send_len = PackNetData(0xE0,sensor_buf,sensor_data_len,send_buf);
 	}
-	else if(GetSysTick1s() - times_sec >= 20)
+	else if(GetSysTick1s() - times_sec >= 20 && UpLoadINCL > 20)			//只有在数据上传周期大于20秒的时候才发送心跳包，间隔是20秒
 	{
 		times_sec = GetSysTick1s();
 		

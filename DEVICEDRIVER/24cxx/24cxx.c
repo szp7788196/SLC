@@ -75,8 +75,13 @@ void AT24CXX_WriteOneByte(u16 WriteAddr,u8 DataToWrite)
 		IIC1_Wait_Ack();
 		IIC1_Stop();						//产生一个停止条件
 		delay_ms(10);
+		
+		if(xSchedulerRunning == 1)
+		{
+			xSemaphoreGive(xMutex_IIC1);
+		}
 
-		data = AT24CXX_ReadOneByte(WriteAddr);
+ 		data = AT24CXX_ReadOneByte(WriteAddr);
 
 		times ++;
 		if(times >= 5)
@@ -86,11 +91,6 @@ void AT24CXX_WriteOneByte(u16 WriteAddr,u8 DataToWrite)
 		}
 	}
     while(data != DataToWrite);
-	
-	if(xSchedulerRunning == 1)
-	{
-		xSemaphoreGive(xMutex_IIC1);
-	}
 }
 //在AT24CXX里面的指定地址开始写入长度为Len的数据
 //该函数用于写入16bit或者32bit的数据.
