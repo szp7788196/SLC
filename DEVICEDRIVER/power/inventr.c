@@ -2,6 +2,8 @@
 #include "common.h"
 #include "usart.h"
 
+float InventrInPutCurrent = 0.0f;
+float InventrInPutVoltage = 0.0f;
 float InventrOutPutCurrent = 0.0f;
 float InventrOutPutVoltage = 0.0f;
 

@@ -37,11 +37,11 @@ u8 *HardWareVersion = NULL;			//硬件版本号
 /***************************设备相关*********************************/
 u8 *DeviceName = NULL;				//设备名称
 u8 *DeviceID = NULL;				//设备ID
-u8 *UUID = NULL;					//设备UUID
+u8 *DeviceUUID = NULL;				//设备UUID
 
 /***************************网络相关*********************************/
 u8 Operators = 0;					//运营商编号
-u8 *APN = NULL;						//私有APN，不同客户APN不同
+u8 *APName = NULL;					//私有APN，不同客户APN不同
 u8 *ServerDomain = NULL;			//服务器域名
 u8 *ServerIP = NULL;				//服务器IP地址
 u8 *ServerPort = NULL;				//服务器端口号
@@ -157,6 +157,111 @@ u32 StringToInt(u8 *String)
 	}
 	return count;
 }
+
+unsigned short find_str(unsigned char *s_str, unsigned char *p_str, unsigned short count, unsigned short *seek)
+{
+	unsigned short _count = 1;
+    unsigned short len = 0;
+    unsigned char *temp_str = NULL;
+    unsigned char *temp_ptr = NULL;
+    unsigned char *temp_char = NULL;
+
+	(*seek) = 0;
+    if(0 == s_str || 0 == p_str)
+        return 0;
+    for(temp_str = s_str; *temp_str != '\0'; temp_str++)
+    {
+        temp_char = temp_str;
+
+        for(temp_ptr = p_str; *temp_ptr != '\0'; temp_ptr++)
+        {
+            if(*temp_ptr != *temp_char)
+            {
+                len = 0;
+                break;
+            }
+            temp_char++;
+            len++;
+        }
+        if(*temp_ptr == '\0')
+        {
+            if(_count == count)
+                return len;
+            else
+            {
+                _count++;
+                len = 0;
+            }
+        }
+        (*seek) ++;
+    }
+    return 0;
+}
+
+int search_str(char *source, const char *target)
+{
+	unsigned short seek = 0;
+    unsigned short len;
+    len = find_str((unsigned char *)source, (unsigned char *)target, 1, &seek);
+    if(len == 0)
+        return -1;
+    else
+        return len;
+}
+
+unsigned short get_str1(char *source, const char *begin, unsigned short count1, const char *end, unsigned short count2, char *out)
+{
+	unsigned short i;
+    unsigned short len1;
+    unsigned short len2;
+    unsigned short index1 = 0;
+    unsigned short index2 = 0;
+    unsigned short length = 0;
+    len1 = find_str((unsigned char *)source, (unsigned char *)begin, count1, &index1);
+    len2 = find_str((unsigned char *)source, (unsigned char *)end, count2, &index2);
+    length = index2 - index1 - len1;
+    if((len1 != 0) && (len2 != 0))
+    {
+        for( i = 0; i < index2 - index1 - len1; i++)
+            out[i] = source[index1 + len1 + i];
+        out[i] = '\0';
+    }
+    else
+    {
+        out[0] = '\0';
+    }
+    return length;
+}
+
+unsigned short get_str2(char *source, const char *begin, unsigned short count, unsigned short length, char *out)
+{
+	unsigned short i = 0;
+    unsigned short len1 = 0;
+    unsigned short index1 = 0;
+    len1 = find_str((unsigned char *)source, (unsigned char *)begin, count, &index1);
+    if(len1 != 0)
+    {
+        for(i = 0; i < length; i++)
+            out[i] = source[index1 + len1 + i];
+        out[i] = '\0';
+    }
+    else
+    {
+        out[0] = '\0';
+    }
+    return length;
+}
+
+unsigned short get_str3(char *source, char *out, unsigned short length)
+{
+	unsigned short i = 0;
+    for (i = 0 ; i < length ; i++)
+    {
+        out[i] = source[i];
+    }
+    out[i] = '\0';
+    return length;
+}
  
 //32位CRC校验
 u32 CRC32( const u8 *buf, u32 size)
@@ -249,7 +354,7 @@ time_t GetSysTick1s(void)
 	return SysTick1s;
 }
 
-//从EEPROM中读取数据(带CRC16校验码)
+//从EEPROM中读取数据(带CRC16校验码)len包括CRC16校验码
 u8 ReadDataFromEepromToHoldBuf(u8 *inbuf,u16 s_add, u16 len)
 {
 	u16 i = 0;
@@ -273,6 +378,23 @@ u8 ReadDataFromEepromToHoldBuf(u8 *inbuf,u16 s_add, u16 len)
 	}
 	
 	return 0;
+}
+
+//向EEPROM中写入数据(带CRC16校验码)len不包括CRC16校验码
+void WriteDataFromHoldBufToEeprom(u8 *inbuf,u16 s_add, u16 len)
+{
+	u16 i = 0;
+	u16 j = 0;
+	u16 CalCrcCode = 0;
+
+	CalCrcCode = CRC16(inbuf,len);
+	*(inbuf + len + 0) = (u8)(CalCrcCode >> 8);
+	*(inbuf + len + 1) = (u8)(CalCrcCode & 0x00FF);
+	
+	for(i = s_add ,j = 0; i < s_add + len + 2; i ++, j ++)
+	{
+		AT24CXX_WriteOneByte(i,*(inbuf + j));
+	}
 }
 
 //将数字或者缓冲区当中的数据转换成字符串，并赋值给相应的指针
@@ -360,6 +482,33 @@ u8 GetMemoryForString(u8 **str, u8 type, u32 id, u16 add, u16 size, u8 *hold_reg
 	return ret;
 }
 
+//将字符串拷贝到指定地址
+u8 CopyStrToPointer(u8 **pointer, u8 *str, u8 len)
+{
+	u8 ret = 0;
+	
+	if(*pointer == NULL)
+	{
+		*pointer = (u8 *)mymalloc(len + 1);
+	}
+	else if(*pointer != NULL)
+	{
+		myfree(*pointer);
+		*pointer = (u8 *)mymalloc(sizeof(u8) * len + 1);
+	}
+	
+	if(*pointer != NULL)
+	{
+		memset(*pointer,0,len + 1);
+		
+		memcpy(*pointer,str,len);
+		
+		ret = 1;
+	}
+	
+	return ret;
+}
+
 //获取设备名称
 u8 GetDeviceName(void)
 {
@@ -385,7 +534,7 @@ u8 GetDeviceUUID(void)
 {
 	u8 ret = 0;
 
-	ret = GetMemoryForString(&UUID, 2, 0, UU_ID_ADD, UU_ID_LEN - 2, HoldReg);
+	ret = GetMemoryForString(&DeviceUUID, 2, 0, UU_ID_ADD, UU_ID_LEN - 2, HoldReg);
 
 	return ret;
 }
@@ -395,7 +544,7 @@ u8 GetAPN(void)
 {
 	u8 ret = 0;
 
-	ret = GetMemoryForString(&APN, 2, 0, APN_ADD, APN_LEN - 2, HoldReg);
+	ret = GetMemoryForString(&APName, 2, 0, APN_ADD, APN_LEN - 2, HoldReg);
 
 	return ret;
 }
@@ -576,14 +725,14 @@ u8 ReadDeviceUUID(void)
 	}
 	else
 	{
-		if(UUID == NULL)
+		if(DeviceUUID == NULL)
 		{
-			UUID = (u8 *)mymalloc(sizeof(u8) * 65);
+			DeviceUUID = (u8 *)mymalloc(sizeof(u8) * 65);
 		}
 		
-		memset(UUID,0,65);
+		memset(DeviceUUID,0,65);
 		
-		sprintf((char *)UUID, "0123456789012345678901234567890123456789012345678901234567890123");
+		sprintf((char *)DeviceUUID, "0123456789012345678901234567890123456789012345678901234567890123");
 	}
 	
 	return ret;
@@ -624,14 +773,14 @@ u8 ReadAPN(void)
 	}
 	else
 	{
-		if(APN == NULL)
+		if(APName == NULL)
 		{
-			APN = (u8 *)mymalloc(sizeof(u8) * 5);
+			APName = (u8 *)mymalloc(sizeof(u8) * 5);
 		}
 		
-		memset(APN,0,5);
+		memset(APName,0,5);
 		
-		sprintf((char *)APN, "null");
+		sprintf((char *)APName, "null");
 	}
 	
 	return ret;

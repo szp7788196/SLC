@@ -18,7 +18,7 @@
 #define READ_BG96_NET  		GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_6)
 
 
-#define BG96_PRINTF_RX_BUF
+//#define BG96_PRINTF_RX_BUF
 
 #define CMD_DATA_BUFFER_SIZE 512
 #define NET_DATA_BUFFER_SIZE 1024
@@ -226,12 +226,6 @@ struct BG96
 
 	unsigned char   break_out_wait_cmd;
 
-    unsigned short  (*find_str)(pBg96 *bg96,unsigned char *s_str, unsigned char *p_str, unsigned short count, unsigned short *seek);
-    int         	(*search_str)(pBg96 *bg96,char *source, const char *target);
-    unsigned short  (*get_str1)(pBg96 *bg96,char *source, const char *begin, unsigned short count1, const char *end, unsigned short count2, char *out);
-    unsigned short  (*get_str2)(pBg96 *bg96,char *source, const char *begin, unsigned short count, unsigned short length, char *out);
-    unsigned short  (*get_str3)(pBg96 *bg96,char *source, char *out, unsigned short length);
-
     void        	(*print_rx_buf)(pBg96 *bg96);
     void        	(*print_cmd)(pBg96 *bg96,CMD_STATE_E cmd);
     CMD_STATE_E 	(*wait_cmd1)(pBg96 *bg96,unsigned int wait_time);
@@ -308,12 +302,6 @@ unsigned char bg96_set_AT_QNTP(pBg96 *bg96,char *server,unsigned short port,char
 
 void        	bg96_clear_rx_cmd_buffer(pBg96 *bg96);
 void        	bg96_get_char(pBg96 *bg96);
-
-unsigned short  bg96_find_str(pBg96 *bg96,unsigned char *s_str, unsigned char *p_str, unsigned short count, unsigned short *seek);
-int         	bg96_search_str(pBg96 *bg96,char *source, const char *target);
-unsigned short  bg96_get_str1(pBg96 *bg96,char *source, const char *begin, unsigned short count1, const char *end, unsigned short count2, char *out);
-unsigned short  bg96_get_str2(pBg96 *bg96,char *source, const char *begin, unsigned short count, unsigned short length, char *out);
-unsigned short  bg96_get_str3(pBg96 *bg96,char *source, char *out, unsigned short length);
 
 void        	bg96_print_rx_buf(pBg96 *bg96);
 void        	bg96_print_cmd(pBg96 *bg96,CMD_STATE_E cmd);

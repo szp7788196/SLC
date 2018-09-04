@@ -309,11 +309,11 @@ extern u8 *HardWareVersion;				//硬件版本号
 /***************************设备相关*********************************/
 extern u8 *DeviceName;					//设备名称
 extern u8 *DeviceID;					//设备ID
-extern u8 *UUID;						//设备UUID
+extern u8 *DeviceUUID;					//设备UUID
 
 /***************************网络相关*********************************/
 extern u8 Operators;					//运营商编号
-extern u8 *APN;							//私有APN，不同客户APN不同
+extern u8 *APName;						//私有APN，不同客户APN不同
 extern u8 *ServerDomain;				//服务器域名
 extern u8 *ServerIP;					//服务器IP地址
 extern u8 *ServerPort;					//服务器端口号
@@ -337,6 +337,11 @@ u8 GetDatBit(u32 dat);
 u32 GetADV(u8 len);
 void IntToString(u8 *DString,u32 Dint,u8 zero_num);
 u32 StringToInt(u8 *String);
+unsigned short find_str(unsigned char *s_str, unsigned char *p_str, unsigned short count, unsigned short *seek);
+int search_str(char *source, const char *target);
+unsigned short get_str1(char *source, const char *begin, unsigned short count1, const char *end, unsigned short count2, char *out);
+unsigned short get_str2(char *source, const char *begin, unsigned short count, unsigned short length, char *out);
+unsigned short get_str3(char *source, char *out, unsigned short length);
 u32 CRC32( const u8 *buf, u32 size);
 u16 CRC16(u8 *puchMsgg,u8 usDataLen);
 u8 CalCheckSum(u8 *buf, u16 len);
@@ -352,7 +357,9 @@ time_t GetSysTick1s(void);
 
 
 u8 ReadDataFromEepromToHoldBuf(u8 *inbuf,u16 s_add, u16 len);
+void WriteDataFromHoldBufToEeprom(u8 *inbuf,u16 s_add, u16 len);
 u8 GetMemoryForString(u8 **str, u8 type, u32 id, u16 add, u16 size, u8 *hold_reg);
+u8 CopyStrToPointer(u8 **pointer, u8 *str, u8 len);
 
 u8 GetDeviceName(void);
 u8 GetDeviceID(void);

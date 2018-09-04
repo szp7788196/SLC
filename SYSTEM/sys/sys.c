@@ -30,6 +30,12 @@ void NVIC_Configuration(void)
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
+	
+	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  			//TIM3中断
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;  	//先占优先级0级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  		//从优先级3级
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 			//IRQ通道被使能
+	NVIC_Init(&NVIC_InitStructure); 
 }
 
 

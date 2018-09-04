@@ -167,8 +167,8 @@ u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
 
 				memset(jing,0,16);
 				memset(wei,0,16);
-				bg96->get_str1(&bg96,buf, ",", 1, ",", 2, jing);
-				bg96->get_str1(&bg96,buf, ",", 2, ",", 3, wei);
+				get_str1(buf, ",", 1, ",", 2, jing);
+				get_str1(buf, ",", 2, ",", 3, wei);
 				
 				len = strlen(jing) + strlen(wei);
 				
