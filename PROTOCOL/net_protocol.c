@@ -46,61 +46,58 @@ u16 NetDataAnalysis(u8 *buf,u16 len,u8 *outbuf,u8 *hold_reg)
 			*(buf + 7) == 0x68 && \
 			*(buf + pos - 1) == 0x16)								//判断包头和包尾
 		{
-			if(MyStrstr(buf + 1,DeviceID,pos,6) != 0xFFFF)			//判断设备ID
+			cmd_code = *(buf + 8);								//获取功能码
+			data_len = *(buf + 9);								//获取有效数据的长度
+			read_check_sum = *(buf + pos - 2);					//获取校验和
+			cal_check_sum = CalCheckSum(buf, pos - 2);			//计算校验和
+			
+			if(read_check_sum == cal_check_sum)
 			{
-				cmd_code = *(buf + 8);								//获取功能码
-				data_len = *(buf + 9);								//获取有效数据的长度
-				read_check_sum = *(buf + pos - 2);					//获取校验和
-				cal_check_sum = CalCheckSum(buf, pos - 2);			//计算校验和
-				
-				if(read_check_sum == cal_check_sum)
+				switch(cmd_code)
 				{
-					switch(cmd_code)
-					{
-						case 0xE0:									//发送固定信息，上行，在别处处理
-							
-						break;
+					case 0xE0:									//发送固定信息，上行，在别处处理
+						
+					break;
 
-						case 0xE1:									//发送心跳，上行，在别处处理
-							
-						break;
+					case 0xE1:									//发送心跳，上行，在别处处理
+						
+					break;
 
-						case 0xE2:									//开关灯/调光，下行
-							ret = ControlLightLevel(cmd_code,buf + 10,data_len,outbuf);
-						break;
+					case 0xE2:									//开关灯/调光，下行
+						ret = ControlLightLevel(cmd_code,buf + 10,data_len,outbuf);
+					break;
 
-						case 0xE3:									//远程升级OTA，下行
-							
-						break;
+					case 0xE3:									//远程升级OTA，下行
+						
+					break;
 
-						case 0xE4:									//重启/复位，下行
-							ret = ControlDeviceReset(cmd_code,buf + 10,data_len,outbuf);
-						break;
+					case 0xE4:									//重启/复位，下行
+						ret = ControlDeviceReset(cmd_code,buf + 10,data_len,outbuf);
+					break;
 
-						case 0xE5:									//设置定时发送间隔,下行
-							
-						break;
+					case 0xE5:									//设置定时发送间隔,下行
+						
+					break;
 
-						case 0xE6:									//控制柜断电/通电，下行
-							
-						break;
+					case 0xE6:									//控制柜断电/通电，下行
+						
+					break;
 
-						case 0xE7:									//设置亮灭灯定时策略，下行
-							ret = SetRegularTimeGroups(cmd_code,buf + 10,data_len,outbuf);
-						break;
+					case 0xE7:									//设置亮灭灯定时策略，下行
+						ret = SetRegularTimeGroups(cmd_code,buf + 10,data_len,outbuf);
+					break;
 
-						case 0xE8:									//读取/发送设备配置信息，下行
-							
-						break;
+					case 0xE8:									//读取/发送设备配置信息，下行
+						
+					break;
 
-						case 0x80:									//应答，下行,上行在别处处理
-							UnPackAckPacket(cmd_code,buf + 10,data_len);
-						break;
+					case 0x80:									//应答，下行,上行在别处处理
+						UnPackAckPacket(cmd_code,buf + 10,data_len);
+					break;
 
-						default:									//此处要给云端应答一个功能码错误信息
-							
-						break;
-					}
+					default:									//此处要给云端应答一个功能码错误信息
+						
+					break;
 				}
 			}
 		}

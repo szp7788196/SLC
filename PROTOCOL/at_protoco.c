@@ -412,8 +412,7 @@ u8 AT_CommandGMR(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 u8 AT_CommandDEVNAME(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 {
 	u8 ret = 1;
-	u8 content[33];
-	u8 content_len = 0;
+	u8 content[34];
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
@@ -422,15 +421,15 @@ u8 AT_CommandDEVNAME(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
 	{
-		memset(content,0,33);
+		memset(content,0,34);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)content))
+		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
 		{
-			content_len = strlen((char *)content);
+			content[0] = strlen((char *)&content[1]);
 			
-			if(content_len <= 32)
+			if(content[0] <= 32)
 			{
-				CopyStrToPointer(&DeviceName, content,content_len);
+				CopyStrToPointer(&DeviceName, &content[1],content[0]);
 				
 				WriteDataFromHoldBufToEeprom(content,DEVICE_NAME_ADD, DEVICE_NAME_LEN - 2);
 				
@@ -533,7 +532,7 @@ u8 AT_CommandOPERATORS(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	else if(inbuf_len == AT_CommandBuf[cmd_id].len +3 + 2 + 2 && \
 		MyStrstr(inbuf, (u8 *)"=", inbuf_len, 1) != 0xFFFF)
 	{
-		content = *(inbuf + inbuf_len - 1);
+		content = *(inbuf + inbuf_len - 3) - 0x30;
 		
 		if(content < 3)
 		{
@@ -552,8 +551,7 @@ u8 AT_CommandOPERATORS(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 u8 AT_CommandAPN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 {
 	u8 ret = 1;
-	u8 content[17];
-	u8 content_len = 0;
+	u8 content[18];
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
@@ -562,15 +560,15 @@ u8 AT_CommandAPN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
 	{
-		memset(content,0,17);
+		memset(content,0,18);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)content))
+		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
 		{
-			content_len = strlen((char *)content);
+			content[0] = strlen((char *)&content[1]);
 			
-			if(content_len < 17)
+			if(content[0] < 17)
 			{
-				CopyStrToPointer(&APName, content,content_len);
+				CopyStrToPointer(&APName, &content[1],content[0]);
 				
 				WriteDataFromHoldBufToEeprom(content,APN_ADD, APN_LEN - 2);
 				
@@ -586,8 +584,7 @@ u8 AT_CommandAPN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 u8 AT_CommandDOMAIN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 {
 	u8 ret = 1;
-	u8 content[33];
-	u8 content_len = 0;
+	u8 content[34];
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
@@ -596,15 +593,15 @@ u8 AT_CommandDOMAIN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
 	{
-		memset(content,0,33);
+		memset(content,0,34);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)content))
+		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
 		{
-			content_len = strlen((char *)content);
+			content[0] = strlen((char *)&content[1]);
 			
-			if(content_len < 33)
+			if(content[0] < 33)
 			{
-				CopyStrToPointer(&ServerDomain, content,content_len);
+				CopyStrToPointer(&ServerDomain, &content[1],content[0]);
 				
 				WriteDataFromHoldBufToEeprom(content,SERVER_DOMAIN_ADD, SERVER_DOMAIN_LEN - 2);
 				
@@ -620,8 +617,7 @@ u8 AT_CommandDOMAIN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 u8 AT_CommandIPADDRESS(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 {
 	u8 ret = 1;
-	u8 content[16];
-	u8 content_len = 0;
+	u8 content[17];
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
@@ -630,15 +626,15 @@ u8 AT_CommandIPADDRESS(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
 	{
-		memset(content,0,16);
+		memset(content,0,17);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)content))
+		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
 		{
-			content_len = strlen((char *)content);
+			content[0] = strlen((char *)&content[1]);
 			
-			if(content_len < 16)
+			if(content[0] < 16)
 			{
-				CopyStrToPointer(&ServerIP, content,content_len);
+				CopyStrToPointer(&ServerIP, &content[1],content[0]);
 				
 				WriteDataFromHoldBufToEeprom(content,SERVER_IP_ADD, SERVER_IP_LEN - 2);
 				
@@ -654,8 +650,7 @@ u8 AT_CommandIPADDRESS(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 u8 AT_CommandPORT(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 {
 	u8 ret = 1;
-	u8 content[6];
-	u8 content_len = 0;
+	u8 content[7];
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
@@ -664,15 +659,15 @@ u8 AT_CommandPORT(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
 	{
-		memset(content,0,6);
+		memset(content,0,7);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)content))
+		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
 		{
-			content_len = strlen((char *)content);
+			content[0] = strlen((char *)content);
 			
-			if(content_len < 6)
+			if(content[0] < 6)
 			{
-				CopyStrToPointer(&ServerPort, content,content_len);
+				CopyStrToPointer(&ServerPort, &content[1],content[0]);
 				
 				WriteDataFromHoldBufToEeprom(content,SERVER_PORT_ADD, SERVER_PORT_LEN - 2);
 				
@@ -744,7 +739,7 @@ u8 AT_CommandINTFC(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	else if(inbuf_len == AT_CommandBuf[cmd_id].len +3 + 2 + 2 && \
 		MyStrstr(inbuf, (u8 *)"=", inbuf_len, 1) != 0xFFFF)
 	{
-		content = *(inbuf + inbuf_len - 1);
+		content = *(inbuf + inbuf_len - 3) - 0x30;
 		
 		if(content < 3)
 		{

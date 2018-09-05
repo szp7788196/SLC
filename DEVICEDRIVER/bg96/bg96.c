@@ -715,19 +715,19 @@ unsigned char bg96_set_AT_QCFG4(pBg96 *bg96,unsigned char operators)
 	
 	switch(operators)
 	{
-		case 0:
+		case 0:			//移动卡
 			parm1 = 0;
 			parm2 = 10;
 			parm3 = 80;
 		break;
 		
-		case 1:
+		case 1:			//联通卡
 			parm1 = 0;
 			parm2 = 10;
 			parm3 = 80;
 		break;
 		
-		case 2:
+		case 2:			//电信卡
 			parm1 = 0;
 			parm2 = 10;
 			parm3 = 10;
@@ -784,16 +784,16 @@ unsigned char bg96_set_AT_QICSGP(pBg96 *bg96,unsigned char operators)
 	
 	switch(operators)
 	{
-		case 0:
+		case 0:		//移动卡
 			printf("AT+QICSGP=1,1,\"CMNBIOT\",\"\",\"\",0\r\n");
 		break;
 		
-		case 1:
+		case 1:		//联通卡
 			printf("AT+QICSGP=1,1,\"CMNBIOT\",\"\",\"\",0\r\n");
 		break;
 		
-		case 2:
-			printf("AT+QICSGP=1,1,\"CMNBIOT\",\"\",\"\",0\r\n");
+		case 2:		//电信卡
+			printf("AT+QICSGP=1,1,\"CTND\",\"\",\"\",0\r\n");
 		break;
 		
 		default:

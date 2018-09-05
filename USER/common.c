@@ -418,12 +418,11 @@ u8 GetMemoryForString(u8 **str, u8 type, u32 id, u16 add, u16 size, u8 *hold_reg
 		else if(type == 2)
 		{
 			len = size;
-			
-			add -= 1;
 		}
 
 		*str = (u8 *)mymalloc(sizeof(u8) * len + 1);
 	}
+	
 	if(*str != NULL)
 	{
 		len = strlen((char *)*str);
@@ -437,7 +436,7 @@ u8 GetMemoryForString(u8 **str, u8 type, u32 id, u16 add, u16 size, u8 *hold_reg
 		}
 		else if(type == 2)
 		{
-			len = size;
+			new_len = size;
 			
 			add -= 1;
 		}
@@ -544,7 +543,7 @@ u8 GetAPN(void)
 {
 	u8 ret = 0;
 
-	ret = GetMemoryForString(&APName, 2, 0, APN_ADD, APN_LEN - 2, HoldReg);
+	ret = GetMemoryForString(&APName, 1, 0, APN_ADD, 0, HoldReg);
 
 	return ret;
 }
@@ -554,7 +553,7 @@ u8 GetServerDomain(void)
 {
 	u8 ret = 0;
 
-	ret = GetMemoryForString(&ServerDomain, 2, 0, SERVER_DOMAIN_ADD, SERVER_DOMAIN_LEN - 2, HoldReg);
+	ret = GetMemoryForString(&ServerDomain, 1, 0, SERVER_DOMAIN_ADD, 0, HoldReg);
 
 	return ret;
 }
@@ -564,7 +563,7 @@ u8 GetServerIP(void)
 {
 	u8 ret = 0;
 
-	ret = GetMemoryForString(&ServerIP, 2, 0, SERVER_IP_ADD, SERVER_IP_LEN - 2, HoldReg);
+	ret = GetMemoryForString(&ServerIP, 1, 0, SERVER_IP_ADD, 0, HoldReg);
 
 	return ret;
 }
@@ -574,7 +573,7 @@ u8 GetServerPort(void)
 {
 	u8 ret = 0;
 
-	ret = GetMemoryForString(&ServerPort, 2, 0, SERVER_PORT_ADD, SERVER_PORT_LEN - 2, HoldReg);
+	ret = GetMemoryForString(&ServerPort, 1, 0, SERVER_PORT_ADD, 0, HoldReg);
 
 	return ret;
 }
@@ -1049,28 +1048,30 @@ u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf)
 	
 	*(outbuf + 0) = 0x68;
 	
-	if(DeviceID != NULL)
+	if(DeviceID != NULL && DeviceUUID != NULL)
 	{
-		memcpy(outbuf + 1,DeviceID,6);
+		memcpy(outbuf + 1,DeviceID,DEVICE_ID_LEN - 2);			//设备ID
 		
 		*(outbuf + 7) = 0x68;
 		*(outbuf + 8) = fun_code;
-		*(outbuf + 9) = inbuf_len;
+		*(outbuf + 9) = inbuf_len + UU_ID_LEN - 2;
 		
-		memcpy(outbuf + 10,inbuf,inbuf_len);
+		memcpy(outbuf + 10,DeviceUUID,UU_ID_LEN - 2);			//UUID
 		
-		*(outbuf + 10 + inbuf_len) = CalCheckSum(outbuf, 10 + inbuf_len);
+		memcpy(outbuf + 10 + UU_ID_LEN - 2,inbuf,inbuf_len);	//具体数据内容
 		
-		*(outbuf + 10 + inbuf_len + 1) = 0x16;
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len) = CalCheckSum(outbuf, 10 + inbuf_len);
 		
-		*(outbuf + 10 + inbuf_len + 2) = 0xFE;
-		*(outbuf + 10 + inbuf_len + 3) = 0xFD;
-		*(outbuf + 10 + inbuf_len + 4) = 0xFC;
-		*(outbuf + 10 + inbuf_len + 5) = 0xFB;
-		*(outbuf + 10 + inbuf_len + 6) = 0xFA;
-		*(outbuf + 10 + inbuf_len + 7) = 0xF9;
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 1) = 0x16;
 		
-		len = 10 + inbuf_len + 7 + 1;
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 2) = 0xFE;
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 3) = 0xFD;
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 4) = 0xFC;
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 5) = 0xFB;
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 6) = 0xFA;
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 7) = 0xF9;
+		
+		len = 10 + UU_ID_LEN - 2 + inbuf_len + 7 + 1;
 	}
 	else
 	{

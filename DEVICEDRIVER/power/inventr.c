@@ -151,7 +151,7 @@ float InventrGetOutPutCurrent(void)
 	send_buf[1] = 0x3A;
 	send_buf[2] = 0x00;
 	send_buf[3] = 0x01;
-	send_buf[4] = 0x00;
+	send_buf[4] = 0x02;
 	send_buf[6] = 0x0D;
 	send_buf[7] = 0x0A;
 	
@@ -242,7 +242,7 @@ float InventrGetOutPutVoltage(void)
 	send_buf[1] = 0x3A;
 	send_buf[2] = 0x01;
 	send_buf[3] = 0x01;
-	send_buf[4] = 0x00;
+	send_buf[4] = 0x02;
 	send_buf[6] = 0x0D;
 	send_buf[7] = 0x0A;
 	
