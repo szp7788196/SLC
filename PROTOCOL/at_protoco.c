@@ -423,7 +423,7 @@ u8 AT_CommandDEVNAME(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content,0,34);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
+		if(get_str1(inbuf, "\"", 1, "\"", 2, &content[1]))
 		{
 			content[0] = strlen((char *)&content[1]);
 			
@@ -461,7 +461,7 @@ u8 AT_CommandDEVID(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 		memset(content_str,0,13);
 		memset(content_hex,0,6);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)content_str))
+		if(get_str1(inbuf, "\"", 1, "\"", 2, content_str))
 		{
 			content_str_len = strlen((char *)content_str);
 			
@@ -500,7 +500,7 @@ u8 AT_CommandUUID(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content,0,65);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)content))
+		if(get_str1(inbuf, "\"", 1, "\"", 2, content))
 		{
 			content_len = strlen((char *)content);
 			
@@ -562,7 +562,7 @@ u8 AT_CommandAPN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content,0,18);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
+		if(get_str1(inbuf, "\"", 1, "\"", 2, &content[1]))
 		{
 			content[0] = strlen((char *)&content[1]);
 			
@@ -595,7 +595,7 @@ u8 AT_CommandDOMAIN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content,0,34);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
+		if(get_str1(inbuf, "\"", 1, "\"", 2, &content[1]))
 		{
 			content[0] = strlen((char *)&content[1]);
 			
@@ -628,7 +628,7 @@ u8 AT_CommandIPADDRESS(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content,0,17);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
+		if(get_str1(inbuf, "\"", 1, "\"", 2, &content[1]))
 		{
 			content[0] = strlen((char *)&content[1]);
 			
@@ -661,7 +661,7 @@ u8 AT_CommandPORT(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content,0,7);
 		
-		if(get_str1((char *)inbuf, "\"", 1, "\"", 2, (char *)&content[1]))
+		if(get_str1(inbuf, "\"", 1, "\"", 2, &content[1]))
 		{
 			content[0] = strlen((char *)content);
 			
@@ -697,7 +697,7 @@ u8 AT_CommandINCL(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content_str,0,6);
 		
-		if(get_str1((char *)inbuf, "=", 1, "\r\n", 1, (char *)content_str))
+		if(get_str1(inbuf, "=", 1, "\r\n", 1, content_str))
 		{
 			content_str_len = strlen((char *)content_str);
 			
@@ -772,7 +772,7 @@ u8 AT_CommandTIMEOFFSET(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content_str,0,4);
 		
-		if(get_str1((char *)inbuf, "=", 1, "\r\n", 1, (char *)content_str))
+		if(get_str1(inbuf, "=", 1, "\r\n", 1, content_str))
 		{
 			content_str_len = strlen((char *)content_str);
 			
@@ -813,7 +813,7 @@ u8 AT_CommandPERCENT(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	{
 		memset(content_str,0,4);
 		
-		if(get_str1((char *)inbuf, "=", 1, "\r\n", 1, (char *)content_str))
+		if(get_str1(inbuf, "=", 1, "\r\n", 1, content_str))
 		{
 			content_str_len = strlen((char *)content_str);
 			

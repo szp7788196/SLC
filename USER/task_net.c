@@ -15,7 +15,7 @@ SensorMsg_S *p_tSensorMsgNet = NULL;			//用于装在传感器数据的结构体变量
 
 
 
-
+u8 *IpAddress = NULL;
 void vTaskNET(void *pvParameters)
 {
 	time_t times_sec = 0;
@@ -38,6 +38,12 @@ void vTaskNET(void *pvParameters)
 				SignalIntensity = bg96->get_AT_CSQ(&bg96);
 				GetGpsInfo(&GpsInfo,&GetGPSOK,&GetTimeOK);
 //				GetTimeInfo("cn.ntp.org.cn",123, &GetTimeOK);
+				
+				if(IpAddress == NULL && ServerDomain != NULL)
+				{
+					bg96->get_AT_QIDNSGIP(&bg96,(char *)ServerDomain, &IpAddress);
+				}
+				
 			}
 		}
 		else
@@ -93,13 +99,13 @@ void OnServerHandle(void)
 	u8 len = 0;
 	u8 out_buf[512];
 	
-	SendSensorData_HeartBeatPacket();		//向服务器定时发送传感器数据和心跳包
+	SendSensorData_HeartBeatPacket();								//向服务器定时发送传感器数据和心跳包
 	
-	len = NetDataFrameHandle(&tcp,out_buf,HoldReg,ConnectState);
+	len = NetDataFrameHandle(&tcp,out_buf,HoldReg,ConnectState);	//读取并解析服务器下发的数据包
 	
 	if(len > 0)
 	{
-		len = tcp->send(&tcp, out_buf, len);
+		len = tcp->send(&tcp, out_buf, len);						//把数据发送到服务器
 	}
 }
 
@@ -146,9 +152,9 @@ void SendSensorData_HeartBeatPacket(void)
 u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
 {
 	u8 ret = 0;
-	char buf[80];
-	char jing[16];
-	char wei[16];
+	u8 buf[80];
+	u8 jing[16];
+	u8 wei[16];
 	u16 len = 0;
 	
 	struct tm tm_time;
@@ -159,18 +165,18 @@ u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
 	{
 		memset(buf,0,80);
 		
-		if(bg96->set_AT_QGPS(&bg96))				//开启GPS
+		if(bg96->set_AT_QGPS(&bg96))						//开启GPS
 		{
-			if(bg96->set_AT_QGPSLOC(&bg96,buf))		//获取信息
+			if(bg96->set_AT_QGPSLOC(&bg96,(char *)buf))		//获取信息
 			{
-				bg96_set_AT_QGPSEND(&bg96);			//关闭GPS
+				bg96_set_AT_QGPSEND(&bg96);					//关闭GPS
 
 				memset(jing,0,16);
 				memset(wei,0,16);
 				get_str1(buf, ",", 1, ",", 2, jing);
 				get_str1(buf, ",", 2, ",", 3, wei);
 				
-				len = strlen(jing) + strlen(wei);
+				len = strlen((char *)jing) + strlen((char *)wei);
 				
 				if(*gps_info == NULL)
 				{
@@ -186,15 +192,15 @@ u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
 				{
 					memset(*gps_info,0,len + 1);
 					
-					strcat((char *)*gps_info,jing);
-					strcat((char *)*gps_info,wei);
+					strcat((char *)*gps_info,(char *)jing);
+					strcat((char *)*gps_info,(char *)wei);
 					
 					*gps_flag = 1;
 					
 					ret = 1;
 				}
 				
-				buf_len = strlen(buf);
+				buf_len = strlen((char *)buf);
 				
 				tm_time.tm_year = 2000 + (buf[buf_len - 5] - 0x30) * 10 + buf[buf_len - 4] - 0x30 - 1900;
 				tm_time.tm_mon = (buf[buf_len - 7] - 0x30) * 10 + buf[buf_len - 6] - 0x30 - 1;

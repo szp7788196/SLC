@@ -67,7 +67,7 @@ void AppTaskCreate(void)
 	
 	xTaskCreate(vTaskNET,
 				"vTaskNET",
-				1500,
+				2048,
 				NULL,
 				6,
 				&xHandleTaskNET);		//网络任务

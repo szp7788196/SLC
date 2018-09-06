@@ -521,7 +521,7 @@ unsigned char bg96_set_AT(pBg96 *bg96)
 	printf("AT\r\n");
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_2S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -542,7 +542,7 @@ unsigned char bg96_set_AT_ATE(pBg96 *bg96,char cmd)
     printf("ATE%d\r\n", cmd);
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_1S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -593,8 +593,8 @@ unsigned char bg96_get_AT_CPIN(pBg96 *bg96)
 	printf("AT+CPIN?\r\n");
     if((*bg96)->wait_cmd2(bg96,"READY",TIMEOUT_6S) == RECEIVED)
     {
-        if((search_str((*bg96)->rx_cmd_buf, "READY") != -1) && \
-			(search_str((*bg96)->rx_cmd_buf, "OK") != -1))
+        if((search_str((unsigned char *)(*bg96)->rx_cmd_buf, "READY") != -1) && \
+			(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1))
             ret = 1;
         else
             ret = 0;
@@ -617,7 +617,7 @@ unsigned char bg96_get_AT_CSQ(pBg96 *bg96)
 	printf("AT+CSQ\r\n");
     if((*bg96)->wait_cmd2(bg96,"+CSQ: ",TIMEOUT_1S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "+CSQ: ") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "+CSQ: ") != -1)
 		{
 			pos = MyStrstr((u8 *)(*bg96)->rx_cmd_buf, "+CSQ: ", 128, 6);
 			if(pos != 0xFFFF)
@@ -654,7 +654,7 @@ unsigned char bg96_set_AT_QCFG1(pBg96 *bg96)
 	printf("AT+QCFG=\"nwscanseq\",03\r\n");
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_1S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -674,7 +674,7 @@ unsigned char bg96_set_AT_QCFG2(pBg96 *bg96)
 	printf("AT+QCFG=\"nwscanmode\",3\r\n");
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_1S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -694,7 +694,7 @@ unsigned char bg96_set_AT_QCFG3(pBg96 *bg96)
 	printf("AT+QCFG=\"iotopmode\",1\r\n");
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_1S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -742,7 +742,7 @@ unsigned char bg96_set_AT_QCFG4(pBg96 *bg96,unsigned char operators)
 	printf("AT+QCFG=\"band\",%d,%d,%d\r\n",parm1,parm2,parm3);
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_1S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -762,7 +762,7 @@ unsigned char bg96_set_AT_QCFG5(pBg96 *bg96)
 	printf("AT+QCFG=\"nbsibscramble\",0\r\n");
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_1S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -801,7 +801,7 @@ unsigned char bg96_set_AT_QICSGP(pBg96 *bg96,unsigned char operators)
 	}
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_2S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -821,7 +821,7 @@ unsigned char bg96_set_AT_QIACT(pBg96 *bg96)
 	printf("AT+QIACT=1\r\n");
     if((*bg96)->wait_cmd1(bg96,TIMEOUT_160S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
             ret = 1;
         else
             ret = 0;
@@ -843,7 +843,7 @@ unsigned char bg96_get_AT_QIACT(pBg96 *bg96,char *list)
     printf("AT+QIACT?\r\n");
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_160S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "+QIACT: 1,1,1,") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "+QIACT: 1,1,1,") != -1)
         {
 			memcpy(list,&((*bg96)->rx_cmd_buf[17]),(*bg96)->rx_cnt - 9);
             ret = 1;
@@ -867,7 +867,7 @@ BG96_STATE_E bg96_get_AT_QISTATE(pBg96 *bg96)
     printf("AT+QISTATE?\r\n");
     if((*bg96)->wait_cmd2(bg96,"OK", TIMEOUT_2S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "+QISTATE") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "+QISTATE") != -1)
 		{
 			pos1 = MyStrstr((u8 *)(*bg96)->rx_cmd_buf, "\"uart1\"", (*bg96)->rx_cnt, 7);
 			
@@ -932,7 +932,7 @@ unsigned char bg96_set_AT_QIOPEN(pBg96 *bg96,char *type, char *addr, char *port)
     printf("AT+QIOPEN=1,0,\"%s\",\"%s\",%s,0,1\r\n", type, addr, port);
     if((*bg96)->wait_cmd2(bg96,"+QIOPEN:", TIMEOUT_160S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, " 0,0") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, " 0,0") != -1)
 		{
 			ret = 1;
 		}
@@ -957,7 +957,7 @@ unsigned char bg96_set_AT_QICLOSE(pBg96 *bg96)
     printf("AT+QICLOSE=0\r\n");
     if((*bg96)->wait_cmd1(bg96,TIMEOUT_11S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
 		{
 			ret = 1;
 		}
@@ -980,7 +980,7 @@ unsigned char bg96_set_AT_QISEND(pBg96 *bg96,unsigned char *buffer, unsigned int
     printf("AT+QISEND=0,%d\r\n", len);
     if((*bg96)->wait_cmd2(bg96,">", TIMEOUT_5S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, ">") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, ">") != -1)
         {
             state = 1;
         }
@@ -998,7 +998,7 @@ unsigned char bg96_set_AT_QISEND(pBg96 *bg96,unsigned char *buffer, unsigned int
 		(*bg96)->send_string(bg96,(*bg96)->USARTx,buffer,len);
         if((*bg96)->wait_cmd2(bg96,"SEND OK", TIMEOUT_15S) == RECEIVED)
         {
-            if(search_str((*bg96)->rx_cmd_buf, "SEND OK") != -1)
+            if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "SEND OK") != -1)
             {
                 state = 2;
             }
@@ -1047,7 +1047,7 @@ unsigned char bg96_get_AT_QISEND(pBg96 *bg96)
 	printf("AT+QISEND=0,0\r\n");
 	if((*bg96)->wait_cmd2(bg96,"+QISEND", TIMEOUT_2S) == RECEIVED)
 	{
-		if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+		if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
 		{
 			pos1 = MyStrstr((u8 *)(*bg96)->rx_cmd_buf, "OK", (*bg96)->rx_cnt, 2);
 			
@@ -1074,76 +1074,63 @@ unsigned char bg96_get_AT_QISEND(pBg96 *bg96)
 //ÓòÃû½âÎö
 unsigned char bg96_get_AT_QIDNSGIP(pBg96 *bg96,const char *domain, unsigned char **ip)
 {
-//	char buf[64];
-//	char msg[64];
+	char msg[32];
     unsigned char ret = 0;
-//	u8 new_len = 0;
-//	u8 len = 0;
-//	u16 pos = 0;
+	u8 new_len = 0;
+	u8 len = 0;
 
-//	memset(buf,0,64);
-//	memset(msg,0,64);
+	memset(msg,0,32);
 
-//    (*gprs)->wait_bg96_mode(gprs,CMD_MODE);
-//    (*gprs)->clear_rx_cmd_buffer(gprs);
-//    printf("AT+CDNSGIP=\"%s\"\r\n", domain);
-//    if((*gprs)->wait_cmd2(gprs,"+CIPDOMAIN:",TIMEOUT_20S) == RECEIVED)
-//    {
-//        if((*gprs)->search_str(gprs,(*gprs)->rx_cmd_buf, "+CIPDOMAIN:") != -1)
-//        {
-//			(*gprs)->get_str3(gprs,(*gprs)->rx_cmd_buf, buf, (*gprs)->rx_cnt);
+    (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
+    (*bg96)->clear_rx_cmd_buffer(bg96);
+    printf("AT+QIDNSGIP=1,\"%s\"\r\n", domain);
+//	printf("AT+QIDNSGIP=1,\"jd.com\"\r\n");
+    if((*bg96)->wait_cmd2(bg96,"+QIURC: ",TIMEOUT_5S) == RECEIVED)
+    {
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "dnsgip") != -1)
+        {
+			get_str1((unsigned char *)(*bg96)->rx_cmd_buf, "\"", 5, "\"", 6, (unsigned char *)msg);
+			
+			new_len = strlen(msg);
 
-//			(*gprs)->get_str1(gprs,buf, "\",\"", 1, "\"\r\n", 2, msg);
+			if(new_len != 0)
+			{
+				if(*ip == NULL)
+				{
+					*ip = (u8 *)mymalloc(sizeof(u8) * len + 1);
+				}
 
-//			if((*gprs)->search_str(gprs,msg, "\",\"") == -1)
-//			{
-//				len = strlen(msg);
-//				memset(buf,0,64);
-//				memcpy(buf,msg,len);
-//			}
-//			else
-//			{
-//				pos = MyStrstr((u8 *)msg, "\",\"", strlen(msg), 3);
-//				memset(buf,0,64);
-//				memcpy(buf,msg,pos);
-//				len = pos;
-//			}
+				if(*ip != NULL)
+				{
+					len = strlen((char *)*ip);
 
-//			if(*ip == NULL)
-//			{
-//				*ip = (u8 *)mymalloc(sizeof(u8) * len + 1);
-//			}
-
-//			if(*ip != NULL)
-//			{
-//				new_len = len;
-
-//				if(len == new_len)
-//				{
-//					memset(*ip,0,new_len + 1);
-//					memcpy(*ip,&buf[pos + 11],new_len);
-//					ret = 1;
-//				}
-//				else
-//				{
-//					myfree(*ip);
-//					*ip = (u8 *)mymalloc(sizeof(u8) * new_len + 1);
-//					if(ip != NULL)
-//					{
-//						memset(*ip,0,new_len + 1);
-//						memcpy(*ip,&buf[pos + 11],new_len);
-//						len = new_len;
-//						new_len = 0;
-//						ret = 1;
-//					}
-//				}
-//			}
-//        }
-//    }
-//    (*gprs)->bg96_mode = NET_MODE;
-//#ifdef BG96_PRINTF_RX_BUF
-//	(*gprs)->print_rx_buf(gprs);
-//#endif
+					if(len == new_len)
+					{
+						memset(*ip,0,new_len + 1);
+						memcpy(*ip,msg,new_len);
+						ret = 1;
+					}
+					else
+					{
+						myfree(*ip);
+						*ip = (u8 *)mymalloc(sizeof(u8) * new_len + 1);
+						if(ip != NULL)
+						{
+							memset(*ip,0,new_len + 1);
+							memcpy(*ip,msg,new_len);
+							len = new_len;
+							new_len = 0;
+							ret = 1;
+						}
+					}
+				}
+			}
+        }
+    }
+    (*bg96)->bg96_mode = NET_MODE;
+#ifdef BG96_PRINTF_RX_BUF
+	(*bg96)->print_rx_buf(bg96);
+#endif
     return ret;
 }
 
@@ -1157,9 +1144,9 @@ unsigned char bg96_get_AT_QPING(pBg96 *bg96,const char *host, char *msg)
     printf("AT+QPING=1,\"%s\",4,4\r\n", host);
     if((*bg96)->wait_cmd2(bg96,"OK",TIMEOUT_5S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
         {
-            get_str3((*bg96)->rx_cmd_buf, msg, (*bg96)->rx_cnt);
+            get_str3((unsigned char *)(*bg96)->rx_cmd_buf, (unsigned char *)msg, (*bg96)->rx_cnt);
             ret = 1;
         }
         else
@@ -1181,11 +1168,11 @@ unsigned char bg96_set_AT_QGPS(pBg96 *bg96)
     printf("AT+QGPS=1,30,50,0,1\r\n");
     if((*bg96)->wait_cmd1(bg96,TIMEOUT_2S) == RECEIVED)
     {
-		if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+		if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
 		{
 			ret = 1;
 		}
-		else if(search_str((*bg96)->rx_cmd_buf, "ERROR: 504") != -1)
+		else if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "ERROR: 504") != -1)
 		{
 			ret = 1;
 		}
@@ -1206,11 +1193,11 @@ unsigned char bg96_set_AT_QGPSLOC(pBg96 *bg96,char *msg)
     printf("AT+QGPSLOC=0\r\n");
     if((*bg96)->wait_cmd1(bg96,TIMEOUT_2S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
 		{
-			if(search_str((*bg96)->rx_cmd_buf, "QGPSLOC: ") != -1)
+			if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "QGPSLOC: ") != -1)
 			{
-				get_str1((*bg96)->rx_cmd_buf, "+QGPSLOC: ", 1, "\r\n\r\nOK", 1, msg);
+				get_str1((unsigned char *)(*bg96)->rx_cmd_buf, "+QGPSLOC: ", 1, "\r\n\r\nOK", 1, (unsigned char *)msg);
 				
 				ret = 1;
 			}
@@ -1231,7 +1218,7 @@ unsigned char bg96_set_AT_QGPSEND(pBg96 *bg96)
     printf("AT+QGPSEND\r\n");
     if((*bg96)->wait_cmd1(bg96,TIMEOUT_2S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, "OK") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
 		{
 			ret = 1;
 		}
@@ -1252,9 +1239,9 @@ unsigned char bg96_set_AT_QNTP(pBg96 *bg96,char *server,unsigned short port,char
 	printf("AT+QNTP=1,\"cn.ntp.org.cn\",123,0\r\n");
     if((*bg96)->wait_cmd2(bg96,"+QNTP:",TIMEOUT_2S) == RECEIVED)
     {
-        if(search_str((*bg96)->rx_cmd_buf, ",\"20") != -1)
+        if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, ",\"20") != -1)
 		{
-			get_str1((*bg96)->rx_cmd_buf, "\"", 1, "\"", 2, msg);
+			get_str1((unsigned char *)(*bg96)->rx_cmd_buf, "\"", 1, "\"", 2, (unsigned char *)msg);
 			
 			ret = 1;
 		}
@@ -1303,9 +1290,9 @@ CMD_STATE_E bg96_wait_cmd1(pBg96 *bg96,unsigned int wait_time)
         }
 
         if(
-            search_str((*bg96)->rx_cmd_buf, "OK"   ) != -1  || \
-            search_str((*bg96)->rx_cmd_buf, "FAIL" ) != -1  || \
-            search_str((*bg96)->rx_cmd_buf, "ERROR") != -1
+            search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK"   ) != -1  || \
+            search_str((unsigned char *)(*bg96)->rx_cmd_buf, "FAIL" ) != -1  || \
+            search_str((unsigned char *)(*bg96)->rx_cmd_buf, "ERROR") != -1
         )
         {
             while(GetSysTick1ms() - (*bg96)->last_time < 20);
@@ -1334,7 +1321,7 @@ CMD_STATE_E bg96_wait_cmd2(pBg96 *bg96,const char *spacial_target, unsigned int 
             break;
         }
 
-        else if(search_str((*bg96)->rx_cmd_buf, spacial_target) != -1)
+        else if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, (unsigned char *)spacial_target) != -1)
         {
             while(GetSysTick1ms() - (*bg96)->last_time < 20);
 				(*bg96)->cmd_state = RECEIVED;

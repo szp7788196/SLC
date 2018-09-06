@@ -18,7 +18,7 @@
 #define READ_BG96_NET  		GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_6)
 
 
-//#define BG96_PRINTF_RX_BUF
+#define BG96_PRINTF_RX_BUF
 
 #define CMD_DATA_BUFFER_SIZE 256
 #define NET_DATA_BUFFER_SIZE 1500
@@ -92,17 +92,6 @@ typedef enum
 
 typedef enum
 {
-//    NEED_PLUS = 0,
-//    NEED_I ,
-//    NEED_P ,
-//    NEED_D ,
-//    NEED_DOT ,
-//    NEED_ID_DATA,
-//    NEED_LEN_DATA,
-//    NEED_COLON ,
-//    NEED_USER_DATA ,
-//    STATE_ERROR ,
-	
 	NEED_PLUS = 0,
 	NEED_Q,
 	NEED_I,

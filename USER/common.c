@@ -65,7 +65,7 @@ u8 *GpsInfo = NULL;					//设备的位置信息
 u16 MyStrstr(u8 *str1, u8 *str2, u16 str1_len, u16 str2_len)
 {
 	u16 len = str1_len;
-	if(str1_len == 0 || str2_len == 0)	
+	if(str1_len == 0 || str2_len == 0)
 	{
 		return 0xFFFF;
 	}
@@ -120,10 +120,10 @@ u32 GetADV(u8 len)
 //整数转换为字符串
 void IntToString(u8 *DString,u32 Dint,u8 zero_num)
 {
-	u16 i = 0;  
+	u16 i = 0;
 	u8 j = GetDatBit(Dint);
 	for(i = 0; i < GetDatBit(Dint) + zero_num; i ++)
-	{ 
+	{
 		DString[i] = Dint / GetADV(j) % 10 + 0x30;
 		j --;
 	}
@@ -135,7 +135,7 @@ u32 StringToInt(u8 *String)
 	u8 i;
 	u32 count=0;
 	u32 dev;
-	
+
 	len = strlen((char *)String);
 	dev = 1;
 	for(i = 0; i < len; i ++)//len-1
@@ -198,18 +198,18 @@ unsigned short find_str(unsigned char *s_str, unsigned char *p_str, unsigned sho
     return 0;
 }
 
-int search_str(char *source, const char *target)
+int search_str(unsigned char *source, unsigned char *target)
 {
 	unsigned short seek = 0;
     unsigned short len;
-    len = find_str((unsigned char *)source, (unsigned char *)target, 1, &seek);
+    len = find_str(source, target, 1, &seek);
     if(len == 0)
         return -1;
     else
         return len;
 }
 
-unsigned short get_str1(char *source, const char *begin, unsigned short count1, const char *end, unsigned short count2, char *out)
+unsigned short get_str1(unsigned char *source, unsigned char *begin, unsigned short count1, unsigned char *end, unsigned short count2, unsigned char *out)
 {
 	unsigned short i;
     unsigned short len1;
@@ -217,8 +217,8 @@ unsigned short get_str1(char *source, const char *begin, unsigned short count1, 
     unsigned short index1 = 0;
     unsigned short index2 = 0;
     unsigned short length = 0;
-    len1 = find_str((unsigned char *)source, (unsigned char *)begin, count1, &index1);
-    len2 = find_str((unsigned char *)source, (unsigned char *)end, count2, &index2);
+    len1 = find_str(source, begin, count1, &index1);
+    len2 = find_str(source, end, count2, &index2);
     length = index2 - index1 - len1;
     if((len1 != 0) && (len2 != 0))
     {
@@ -233,12 +233,12 @@ unsigned short get_str1(char *source, const char *begin, unsigned short count1, 
     return length;
 }
 
-unsigned short get_str2(char *source, const char *begin, unsigned short count, unsigned short length, char *out)
+unsigned short get_str2(unsigned char *source, unsigned char *begin, unsigned short count, unsigned short length, unsigned char *out)
 {
 	unsigned short i = 0;
     unsigned short len1 = 0;
     unsigned short index1 = 0;
-    len1 = find_str((unsigned char *)source, (unsigned char *)begin, count, &index1);
+    len1 = find_str(source, begin, count, &index1);
     if(len1 != 0)
     {
         for(i = 0; i < length; i++)
@@ -252,7 +252,7 @@ unsigned short get_str2(char *source, const char *begin, unsigned short count, u
     return length;
 }
 
-unsigned short get_str3(char *source, char *out, unsigned short length)
+unsigned short get_str3(unsigned char *source, unsigned char *out, unsigned short length)
 {
 	unsigned short i = 0;
     for (i = 0 ; i < length ; i++)
@@ -262,7 +262,7 @@ unsigned short get_str3(char *source, char *out, unsigned short length)
     out[i] = '\0';
     return length;
 }
- 
+
 //32位CRC校验
 u32 CRC32( const u8 *buf, u32 size)
 {
@@ -273,11 +273,11 @@ u32 CRC32( const u8 *buf, u32 size)
      return crc^0xFFFFFFFF;
 }
 
-/***************************************************** 
+/*****************************************************
 函数：u16 CRC16(u8 *puchMsgg,u8 usDataLen)
 功能：CRC校验用函数
-参数：puchMsgg是要进行CRC校验的消息，usDataLen是消息中字节数														    
-返回：计算出来的CRC校验码。                                                                                      
+参数：puchMsgg是要进行CRC校验的消息，usDataLen是消息中字节数
+返回：计算出来的CRC校验码。
 *****************************************************/
 u16 CRC16(u8 *puchMsgg,u8 usDataLen)
 {
@@ -286,7 +286,7 @@ u16 CRC16(u8 *puchMsgg,u8 usDataLen)
     u8 uIndex ; 													//CRC循环中的索引
     while (usDataLen--) 											//传输消息缓冲区
     {
-		uIndex = uchCRCHi ^ *puchMsgg++; 							//计算CRC 
+		uIndex = uchCRCHi ^ *puchMsgg++; 							//计算CRC
 		uchCRCHi = uchCRCLo ^ auchCRCHi[uIndex];
 		uchCRCLo = auchCRCLo[uIndex];
     }
@@ -298,18 +298,18 @@ u8 CalCheckSum(u8 *buf, u16 len)
 {
 	u8 sum = 0;
 	u16 i = 0;
-	
+
 	for(i = 0; i < len; i ++)
 	{
 		sum += *(buf + i);
 	}
-	
+
 	return sum;
 }
 
 //产生一个系统1毫秒滴答时钟.
 void SysTick1msAdder(void)
-{	
+{
 	SysTick1ms = (SysTick1ms + 1) & 0xFFFFFFFF;
 }
 
@@ -333,7 +333,7 @@ u32 GetSysTick10ms(void)
 
 //产生一个系统100毫秒滴答时钟.
 void SysTick100msAdder(void)
-{	
+{
 	SysTick100ms = (SysTick100ms + 1) & 0xFFFFFFFF;
 }
 
@@ -376,7 +376,7 @@ u8 ReadDataFromEepromToHoldBuf(u8 *inbuf,u16 s_add, u16 len)
 	{
 		return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -390,7 +390,7 @@ void WriteDataFromHoldBufToEeprom(u8 *inbuf,u16 s_add, u16 len)
 	CalCrcCode = CRC16(inbuf,len);
 	*(inbuf + len + 0) = (u8)(CalCrcCode >> 8);
 	*(inbuf + len + 1) = (u8)(CalCrcCode & 0x00FF);
-	
+
 	for(i = s_add ,j = 0; i < s_add + len + 2; i ++, j ++)
 	{
 		AT24CXX_WriteOneByte(i,*(inbuf + j));
@@ -422,7 +422,7 @@ u8 GetMemoryForString(u8 **str, u8 type, u32 id, u16 add, u16 size, u8 *hold_reg
 
 		*str = (u8 *)mymalloc(sizeof(u8) * len + 1);
 	}
-	
+
 	if(*str != NULL)
 	{
 		len = strlen((char *)*str);
@@ -437,7 +437,7 @@ u8 GetMemoryForString(u8 **str, u8 type, u32 id, u16 add, u16 size, u8 *hold_reg
 		else if(type == 2)
 		{
 			new_len = size;
-			
+
 			add -= 1;
 		}
 
@@ -485,7 +485,7 @@ u8 GetMemoryForString(u8 **str, u8 type, u32 id, u16 add, u16 size, u8 *hold_reg
 u8 CopyStrToPointer(u8 **pointer, u8 *str, u8 len)
 {
 	u8 ret = 0;
-	
+
 	if(*pointer == NULL)
 	{
 		*pointer = (u8 *)mymalloc(len + 1);
@@ -495,16 +495,16 @@ u8 CopyStrToPointer(u8 **pointer, u8 *str, u8 len)
 		myfree(*pointer);
 		*pointer = (u8 *)mymalloc(sizeof(u8) * len + 1);
 	}
-	
+
 	if(*pointer != NULL)
 	{
 		memset(*pointer,0,len + 1);
-		
+
 		memcpy(*pointer,str,len);
-		
+
 		ret = 1;
 	}
-	
+
 	return ret;
 }
 
@@ -582,18 +582,18 @@ u8 GetServerPort(void)
 u8 ReadBootLoaderVersion(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,BOOT_SW_VER_ADD, BOOT_SW_VER_LEN);
-	
+
 	if(ret)
 	{
 		if(BootLoaderVersion == NULL)
 		{
 			BootLoaderVersion = (u8 *)mymalloc(sizeof(u8) * 6);
 		}
-		
+
 		memset(BootLoaderVersion,0,6);
-		
+
 		sprintf((char *)BootLoaderVersion, "%02d.%02d", HoldReg[BOOT_SW_VER_ADD + 0],HoldReg[BOOT_SW_VER_ADD + 1]);
 	}
 	else
@@ -602,12 +602,12 @@ u8 ReadBootLoaderVersion(void)
 		{
 			BootLoaderVersion = (u8 *)mymalloc(sizeof(u8) * 6);
 		}
-		
+
 		memset(BootLoaderVersion,0,6);
-		
+
 		sprintf((char *)BootLoaderVersion, "null");
 	}
-	
+
 	return ret;
 }
 
@@ -615,16 +615,16 @@ u8 ReadBootLoaderVersion(void)
 u8 ReadSoftWareVersion(void)
 {
 	u8 ret = 1;
-	
+
 	if(SoftWareVersion == NULL)
 	{
 		SoftWareVersion = (u8 *)mymalloc(sizeof(u8) * 6);
 	}
-	
+
 	memset(SoftWareVersion,0,6);
-	
+
 	sprintf((char *)SoftWareVersion, "%02d.%02d", SOFT_WARE_VRESION / 100,SOFT_WARE_VRESION % 100);
-	
+
 	return ret;
 }
 
@@ -632,18 +632,18 @@ u8 ReadSoftWareVersion(void)
 u8 ReadHardWareVersion(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,HW_VER_ADD, HW_VER_LEN);
-	
+
 	if(ret)
 	{
 		if(HardWareVersion == NULL)
 		{
 			HardWareVersion = (u8 *)mymalloc(sizeof(u8) * 6);
 		}
-		
+
 		memset(HardWareVersion,0,6);
-		
+
 		sprintf((char *)HardWareVersion, "%02d.%02d", HoldReg[HW_VER_ADD + 0],HoldReg[HW_VER_ADD + 1]);
 	}
 	else
@@ -652,12 +652,12 @@ u8 ReadHardWareVersion(void)
 		{
 			HardWareVersion = (u8 *)mymalloc(sizeof(u8) * 6);
 		}
-		
+
 		memset(HardWareVersion,0,6);
-		
+
 		sprintf((char *)HardWareVersion, "null");
 	}
-	
+
 	return ret;
 }
 
@@ -665,9 +665,9 @@ u8 ReadHardWareVersion(void)
 u8 ReadDeviceName(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,DEVICE_NAME_ADD, DEVICE_NAME_LEN);
-	
+
 	if(ret)
 	{
 		GetDeviceName();
@@ -678,12 +678,12 @@ u8 ReadDeviceName(void)
 		{
 			DeviceName = (u8 *)mymalloc(sizeof(u8) * 5);
 		}
-		
+
 		memset(DeviceName,0,5);
-		
+
 		sprintf((char *)DeviceName, "null");
 	}
-	
+
 	return ret;
 }
 
@@ -691,9 +691,9 @@ u8 ReadDeviceName(void)
 u8 ReadDeviceID(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,DEVICE_ID_ADD, DEVICE_ID_LEN);
-	
+
 	if(ret)
 	{
 		GetDeviceID();
@@ -704,10 +704,10 @@ u8 ReadDeviceID(void)
 		{
 			DeviceID = (u8 *)mymalloc(sizeof(u8) * 6);
 		}
-		
+
 		memset(DeviceID,0,6);
 	}
-	
+
 	return ret;
 }
 
@@ -715,9 +715,9 @@ u8 ReadDeviceID(void)
 u8 ReadDeviceUUID(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,UU_ID_ADD, UU_ID_LEN);
-	
+
 	if(ret)
 	{
 		GetDeviceUUID();
@@ -728,12 +728,12 @@ u8 ReadDeviceUUID(void)
 		{
 			DeviceUUID = (u8 *)mymalloc(sizeof(u8) * 65);
 		}
-		
+
 		memset(DeviceUUID,0,65);
-		
-		sprintf((char *)DeviceUUID, "0123456789012345678901234567890123456789012345678901234567890123");
+
+		sprintf((char *)DeviceUUID, "0000000000000000000000000000000000000000000000000000000000000000");
 	}
-	
+
 	return ret;
 }
 
@@ -741,9 +741,9 @@ u8 ReadDeviceUUID(void)
 u8 ReadOperators(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,OPERATORS_ADD, OPERATORS_LEN);
-	
+
 	if(ret)
 	{
 		if(HoldReg[OPERATORS_ADD] < 3)
@@ -755,7 +755,7 @@ u8 ReadOperators(void)
 			Operators = 0;
 		}
 	}
-	
+
 	return ret;
 }
 
@@ -763,9 +763,9 @@ u8 ReadOperators(void)
 u8 ReadAPN(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,APN_ADD, APN_LEN);
-	
+
 	if(ret)
 	{
 		GetAPN();
@@ -776,12 +776,12 @@ u8 ReadAPN(void)
 		{
 			APName = (u8 *)mymalloc(sizeof(u8) * 5);
 		}
-		
+
 		memset(APName,0,5);
-		
+
 		sprintf((char *)APName, "null");
 	}
-	
+
 	return ret;
 }
 
@@ -789,9 +789,9 @@ u8 ReadAPN(void)
 u8 ReadServerDomain(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,SERVER_DOMAIN_ADD, SERVER_DOMAIN_LEN);
-	
+
 	if(ret)
 	{
 		GetServerDomain();
@@ -802,12 +802,12 @@ u8 ReadServerDomain(void)
 		{
 			ServerDomain = (u8 *)mymalloc(sizeof(u8) * 19);
 		}
-		
+
 		memset(ServerDomain,0,19);
-		
+
 		sprintf((char *)ServerDomain, "www.nnlighting.com");
 	}
-	
+
 	return ret;
 }
 
@@ -815,9 +815,9 @@ u8 ReadServerDomain(void)
 u8 ReadServerIP(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,SERVER_IP_ADD, SERVER_IP_LEN);
-	
+
 	if(ret)
 	{
 		GetServerIP();
@@ -828,12 +828,12 @@ u8 ReadServerIP(void)
 		{
 			ServerIP = (u8 *)mymalloc(sizeof(u8) * 16);
 		}
-		
+
 		memset(ServerIP,0,16);
-		
+
 		sprintf((char *)ServerIP, "103.48.232.123");
 	}
-	
+
 	return ret;
 }
 
@@ -841,9 +841,9 @@ u8 ReadServerIP(void)
 u8 ReadServerPort(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,SERVER_PORT_ADD, SERVER_PORT_LEN);
-	
+
 	if(ret)
 	{
 		GetServerPort();
@@ -854,12 +854,12 @@ u8 ReadServerPort(void)
 		{
 			ServerPort = (u8 *)mymalloc(sizeof(u8) * 6);
 		}
-		
+
 		memset(ServerPort,0,6);
-		
+
 		sprintf((char *)ServerPort, "56556");
 	}
-	
+
 	return ret;
 }
 
@@ -867,19 +867,19 @@ u8 ReadServerPort(void)
 u8 ReadUpLoadINVL(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,UPLOAD_INVL_ADD, UPLOAD_INVL_LEN);
-	
+
 	if(ret)
 	{
 		UpLoadINCL = (((u16)HoldReg[UPLOAD_INVL_ADD + 0]) << 8) + (u16)HoldReg[UPLOAD_INVL_ADD +1] & 0x00FF;
-		
+
 		if(UpLoadINCL > MAX_UPLOAD_INVL)
 		{
 			UpLoadINCL = 10;
 		}
 	}
-	
+
 	return ret;
 }
 
@@ -887,9 +887,9 @@ u8 ReadUpLoadINVL(void)
 u8 ReadPowerINTFCC(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,POWER_INTFC_ADD, POWER_INTFC_LEN);
-	
+
 	if(ret)
 	{
 		if(HoldReg[POWER_INTFC_ADD] < 3)
@@ -901,7 +901,7 @@ u8 ReadPowerINTFCC(void)
 			PowerINTFC = 2;
 		}
 	}
-	
+
 	return ret;
 }
 
@@ -909,9 +909,9 @@ u8 ReadPowerINTFCC(void)
 u8 ReadTimeZone(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,TIME_ZONE_ADD, TIME_ZONE_LEN);
-	
+
 	if(ret)
 	{
 		if(HoldReg[TIME_ZONE_ADD] < 25)
@@ -923,7 +923,7 @@ u8 ReadTimeZone(void)
 			TimeZone = 8;
 		}
 	}
-	
+
 	return ret;
 }
 
@@ -931,9 +931,9 @@ u8 ReadTimeZone(void)
 u8 ReadTimeGroupNumber(void)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(HoldReg,TIME_GROUP_NUM_ADD, TIME_GROUP_NUM_LEN);
-	
+
 	if(ret)
 	{
 		if(HoldReg[TIME_GROUP_NUM_ADD] >= 2 && HoldReg[TIME_GROUP_NUM_ADD] <= MAX_GROUP_NUM)
@@ -945,7 +945,7 @@ u8 ReadTimeGroupNumber(void)
 			TimeGroupNumber = 0;
 		}
 	}
-	
+
 	return ret;
 }
 
@@ -959,55 +959,55 @@ u8 ReadRegularTimeGroups(void)
 	u16 cal_crc = 0;
 	u8 time_group[256];
 	u8 read_success_buf_flag[MAX_GROUP_NUM];
-	
+
 	ReadTimeGroupNumber();		//读取时间策略条数
-	
+
 	if(TimeGroupNumber != 0 && TimeGroupNumber % 2 == 0)
 	{
 		memset(time_group,0,256);
 		memset(read_success_buf_flag,0,MAX_GROUP_NUM);
-		
+
 		for(i = 0; i < TimeGroupNumber; i ++)
 		{
 			for(j = i * 9; j < i * 9 + 9; j ++)
 			{
 				time_group[j] = AT24CXX_ReadOneByte(TIME_RULE_ADD + j);
 			}
-			
+
 			cal_crc = CRC16(&time_group[j - 9],7);
 			read_crc = (((u16)time_group[j - 2]) << 8) + (u16)time_group[j - 1];
-			
+
 			if(cal_crc == read_crc)
 			{
 				read_success_buf_flag[i] = 1;
 			}
 		}
-		
+
 		for(i = 0; i <= TimeGroupNumber / 2; i += 2)
 		{
 			if(read_success_buf_flag[i + 0] == 1 && read_success_buf_flag[i + 1] == 1)
 			{
 				RegularTimeStruct[i / 2].type 		= time_group[(i + 0) * 9 + 0];
-				
+
 				RegularTimeStruct[i / 2].s_year 	= time_group[(i + 0) * 9 + 1];
 				RegularTimeStruct[i / 2].s_month 	= time_group[(i + 0) * 9 + 2];
 				RegularTimeStruct[i / 2].s_date 	= time_group[(i + 0) * 9 + 3];
 				RegularTimeStruct[i / 2].s_hour 	= time_group[(i + 0) * 9 + 4];
 				RegularTimeStruct[i / 2].s_minute 	= time_group[(i + 0) * 9 + 5];
-				
+
 				RegularTimeStruct[i / 2].percent 	= time_group[(i + 0) * 9 + 6];
-				
+
 				RegularTimeStruct[i / 2].e_year 	= time_group[(i + 1) * 9 + 1];
 				RegularTimeStruct[i / 2].e_month 	= time_group[(i + 1) * 9 + 2];
 				RegularTimeStruct[i / 2].e_date 	= time_group[(i + 1) * 9 + 3];
 				RegularTimeStruct[i / 2].e_hour 	= time_group[(i + 1) * 9 + 4];
 				RegularTimeStruct[i / 2].e_minute 	= time_group[(i + 1) * 9 + 5];
-				
+
 				RegularTimeStruct[i / 2].s_seconds = RegularTimeStruct[i / 2].s_hour * 3600 + RegularTimeStruct[i / 2].s_minute * 60;
 				RegularTimeStruct[i / 2].e_seconds = RegularTimeStruct[i / 2].e_hour * 3600 + RegularTimeStruct[i / 2].e_minute * 60;
 			}
 		}
-		
+
 		for(i = 0; i <= TimeGroupNumber / 2; i += 2)
 		{
 			if(read_success_buf_flag[i + 0] != 1 || read_success_buf_flag[i + 1] != 1)
@@ -1018,7 +1018,7 @@ u8 ReadRegularTimeGroups(void)
 			}
 		}
 	}
-	
+
 	return ret;
 }
 
@@ -1045,39 +1045,39 @@ void ReadParametersFromEEPROM(void)
 u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf)
 {
 	u16 len = 0;
-	
+
 	*(outbuf + 0) = 0x68;
-	
+
 	if(DeviceID != NULL && DeviceUUID != NULL)
 	{
 		memcpy(outbuf + 1,DeviceID,DEVICE_ID_LEN - 2);			//设备ID
-		
+
 		*(outbuf + 7) = 0x68;
 		*(outbuf + 8) = fun_code;
 		*(outbuf + 9) = inbuf_len + UU_ID_LEN - 2;
-		
+
 		memcpy(outbuf + 10,DeviceUUID,UU_ID_LEN - 2);			//UUID
-		
+
 		memcpy(outbuf + 10 + UU_ID_LEN - 2,inbuf,inbuf_len);	//具体数据内容
-		
+
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len) = CalCheckSum(outbuf, 10 + inbuf_len);
-		
+
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 1) = 0x16;
-		
+
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 2) = 0xFE;
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 3) = 0xFD;
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 4) = 0xFC;
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 5) = 0xFB;
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 6) = 0xFA;
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 7) = 0xF9;
-		
+
 		len = 10 + UU_ID_LEN - 2 + inbuf_len + 7 + 1;
 	}
 	else
 	{
 		return 0;
 	}
-	
+
 	return len;
 }
 
@@ -1085,7 +1085,7 @@ u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf)
 u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf)
 {
 	u16 len = 0;
-	
+
 	if(msg != NULL)
 	{
 		*(buf + 0) = (u8)(msg->temperature >> 8);
@@ -1100,14 +1100,14 @@ u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf)
 		*(buf + 9) = msg->hour;
 		*(buf + 10) = msg->minute;
 		*(buf + 11) = msg->second;
-		
+
 		len = strlen(msg->gps);
-		
+
 		memcpy(buf + 12,msg->gps,len);
-		
+
 		len = len + 12;
 	}
-	
+
 	return len;
 }
 
