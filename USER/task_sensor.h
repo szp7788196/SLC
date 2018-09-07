@@ -10,8 +10,8 @@ typedef struct SensorMsg
 	u16 temperature;
 	u16 humidity;
 	u16 illumination;
-	u8 out_put_current;
-	u8 out_put_voltage;
+	u16 out_put_current;
+	u16 out_put_voltage;
 	u8 signal_intensity;
 	u8 hour;
 	u8 minute;

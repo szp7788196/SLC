@@ -49,8 +49,8 @@ void vTaskSENSOR(void *pvParameters)
 				p_tSensorMsg->temperature = (u16)(Temperature * 10.0f + 0.5f);
 				p_tSensorMsg->humidity = (u16)(Humidity * 10.0f + 0.5f);
 				p_tSensorMsg->illumination = (u16)(Illumination + 0.5f);
-				p_tSensorMsg->out_put_current = (u8)(InventrOutPutCurrent + 0.5f);
-				p_tSensorMsg->out_put_voltage = (u8)(InventrOutPutVoltage + 0.5f);
+				p_tSensorMsg->out_put_current = (u16)(InventrOutPutCurrent + 0.5f);
+				p_tSensorMsg->out_put_voltage = (u16)(InventrOutPutVoltage + 0.5f);
 				p_tSensorMsg->signal_intensity = SignalIntensity;
 				p_tSensorMsg->hour = calendar.hour;
 				p_tSensorMsg->minute = calendar.min;

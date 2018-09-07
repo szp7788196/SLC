@@ -1060,7 +1060,7 @@ u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf)
 
 		memcpy(outbuf + 10 + UU_ID_LEN - 2,inbuf,inbuf_len);	//具体数据内容
 
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len) = CalCheckSum(outbuf, 10 + inbuf_len);
+		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len) = CalCheckSum(outbuf, 10 + inbuf_len + UU_ID_LEN - 2);
 
 		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 1) = 0x16;
 
@@ -1094,18 +1094,23 @@ u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf)
 		*(buf + 3) = (u8)(msg->humidity & 0x00FF);
 		*(buf + 4) = (u8)(msg->illumination >> 8);
 		*(buf + 5) = (u8)(msg->illumination & 0x00FF);
-		*(buf + 6) = msg->out_put_current;
-		*(buf + 7) = msg->out_put_voltage;
-		*(buf + 8) = msg->signal_intensity;
-		*(buf + 9) = msg->hour;
-		*(buf + 10) = msg->minute;
-		*(buf + 11) = msg->second;
+		
+		*(buf + 6) = (u8)(msg->out_put_current >> 8);
+		*(buf + 7) = (u8)(msg->out_put_current & 0x00FF);
+		
+		*(buf + 8) = (u8)(msg->out_put_voltage >> 8);
+		*(buf + 9) = (u8)(msg->out_put_voltage & 0x00FF);
+		
+		*(buf + 10) = msg->signal_intensity;
+		*(buf + 11) = msg->hour;
+		*(buf + 12) = msg->minute;
+		*(buf + 13) = msg->second;
 
 		len = strlen(msg->gps);
 
-		memcpy(buf + 12,msg->gps,len);
+		memcpy(buf + 14,msg->gps,len);
 
-		len = len + 12;
+		len = len + 14;
 	}
 
 	return len;

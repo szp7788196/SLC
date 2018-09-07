@@ -12,6 +12,9 @@ u8 MirrorLightLevelPercent = 0;
 void vTaskMAIN(void *pvParameters)
 {
 	time_t times_sec = 0;
+	time_t times_sync = 0;
+	
+	times_sync = GetSysTick1s();
 	
 	InventrSetLightLevel(INIT_LIGHT_LEVEL);					//上电默认灭灯
 	
@@ -42,8 +45,12 @@ void vTaskMAIN(void *pvParameters)
 			break;
 		}
 		
-		
-		
+		if(GetSysTick1s() - times_sync >= 3600)		//每隔1h同步一次时间
+		{
+			times_sync = GetSysTick1s();
+			
+			GetTimeOK = 2;
+		}
 		
 		if(NeedToReset == 1)			//接收到重启的命令
 		{

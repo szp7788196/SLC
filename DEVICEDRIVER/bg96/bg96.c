@@ -1083,8 +1083,8 @@ unsigned char bg96_get_AT_QIDNSGIP(pBg96 *bg96,const char *domain, unsigned char
 
     (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
     (*bg96)->clear_rx_cmd_buffer(bg96);
-    printf("AT+QIDNSGIP=1,\"%s\"\r\n", domain);
-//	printf("AT+QIDNSGIP=1,\"jd.com\"\r\n");
+//    printf("AT+QIDNSGIP=1,\"%s\"\r\n", domain);
+	printf("AT+QIDNSGIP=1,\"www.baidu.com\"\r\n");
     if((*bg96)->wait_cmd2(bg96,"+QIURC: ",TIMEOUT_5S) == RECEIVED)
     {
         if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "dnsgip") != -1)

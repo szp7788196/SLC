@@ -15,7 +15,7 @@ SensorMsg_S *p_tSensorMsgNet = NULL;			//用于装在传感器数据的结构体变量
 
 
 
-u8 *IpAddress = NULL;
+//u8 *IpAddress = NULL;
 void vTaskNET(void *pvParameters)
 {
 	time_t times_sec = 0;
@@ -39,10 +39,10 @@ void vTaskNET(void *pvParameters)
 				GetGpsInfo(&GpsInfo,&GetGPSOK,&GetTimeOK);
 //				GetTimeInfo("cn.ntp.org.cn",123, &GetTimeOK);
 				
-				if(IpAddress == NULL && ServerDomain != NULL)
-				{
-					bg96->get_AT_QIDNSGIP(&bg96,(char *)ServerDomain, &IpAddress);
-				}
+//				if(IpAddress == NULL && ServerDomain != NULL)
+//				{
+//					bg96->get_AT_QIDNSGIP(&bg96,(char *)ServerDomain, &IpAddress);
+//				}
 				
 			}
 		}
@@ -161,7 +161,7 @@ u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
 	time_t time_s = 0;
 	u8 buf_len = 0;
 	
-	if(*gps_flag != 1)
+	if(*gps_flag != 1 || *time_flag != 1)
 	{
 		memset(buf,0,80);
 		
