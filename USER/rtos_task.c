@@ -27,6 +27,12 @@ void AppObjCreate(void)
         /* 没有创建成功，用户可以在这里加入创建失败的处理机制 */
     }
 	
+	xMutex_AT_COMMAND = xSemaphoreCreateMutex();
+	if(xMutex_AT_COMMAND == NULL)
+    {
+        /* 没有创建成功，用户可以在这里加入创建失败的处理机制 */
+    }
+	
 	
 	//创建消息队列
 	xQueue_sensor = xQueueCreate(10, sizeof(SensorMsg_S));

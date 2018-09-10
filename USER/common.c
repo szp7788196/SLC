@@ -8,8 +8,9 @@ u8 TimeGroupNumber = 0;							//时间策略组数
 RegularTime_S RegularTimeStruct[MAX_GROUP_NUM];	//时间策略结构体数组
 
 /****************************互斥量相关******************************/
-SemaphoreHandle_t  xMutex_IIC1 		= NULL;	//IIC总线1的互斥量
-SemaphoreHandle_t  xMutex_INVENTR 	= NULL;	//英飞特电源的互斥量
+SemaphoreHandle_t  xMutex_IIC1 			= NULL;	//IIC总线1的互斥量
+SemaphoreHandle_t  xMutex_INVENTR 		= NULL;	//英飞特电源的互斥量
+SemaphoreHandle_t  xMutex_AT_COMMAND 	= NULL;	//AT指令的互斥量
 
 /***************************消息队列相关*****************************/
 QueueHandle_t xQueue_sensor 		= NULL;	//用于存储传感器的数据

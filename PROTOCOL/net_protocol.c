@@ -91,6 +91,14 @@ u16 NetDataAnalysis(u8 *buf,u16 len,u8 *outbuf,u8 *hold_reg)
 
 					break;
 
+					case 0xE9:									//设置设备的工作模式，手动或者自动模式
+						ret = SetDeviceWorkMode(cmd_code,buf + 10,data_len,outbuf);
+					break;
+
+					case 0xF0:									//设置设备UUID，固定64个字节
+						ret = SetDeviceUUID(cmd_code,buf + 10,data_len,outbuf);
+					break;
+
 					case 0x80:									//应答，下行,上行在别处处理
 						UnPackAckPacket(cmd_code,buf + 10,data_len);
 					break;
@@ -159,14 +167,8 @@ u16 ControlLightLevel(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 		{
 			LightLevelPercent = 2 * level;
 
-			if(level != 0)
-			{
-				DeviceWorkMode = MODE_MANUAL;		//强制转换为手动模式
-			}
-			else
-			{
-				DeviceWorkMode = MODE_AUTO ;		//强制转换为自动模式
-			}
+			DeviceWorkMode = MODE_MANUAL;		//强制转换为手动模式
+
 		}
 		else
 		{
@@ -285,7 +287,64 @@ u16 SetRegularTimeGroups(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 	return out_len;
 }
 
+//控制灯的亮度
+u16 SetDeviceWorkMode(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
+{
+	u8 out_len = 0;
+	u8 mode = 0;
+	u8 data_buf[2] = {0,0};
+	data_buf[0] = cmd_code;
 
+	if(len == 1)
+	{
+		mode = *(buf + 0);
+
+		if(mode == 0 || mode == 1)
+		{
+			DeviceWorkMode = mode;			//置工作模式标志
+
+		}
+		else
+		{
+			data_buf[1] = 1;
+		}
+	}
+	else
+	{
+		data_buf[1] = 2;
+	}
+
+	out_len = PackAckPacket(cmd_code,data_buf,outbuf);
+
+	return out_len;
+}
+
+//设置设备的UUID
+u16 SetDeviceUUID(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
+{
+	u8 out_len = 0;
+	u8 data_buf[2] = {0,0};
+	u8 uuid_buf[66];
+
+	data_buf[0] = cmd_code;
+
+	if(len == 64)												//数据长度必须是64
+	{
+		memset(uuid_buf,0,66);
+
+		memcpy(&HoldReg[UU_ID_ADD],buf,64);
+
+		WriteDataFromHoldBufToEeprom(&HoldReg[UU_ID_ADD],UU_ID_ADD, UU_ID_LEN - 2);
+	}
+	else
+	{
+		data_buf[1] = 2;
+	}
+
+	out_len = PackAckPacket(cmd_code,data_buf,outbuf);
+
+	return out_len;
+}
 
 
 

@@ -6,7 +6,7 @@
 #include "SHT2x.h"
 #include "bh1750.h"
 
-u8 AT_ECHO = 1;
+u8 AT_ECHO = 0;
 AT_Command_S AT_CommandBuf[AT_MAX_NUM];
 
 void AT_CommandInit(void)
@@ -198,6 +198,8 @@ u16 AT_CommandDataAnalysis(u8 *inbuf,u16 inbuf_len,u8 *outbuf,u8 *hold_reg)
 	u8 cmd_id = 255;
 	u8 respbuf[256];
 	
+//	xSemaphoreTake(xMutex_AT_COMMAND, portMAX_DELAY);
+	
 	if((MyStrstr(inbuf, (u8 *)"AT", inbuf_len, 2) != 0xFFFF || \
 		MyStrstr(inbuf, (u8 *)"AT+", inbuf_len, 3) != 0xFFFF) &&\
 		MyStrstr(inbuf, (u8 *)"\r\n", inbuf_len, 2) != 0xFFFF)
@@ -351,6 +353,8 @@ u16 AT_CommandDataAnalysis(u8 *inbuf,u16 inbuf_len,u8 *outbuf,u8 *hold_reg)
 		
 		ret = PackAT_CommandRespone(inbuf,err_code,respbuf,outbuf);
 	}
+	
+//	xSemaphoreGive(xMutex_AT_COMMAND);
 	
 	return ret;
 }

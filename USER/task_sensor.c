@@ -36,9 +36,9 @@ void vTaskSENSOR(void *pvParameters)
 		Illumination = Bh1750ReadIllumination();			//读取光照
 		
 		InventrOutPutCurrent = InventrGetOutPutCurrent();	//读取电源输出电流
-		delay_ms(250);
+		delay_ms(500);
 		InventrOutPutVoltage = InventrGetOutPutVoltage();	//读取电源输出电压
-		delay_ms(250);
+		delay_ms(500);
 		
 		if(push_data_to_net == 1)
 		{

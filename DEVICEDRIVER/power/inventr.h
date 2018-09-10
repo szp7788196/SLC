@@ -10,6 +10,8 @@
 #define INVENTR_MAX_VOLTAGE_V		272.108844f		//最大输出电压272.108844v,VMAX =Power/(Iomax*70%)=200w/(1.05A*70%)= 204.1v(其中70%是固定值，常量)
 
 
+extern u8 InventrBusy;
+
 extern float InventrInPutCurrent;
 extern float InventrInPutVoltage;
 extern float InventrOutPutCurrent;

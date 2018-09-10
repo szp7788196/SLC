@@ -9,8 +9,8 @@
 #define Usart2RxLen	512	
 #define Usart2TxLen	512
 
-#define Usart4RxLen	64	
-#define Usart4TxLen	64
+#define Usart4RxLen	128	
+#define Usart4TxLen	128
 
 
 extern u16 Usart1RxCnt;					//串口1接收到的数据长度

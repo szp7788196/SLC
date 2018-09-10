@@ -2,6 +2,8 @@
 #include "common.h"
 #include "usart.h"
 
+u8 InventrBusy = 0;
+
 float InventrInPutCurrent = 0.0f;
 float InventrInPutVoltage = 0.0f;
 float InventrOutPutCurrent = 0.0f;
@@ -13,6 +15,8 @@ u8 InventrSetMaxPowerCurrent(u8 percent)
 	u8 ret = 0;
 	u8 i = 0;
 	u8 send_buf[8];
+	
+	InventrBusy = 1;
 	
 	if(xSchedulerRunning == 1)
 	{
@@ -65,6 +69,8 @@ u8 InventrSetMaxPowerCurrent(u8 percent)
 		xSemaphoreGive(xMutex_INVENTR);
 	}
 	
+	InventrBusy = 0;
+	
 	return ret;
 }
 
@@ -74,6 +80,8 @@ u8 InventrSetLightLevel(u8 level)
 	u8 ret = 0;
 	u8 i = 0;
 	u8 send_buf[8];
+	
+	InventrBusy = 1;
 	
 	if(xSchedulerRunning == 1)
 	{
@@ -126,6 +134,8 @@ u8 InventrSetLightLevel(u8 level)
 		xSemaphoreGive(xMutex_INVENTR);
 	}
 	
+	InventrBusy = 0;
+	
 	return ret;
 }
 
@@ -139,6 +149,8 @@ float InventrGetOutPutCurrent(void)
 	u8 send_buf[8];
 	u8 revc_buf[10];
 //	u16 adc_val = 0;
+	
+	InventrBusy = 1;
 	
 	if(xSchedulerRunning == 1)
 	{
@@ -217,6 +229,8 @@ float InventrGetOutPutCurrent(void)
 		xSemaphoreGive(xMutex_INVENTR);
 	}
 	
+	InventrBusy = 0;
+	
 	return current;
 }
 
@@ -230,6 +244,8 @@ float InventrGetOutPutVoltage(void)
 	u8 send_buf[8];
 	u8 revc_buf[10];
 //	u16 adc_val = 0;
+	
+	InventrBusy = 1;
 	
 	if(xSchedulerRunning == 1)
 	{
@@ -308,6 +324,8 @@ float InventrGetOutPutVoltage(void)
 		xSemaphoreGive(xMutex_INVENTR);
 	}
 	
+	InventrBusy = 0;
+	
 	return voltage;
 }
 
@@ -317,6 +335,8 @@ u8 InventrGetDeviceInfo(void)
 	u8 ret = 0;
 	u8 i = 0;
 	u8 send_buf[8];
+	
+	InventrBusy = 1;
 	
 	if(xSchedulerRunning == 1)
 	{
@@ -368,6 +388,8 @@ u8 InventrGetDeviceInfo(void)
 	{
 		xSemaphoreGive(xMutex_INVENTR);
 	}
+	
+	InventrBusy = 0;
 	
 	return ret;
 }

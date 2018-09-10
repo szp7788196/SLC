@@ -1,6 +1,7 @@
 #include "task_main.h"
 #include "common.h"
 #include "delay.h"
+#include "usart.h"
 #include "inventr.h"
 
 

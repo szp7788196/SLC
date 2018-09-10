@@ -275,6 +275,7 @@ static u8 auchCRCLo[] =
 
 extern SemaphoreHandle_t  xMutex_IIC1;			//IIC1的互斥量
 extern SemaphoreHandle_t  xMutex_INVENTR;		//英飞特电源的互斥量
+extern SemaphoreHandle_t  xMutex_AT_COMMAND;	//AT指令的互斥量
 
 extern QueueHandle_t xQueue_sensor;				//用于存储传感器的数据
 
