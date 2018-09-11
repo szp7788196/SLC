@@ -13,7 +13,7 @@ void vTaskLED(void *pvParameters)
 	
 	while(1)
 	{
-		if(cnt % 500 == 0)					//每隔5秒喂看门狗
+		if(cnt % 50 == 0)					//每隔0.5秒喂看门狗
 		{
 			IWDG_Feed();
 		}

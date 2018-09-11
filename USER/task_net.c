@@ -128,11 +128,18 @@ void SendSensorData_HeartBeatPacket(void)
 		memset(send_buf,0,512);
 		memset(sensor_buf,0,128);
 		
-		sensor_data_len = UnPackSensorData(p_tSensorMsgNet,sensor_buf);
+		if(DeviceUUID != NULL)			//发送普通数据
+		{
+			sensor_data_len = UnPackSensorData(p_tSensorMsgNet,sensor_buf);
 		
-		send_len = PackNetData(0xE0,sensor_buf,sensor_data_len,send_buf);
+			send_len = PackNetData(0xE0,sensor_buf,sensor_data_len,send_buf);
+		}
+		else							//发送UUID请求
+		{
+			send_len = PackNetData(0xF0,NULL,0,send_buf);
+		}
 	}
-	else if(GetSysTick1s() - times_sec >= 20 && UpLoadINCL > 20)			//只有在数据上传周期大于20秒的时候才发送心跳包，间隔是20秒
+	else if(GetSysTick1s() - times_sec >= 20 && UpLoadINCL > 20)	//只有在数据上传周期大于20秒的时候才发送心跳包，间隔是20秒
 	{
 		times_sec = GetSysTick1s();
 		

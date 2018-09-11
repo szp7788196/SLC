@@ -54,7 +54,7 @@
 #define HOLD_REG_LEN				512
 #define TIME_BUF_LEN				255
 
-#define MAX_UPLOAD_INVL				3600
+#define MAX_UPLOAD_INVL				65500
 
 #define INIT_LIGHT_LEVEL			0
 

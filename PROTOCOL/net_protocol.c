@@ -76,7 +76,7 @@ u16 NetDataAnalysis(u8 *buf,u16 len,u8 *outbuf,u8 *hold_reg)
 					break;
 
 					case 0xE5:									//设置定时发送间隔,下行
-
+						ret = SetDeviceUpLoadINCL(cmd_code,buf + 10,data_len,outbuf);
 					break;
 
 					case 0xE6:									//控制柜断电/通电，下行
@@ -195,6 +195,41 @@ u16 ControlDeviceReset(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 	if(len == 0)
 	{
 		NeedToReset = 1;
+	}
+	else
+	{
+		data_buf[1] = 2;
+	}
+
+	out_len = PackAckPacket(cmd_code,data_buf,outbuf);
+
+	return out_len;
+}
+
+//设置设备数据上传时间间隔
+u16 SetDeviceUpLoadINCL(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
+{
+	u8 out_len = 0;
+	u8 data_buf[2] = {0,0};
+	u16 incl;
+
+	data_buf[0] = cmd_code;
+
+	if(len == 2)												//数据长度必须是64
+	{
+		incl = ((u16)(*(buf + 0)) << 16) + (*(buf + 1));
+		
+		if(incl <= MAX_UPLOAD_INVL)
+		{
+			UpLoadINCL = incl;
+			
+			memcpy(&HoldReg[UPLOAD_INVL_ADD],buf,2);
+			WriteDataFromHoldBufToEeprom(&HoldReg[UPLOAD_INVL_ADD],UPLOAD_INVL_ADD, UPLOAD_INVL_LEN - 2);
+		}
+		else
+		{
+			data_buf[1] = 1;
+		}
 	}
 	else
 	{
@@ -333,6 +368,8 @@ u16 SetDeviceUUID(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 		memset(uuid_buf,0,66);
 
 		memcpy(&HoldReg[UU_ID_ADD],buf,64);
+		
+		GetDeviceUUID();
 
 		WriteDataFromHoldBufToEeprom(&HoldReg[UU_ID_ADD],UU_ID_ADD, UU_ID_LEN - 2);
 	}

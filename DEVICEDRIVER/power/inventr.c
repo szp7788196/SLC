@@ -79,6 +79,7 @@ u8 InventrSetLightLevel(u8 level)
 {
 	u8 ret = 0;
 	u8 i = 0;
+	u8 re_try_cnt = 0;
 	u8 send_buf[8];
 	
 	InventrBusy = 1;
@@ -103,6 +104,7 @@ u8 InventrSetLightLevel(u8 level)
 		send_buf[5] += send_buf[i];
 	}
 	
+	RE_SEND:
 	UsartSendString(UART4,send_buf,8);
 	
 	i = 10;
@@ -126,6 +128,14 @@ u8 InventrSetLightLevel(u8 level)
 				i = 1;
 				ret = 1;
 			}
+		}
+	}
+	
+	if(ret == 0)
+	{
+		if(re_try_cnt < 10)
+		{
+			goto RE_SEND;
 		}
 	}
 	
