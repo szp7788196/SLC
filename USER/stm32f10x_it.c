@@ -23,7 +23,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h" 
-#include "common.h"
 
 
 void NMI_Handler(void)
@@ -33,9 +32,6 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* Go to infinite loop when Hard Fault exception occurs */
-#ifdef STORE_LOG	
-	WriteLogDataToEEPROM(2);			//进入硬件错误中断
-#endif
 	
 	__disable_fault_irq();
 	NVIC_SystemReset();
@@ -73,21 +69,21 @@ void UsageFault_Handler(void)
   }
 }
  
-void SVC_Handler(void)
-{
-}
+//void SVC_Handler(void)
+//{
+//}
  
 void DebugMon_Handler(void)
 {
 }
  
-void PendSV_Handler(void)
-{
-}
+//void PendSV_Handler(void)
+//{
+//}
  
-void SysTick_Handler(void)
-{
-}
+//void SysTick_Handler(void)
+//{
+//}
 
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */

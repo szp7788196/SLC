@@ -186,6 +186,13 @@ void AT_CommandInit(void)
 	AT_CommandBuf[i].cmd = (char *)mymalloc(sizeof(char) * AT_CommandBuf[i].len + 1);
 	memset(AT_CommandBuf[i].cmd,0,AT_CommandBuf[i].len);
 	memcpy(AT_CommandBuf[i].cmd,"MODE",AT_CommandBuf[i].len);
+	i ++;
+	
+	AT_CommandBuf[i].id = i;
+	AT_CommandBuf[i].len = strlen("PWRCTL");
+	AT_CommandBuf[i].cmd = (char *)mymalloc(sizeof(char) * AT_CommandBuf[i].len + 1);
+	memset(AT_CommandBuf[i].cmd,0,AT_CommandBuf[i].len);
+	memcpy(AT_CommandBuf[i].cmd,"PWRCTL",AT_CommandBuf[i].len);
 }
 
 
@@ -345,6 +352,10 @@ u16 AT_CommandDataAnalysis(u8 *inbuf,u16 inbuf_len,u8 *outbuf,u8 *hold_reg)
 					err_code = AT_CommandMODE(cmd_id,inbuf,inbuf_len,respbuf);
 				break;
 				
+				case PWRCTL:
+					err_code = AT_CommandPWRCTL(cmd_id,inbuf,inbuf_len,respbuf);
+				break;
+				
 				default:
 					
 				break;
@@ -420,7 +431,14 @@ u8 AT_CommandDEVNAME(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
-		sprintf((char *)respbuf, "device name: %s\r\n",DeviceName);
+		if(DeviceName != NULL)
+		{
+			sprintf((char *)respbuf, "device name: %s\r\n",DeviceName);
+		}
+		else
+		{
+			sprintf((char *)respbuf, "device name: null\r\n");
+		}
 		ret = 0;
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
@@ -456,8 +474,16 @@ u8 AT_CommandDEVID(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
-		sprintf((char *)respbuf, "device id: %02x%02x%02x%02x%02x%02x\r\n",\
-			DeviceID[0],DeviceID[1],DeviceID[2],DeviceID[3],DeviceID[4],DeviceID[5]);
+		if(DeviceID != NULL)
+		{
+			sprintf((char *)respbuf, "device id: %02x%02x%02x%02x%02x%02x\r\n",\
+				DeviceID[0],DeviceID[1],DeviceID[2],DeviceID[3],DeviceID[4],DeviceID[5]);
+		}
+		else
+		{
+			sprintf((char *)respbuf, "device id: null\r\n");
+		}
+		
 		ret = 0;
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
@@ -492,23 +518,30 @@ u8 AT_CommandDEVID(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 u8 AT_CommandUUID(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 {
 	u8 ret = 1;
-	u8 content[65];
+	u8 content[37];
 	u8 content_len = 0;
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
-		sprintf((char *)respbuf, "uuid: %s\r\n",DeviceUUID);
+		if(DeviceUUID != NULL)
+		{
+			sprintf((char *)respbuf, "uuid: %s\r\n",DeviceUUID);
+		}
+		else
+		{
+			sprintf((char *)respbuf, "uuid: null\r\n");
+		}
 		ret = 0;
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
 	{
-		memset(content,0,65);
+		memset(content,0,37);
 		
 		if(get_str1(inbuf, "\"", 1, "\"", 2, content))
 		{
 			content_len = strlen((char *)content);
 			
-			if(content_len == 64)
+			if(content_len == 36)
 			{
 				CopyStrToPointer(&DeviceUUID, content,content_len);
 				
@@ -559,7 +592,15 @@ u8 AT_CommandAPN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
-		sprintf((char *)respbuf, "apn: %s\r\n",APName);
+		if(APName != NULL)
+		{
+			sprintf((char *)respbuf, "apn: %s\r\n",APName);
+		}
+		else
+		{
+			sprintf((char *)respbuf, "apn: null\r\n");
+		}
+		
 		ret = 0;
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
@@ -592,7 +633,15 @@ u8 AT_CommandDOMAIN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
-		sprintf((char *)respbuf, "domain: %s\r\n",ServerDomain);
+		if(ServerDomain != NULL)
+		{
+			sprintf((char *)respbuf, "domain: %s\r\n",ServerDomain);
+		}
+		else
+		{
+			sprintf((char *)respbuf, "domain: null\r\n");
+		}
+		
 		ret = 0;
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
@@ -625,7 +674,14 @@ u8 AT_CommandIPADDRESS(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
-		sprintf((char *)respbuf, "server ip: %s\r\n",ServerIP);
+		if(ServerIP != NULL)
+		{
+			sprintf((char *)respbuf, "server ip: %s\r\n",ServerIP);
+		}
+		else
+		{
+			sprintf((char *)respbuf, "server ip: null\r\n");
+		}
 		ret = 0;
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
@@ -658,7 +714,14 @@ u8 AT_CommandPORT(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 
 	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
 	{
-		sprintf((char *)respbuf, "server port: %s\r\n",ServerPort);
+		if(ServerPort != NULL)
+		{
+			sprintf((char *)respbuf, "server port: %s\r\n",ServerPort);
+		}
+		else
+		{
+			sprintf((char *)respbuf, "server port: null\r\n");
+		}
 		ret = 0;
 	}
 	else if(MyStrstr(inbuf, (u8 *)"=\"", inbuf_len, 2) != 0xFFFF)
@@ -1003,11 +1066,38 @@ u8 AT_CommandMODE(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 	else if(inbuf_len == AT_CommandBuf[cmd_id].len +3 + 2 + 2 && \
 		MyStrstr(inbuf, (u8 *)"=", inbuf_len, 1) != 0xFFFF)
 	{
-		content = *(inbuf + inbuf_len - 1);
+		content = *(inbuf + inbuf_len - 3) - 0x30;
 		
 		if(content < 2)
 		{
 			DeviceWorkMode = content;
+			
+			ret = 0;
+		}
+	}
+	
+	return ret;
+}
+
+//开启/关闭对电源的操作
+u8 AT_CommandPWRCTL(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
+{
+	u8 ret = 1;
+	u8 content;
+
+	if(inbuf_len == AT_CommandBuf[cmd_id].len + 3 + 2)
+	{
+		sprintf((char *)respbuf, "power control: %d\r\n",DeviceWorkMode);
+		ret = 0;
+	}
+	else if(inbuf_len == AT_CommandBuf[cmd_id].len +3 + 2 + 2 && \
+		MyStrstr(inbuf, (u8 *)"=", inbuf_len, 1) != 0xFFFF)
+	{
+		content = *(inbuf + inbuf_len - 3) - 0x30;
+		
+		if(content < 2)
+		{
+			InventrBusy = !content;
 			
 			ret = 0;
 		}

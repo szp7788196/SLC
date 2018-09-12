@@ -732,7 +732,7 @@ u8 ReadDeviceUUID(void)
 
 //		memset(DeviceUUID,0,65);
 
-//		sprintf((char *)DeviceUUID, "0000000000000000000000000000000000000000000000000000000000000000");
+//		sprintf((char *)DeviceUUID, "000000000000000000000000000000000000");
 //	}
 
 	return ret;
@@ -1063,7 +1063,7 @@ u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf)
 		}
 		else
 		{
-			memcpy(outbuf + 10,"0000000000000000000000000000000000000000000000000000000000000000",UU_ID_LEN - 2);	//默认UUID
+			memcpy(outbuf + 10,"000000000000000000000000000000000000",UU_ID_LEN - 2);	//默认UUID
 		}
 
 		memcpy(outbuf + 10 + UU_ID_LEN - 2,inbuf,inbuf_len);	//具体数据内容

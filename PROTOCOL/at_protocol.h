@@ -4,7 +4,7 @@
 #include "sys.h"
 #include "common.h"
 
-#define AT_MAX_NUM	25
+#define AT_MAX_NUM	26
 
 #define RST				0
 #define GMR				1
@@ -31,6 +31,7 @@
 #define TIME			22
 #define GPS				23
 #define MODE			24
+#define PWRCTL			25
 
 
 typedef struct AT_Command
@@ -85,6 +86,7 @@ u8 AT_CommandLUMEN(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf);
 u8 AT_CommandTIME(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf);
 u8 AT_CommandGPS(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf);
 u8 AT_CommandMODE(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf);
+u8 AT_CommandPWRCTL(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf);
 
 
 

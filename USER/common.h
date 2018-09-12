@@ -52,7 +52,7 @@
 
 #define MAX_GROUP_NUM				36
 #define HOLD_REG_LEN				512
-#define TIME_BUF_LEN				255
+#define TIME_BUF_LEN				256
 
 #define MAX_UPLOAD_INVL				65500
 
@@ -82,7 +82,7 @@
 #define DEVICE_ID_LEN				8
 
 #define UU_ID_ADD					55			//UUID存储地址
-#define UU_ID_LEN					66
+#define UU_ID_LEN					38
 
 #define OPERATORS_ADD				151			//运营商编号存储地址
 #define OPERATORS_LEN				3

@@ -359,15 +359,15 @@ u16 SetDeviceUUID(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 {
 	u8 out_len = 0;
 	u8 data_buf[2] = {0,0};
-	u8 uuid_buf[66];
+	u8 uuid_buf[38];
 
 	data_buf[0] = cmd_code;
 
-	if(len == 64)												//数据长度必须是64
+	if(len == 36)												//数据长度必须是64
 	{
-		memset(uuid_buf,0,66);
+		memset(uuid_buf,0,38);
 
-		memcpy(&HoldReg[UU_ID_ADD],buf,64);
+		memcpy(&HoldReg[UU_ID_ADD],buf,36);
 		
 		GetDeviceUUID();
 

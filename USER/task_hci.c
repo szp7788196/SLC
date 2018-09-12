@@ -27,7 +27,7 @@ void vTaskHCI(void *pvParameters)
 			memset(Usart1RxBuf,0,Usart1FrameLen);
 		}
 		
-		if(Usart4RecvEnd == 0xAA && InventrBusy == 0)
+		if(Usart4RecvEnd == 0xAA)
 		{
 			Usart4RecvEnd = 0;
 			
