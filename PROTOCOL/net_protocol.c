@@ -68,7 +68,7 @@ u16 NetDataAnalysis(u8 *buf,u16 len,u8 *outbuf,u8 *hold_reg)
 					break;
 
 					case 0xE3:									//远程升级OTA，下行
-
+						ret = SetUpdateFirmWareInfo(cmd_code,buf + 10,data_len,outbuf);
 					break;
 
 					case 0xE4:									//重启/复位，下行
@@ -129,12 +129,9 @@ u8 UnPackAckPacket(u8 cmd_code,u8 *buf,u8 len)
 
 	if(len == 2)
 	{
-		if(*(buf + 0) == cmd_code)
+		if(*(buf + 1) == 0)
 		{
-			if(*(buf + 1) == 0)
-			{
-				ret = 1;
-			}
+			ret = 1;
 		}
 	}
 
@@ -173,6 +170,56 @@ u16 ControlLightLevel(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 		else
 		{
 			data_buf[1] = 1;
+		}
+	}
+	else
+	{
+		data_buf[1] = 2;
+	}
+
+	out_len = PackAckPacket(cmd_code,data_buf,outbuf);
+
+	return out_len;
+}
+
+//下发更新固件命令
+u16 SetUpdateFirmWareInfo(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
+{
+	u8 out_len = 0;
+	u8 data_buf[2] = {0,0};
+	data_buf[0] = cmd_code;
+
+	if(len == 1)
+	{
+		NewFirmWareVer    = (((u16)(*(buf + 0))) << 8) + (u16)(*(buf + 1));
+		NewFirmWareBagNum = (((u16)(*(buf + 2))) << 8) + (u16)(*(buf + 3));
+		LastBagByteNum    = *(buf + 4);
+	
+		if(NewFirmWareBagNum == 0 || NewFirmWareBagNum > MAX_FW_BAG_NUM \
+			|| NewFirmWareVer == 0 || NewFirmWareVer > MAX_FW_VER \
+			|| LastBagByteNum == 0 || LastBagByteNum > MAX_FW_LAST_BAG_NUM)  //128 + 2 + 4 = 134
+		{
+			data_buf[1] = 1;
+		}
+		else
+		{
+			HaveNewFirmWare = 0xAA;
+			if(NewFirmWareAdd == 0xAA)
+			{
+				NewFirmWareAdd = 0x55;
+			}
+			else if(NewFirmWareAdd == 0x55)
+			{
+				NewFirmWareAdd = 0xAA;
+			}
+			else
+			{
+				NewFirmWareAdd = 0xAA;
+			}
+			
+			WriteOTAInfo(HoldReg,0);		//将数据写入EEPROM
+			
+			NeedToReset = 1;				//重新启动
 		}
 	}
 	else

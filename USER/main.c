@@ -12,7 +12,9 @@ u8 led_s = 0;
 RCC_ClocksTypeDef RCC_Clocks;
 int main(void)
 {
-//	IWDG_Init(IWDG_Prescaler_128,625);	//128分频 312.5HZ 625为2秒
+//	SCB->VTOR = FLASH_BASE | 0x08000; /* Vector Table Relocation in Internal FLASH. */
+	IWDG_Init(IWDG_Prescaler_128,625);	//128分频 312.5HZ 625为2秒
+	
 	RCC_GetClocksFreq(&RCC_Clocks);		//查看各个总线的时钟频率
 	__set_PRIMASK(1);	//关闭全局中断
 

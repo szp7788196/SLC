@@ -950,6 +950,69 @@ u8 ReadTimeGroupNumber(void)
 	return ret;
 }
 
+//设定OTA参数到EEPROM中
+void WriteOTAInfo(u8 *hold_reg,u8 reset)
+{
+	u16 crc_code = 0;
+	u16 i = 0;
+	
+	if(reset == 1)
+	{
+		HaveNewFirmWare   = 0;
+		NewFirmWareBagNum = 0;
+		NewFirmWareVer    = 101;
+		LastBagByteNum    = 0;
+	}
+	
+	if(NewFirmWareAdd != 0xAA && NewFirmWareAdd != 0x55)
+	{
+		NewFirmWareAdd = 0xAA;
+	}
+	
+	*(hold_reg + FIRM_WARE_FLAG_S_ADD) 			= HaveNewFirmWare;
+	*(hold_reg + FIRM_WARE_STORE_ADD_S_ADD) 	= NewFirmWareAdd;
+	*(hold_reg + FIRM_WARE_VER_S_ADD + 0) 		= (u8)((NewFirmWareVer >> 8) & 0x00FF);
+	*(hold_reg + FIRM_WARE_VER_S_ADD + 1) 		= (u8)(NewFirmWareVer & 0x00FF);
+	*(hold_reg + FIRM_WARE_BAG_NUM_S_ADD + 0) 	= (u8)((NewFirmWareBagNum >> 8) & 0x00FF);
+	*(hold_reg + FIRM_WARE_BAG_NUM_S_ADD + 1) 	= (u8)(NewFirmWareBagNum & 0x00FF);
+	*(hold_reg + LAST_BAG_BYTE_NUM_S_ADD) 		= LastBagByteNum;
+
+	crc_code = CRC16(hold_reg + OTA_INFO_ADD, OTA_INFO_LEN - 2);
+
+	*(hold_reg + OTA_INFO_ADD + OTA_INFO_LEN - 2) = (u8)(crc_code >> 8);
+	*(hold_reg + OTA_INFO_ADD + OTA_INFO_LEN - 1) = (u8)(crc_code & 0x00FF);
+
+	for(i = OTA_INFO_ADD; i < OTA_INFO_ADD + OTA_INFO_LEN; i ++)
+	{
+		AT24CXX_WriteOneByte(i,*(hold_reg + i));
+	}
+}
+
+//从EEPROM中读取OTA信息
+u8 ReadOTAInfo(u8 *hold_reg)
+{
+	u8 ret = 0;
+	
+	ret = ReadDataFromEepromToHoldBuf(hold_reg,OTA_INFO_ADD,OTA_INFO_LEN);
+	
+	if(ret == 1)
+	{
+		HaveNewFirmWare 	= *(hold_reg + FIRM_WARE_FLAG_S_ADD);
+		NewFirmWareAdd 		= *(hold_reg + FIRM_WARE_STORE_ADD_S_ADD);
+		NewFirmWareVer 		= (((u16)(*(hold_reg + FIRM_WARE_VER_S_ADD + 0))) << 8) + \
+								(u16)(*(hold_reg + FIRM_WARE_VER_S_ADD + 1));
+		NewFirmWareBagNum 	= (((u16)(*(hold_reg + FIRM_WARE_BAG_NUM_S_ADD + 0))) << 8) + \
+								(u16)(*(hold_reg + FIRM_WARE_BAG_NUM_S_ADD + 1));
+		LastBagByteNum 		= *(hold_reg + LAST_BAG_BYTE_NUM_S_ADD);
+	}
+	else
+	{
+		WriteOTAInfo(HoldReg,1);		//复位OTA信息
+	}
+	
+	return ret;
+}
+
 //读取时间策略数组
 u8 ReadRegularTimeGroups(void)
 {
@@ -1040,6 +1103,7 @@ void ReadParametersFromEEPROM(void)
 	ReadPowerINTFCC();
 	ReadTimeZone();
 	ReadRegularTimeGroups();
+	ReadOTAInfo(HoldReg);
 }
 
 //将数据打包成网络格式的数据

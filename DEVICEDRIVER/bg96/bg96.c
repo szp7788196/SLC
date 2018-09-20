@@ -865,7 +865,7 @@ BG96_STATE_E bg96_get_AT_QISTATE(pBg96 *bg96)
     (*bg96)->wait_bg96_mode(bg96,CMD_MODE);
     (*bg96)->clear_rx_cmd_buffer(bg96);
     printf("AT+QISTATE?\r\n");
-    if((*bg96)->wait_cmd2(bg96,"OK", TIMEOUT_2S) == RECEIVED)
+    if((*bg96)->wait_cmd2(bg96,"OK", TIMEOUT_5S) == RECEIVED)
     {
         if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "+QISTATE") != -1)
 		{

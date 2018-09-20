@@ -3,6 +3,7 @@
 #include "usart.h"
 
 u8 InventrBusy = 0;
+u8 InventrDisable = 0;
 
 float InventrInPutCurrent = 0.0f;
 float InventrInPutVoltage = 0.0f;
@@ -16,52 +17,59 @@ u8 InventrSetMaxPowerCurrent(u8 percent)
 	u8 i = 0;
 	u8 send_buf[8];
 	
-	if(InventrBusy == 0)
+	if(InventrDisable == 0)
 	{
 		if(xSchedulerRunning == 1)
 		{
 			xSemaphoreTake(xMutex_INVENTR, portMAX_DELAY);
 		}
 		
-		memset(send_buf,0,8);
-		
-		send_buf[0] = 0x3A;
-		send_buf[1] = 0x31;
-		send_buf[2] = 0x00;
-		send_buf[3] = 0x01;
-		send_buf[4] = percent;
-		send_buf[6] = 0x0D;
-		send_buf[7] = 0x0A;
-		
-		for(i = 1; i <= 4; i ++)
+		if(InventrBusy == 0)
 		{
-			send_buf[5] += send_buf[i];
-		}
-		
-		UsartSendString(UART4,send_buf,8);
-		
-		i = 10;
-		
-		while(i --)
-		{
-			delay_ms(100);
+			InventrBusy = 1;
 			
-			if(Usart4RecvEnd == 0xAA)
+			memset(send_buf,0,8);
+		
+			send_buf[0] = 0x3A;
+			send_buf[1] = 0x31;
+			send_buf[2] = 0x00;
+			send_buf[3] = 0x01;
+			send_buf[4] = percent;
+			send_buf[6] = 0x0D;
+			send_buf[7] = 0x0A;
+			
+			for(i = 1; i <= 4; i ++)
 			{
-				Usart4RecvEnd = 0;
+				send_buf[5] += send_buf[i];
+			}
+			
+			UsartSendString(UART4,send_buf,8);
+			
+			i = 10;
+			
+			while(i --)
+			{
+				delay_ms(100);
 				
-				if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
+				if(Usart4RecvEnd == 0xAA)
 				{
-					memset(Usart4RxBuf,0,Usart4FrameLen);
-				}
-				else
-				{
-					memset(Usart4RxBuf,0,Usart4FrameLen);
+					Usart4RecvEnd = 0;
 					
-					i = 1;
-					ret = 1;
+					if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
+					{
+						memset(Usart4RxBuf,0,Usart4FrameLen);
+					}
+					else
+					{
+						memset(Usart4RxBuf,0,Usart4FrameLen);
+						
+						i = 1;
+						ret = 1;
+					}
 				}
 			}
+			
+			InventrBusy = 0;
 		}
 		
 		if(xSchedulerRunning == 1)
@@ -81,63 +89,70 @@ u8 InventrSetLightLevel(u8 level)
 	static u8 re_try_cnt = 0;
 	u8 send_buf[8];
 	
-	if(InventrBusy == 0)
+	if(InventrDisable == 0)
 	{
 		if(xSchedulerRunning == 1)
 		{
 			xSemaphoreTake(xMutex_INVENTR, portMAX_DELAY);
 		}
 		
-		memset(send_buf,0,8);
-		
-		send_buf[0] = 0x3A;
-		send_buf[1] = 0x3C;
-		send_buf[2] = 0x00;
-		send_buf[3] = 0x01;
-		send_buf[4] = level;
-		send_buf[6] = 0x0D;
-		send_buf[7] = 0x0A;
-		
-		for(i = 1; i <= 4; i ++)
+		if(InventrBusy == 0)
 		{
-			send_buf[5] += send_buf[i];
-		}
-		
-		RE_SEND:
-		UsartSendString(UART4,send_buf,8);
-		
-		i = 10;
-		
-		while(i --)
-		{
-			delay_ms(100);
+			InventrBusy = 1;
 			
-			if(Usart4RecvEnd == 0xAA)
+			memset(send_buf,0,8);
+			
+			send_buf[0] = 0x3A;
+			send_buf[1] = 0x3C;
+			send_buf[2] = 0x00;
+			send_buf[3] = 0x01;
+			send_buf[4] = level;
+			send_buf[6] = 0x0D;
+			send_buf[7] = 0x0A;
+			
+			for(i = 1; i <= 4; i ++)
 			{
-				Usart4RecvEnd = 0;
+				send_buf[5] += send_buf[i];
+			}
+			
+			RE_SEND:
+			UsartSendString(UART4,send_buf,8);
+			
+			i = 10;
+			
+			while(i --)
+			{
+				delay_ms(100);
 				
-				if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
+				if(Usart4RecvEnd == 0xAA)
 				{
-					memset(Usart4RxBuf,0,Usart4FrameLen);
-				}
-				else
-				{
-					memset(Usart4RxBuf,0,Usart4FrameLen);
+					Usart4RecvEnd = 0;
 					
-					i = 1;
-					ret = 1;
+					if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
+					{
+						memset(Usart4RxBuf,0,Usart4FrameLen);
+					}
+					else
+					{
+						memset(Usart4RxBuf,0,Usart4FrameLen);
+						
+						i = 1;
+						ret = 1;
+					}
 				}
 			}
-		}
-		
-		if(ret == 0)
-		{
-			re_try_cnt ++;
 			
-			if(re_try_cnt < 10)
+			if(ret == 0)
 			{
-				goto RE_SEND;
+				re_try_cnt ++;
+				
+				if(re_try_cnt < 10)
+				{
+					goto RE_SEND;
+				}
 			}
+			
+			InventrBusy = 0;
 		}
 		
 		if(xSchedulerRunning == 1)
@@ -160,78 +175,85 @@ float InventrGetOutPutCurrent(void)
 	u8 revc_buf[10];
 //	u16 adc_val = 0;
 	
-	if(InventrBusy == 0)
+	if(InventrDisable == 0)
 	{
 		if(xSchedulerRunning == 1)
 		{
 			xSemaphoreTake(xMutex_INVENTR, portMAX_DELAY);
 		}
 		
-		memset(send_buf,0,8);
-		
-		send_buf[0] = 0x3A;
-		send_buf[1] = 0x3A;
-		send_buf[2] = 0x00;
-		send_buf[3] = 0x01;
-		send_buf[4] = 0x02;
-		send_buf[6] = 0x0D;
-		send_buf[7] = 0x0A;
-		
-		for(i = 1; i <= 4; i ++)
+		if(InventrBusy == 0)
 		{
-			send_buf[5] += send_buf[i];
-		}
-		
-		UsartSendString(UART4,send_buf,8);
-		
-		i = 10;
-		
-		while(i --)
-		{
-			delay_ms(100);
+			InventrBusy = 1;
 			
-			if(Usart4RecvEnd == 0xAA)
+			memset(send_buf,0,8);
+			
+			send_buf[0] = 0x3A;
+			send_buf[1] = 0x3A;
+			send_buf[2] = 0x00;
+			send_buf[3] = 0x01;
+			send_buf[4] = 0x02;
+			send_buf[6] = 0x0D;
+			send_buf[7] = 0x0A;
+			
+			for(i = 1; i <= 4; i ++)
 			{
-				Usart4RecvEnd = 0;
+				send_buf[5] += send_buf[i];
+			}
+			
+			UsartSendString(UART4,send_buf,8);
+			
+			i = 10;
+			
+			while(i --)
+			{
+				delay_ms(100);
 				
-				if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
+				if(Usart4RecvEnd == 0xAA)
 				{
-					memset(Usart4RxBuf,0,Usart4FrameLen);
-				}
-				else
-				{
-					memset(revc_buf,0,10);
+					Usart4RecvEnd = 0;
 					
-					if(Usart4FrameLen <= 10)
+					if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
 					{
-						memcpy(revc_buf,Usart4RxBuf,Usart4FrameLen);
-						
-						
-						for(i = 1; i < Usart4FrameLen - 3; i ++)
-						{
-							sum_cal += revc_buf[i];
-						}
-						
-						sum_recv = revc_buf[Usart4FrameLen - 3];
-						
-						if(sum_cal == sum_recv)
-						{
-							current = (float)((((u16)revc_buf[4]) << 8) + (u16)revc_buf[5]);			//新的通讯协议，读出来的值无需转换，直接是电流值ma
-							
-//							if(adc_val > INVENTR_MAX_CURRENT_ADC_VAL)
-//							{
-//								adc_val = INVENTR_MAX_CURRENT_ADC_VAL;
-//							}
-//							
-//							current = (float)INVENTR_MAX_CURRENT_MA * ((float)adc_val / (float)INVENTR_MAX_CURRENT_ADC_VAL);
-						}
+						memset(Usart4RxBuf,0,Usart4FrameLen);
 					}
-					
-					memset(Usart4RxBuf,0,Usart4FrameLen);
-					
-					i = 1;
+					else
+					{
+						memset(revc_buf,0,10);
+						
+						if(Usart4FrameLen <= 10)
+						{
+							memcpy(revc_buf,Usart4RxBuf,Usart4FrameLen);
+							
+							
+							for(i = 1; i < Usart4FrameLen - 3; i ++)
+							{
+								sum_cal += revc_buf[i];
+							}
+							
+							sum_recv = revc_buf[Usart4FrameLen - 3];
+							
+							if(sum_cal == sum_recv)
+							{
+								current = (float)((((u16)revc_buf[4]) << 8) + (u16)revc_buf[5]);			//新的通讯协议，读出来的值无需转换，直接是电流值ma
+								
+	//							if(adc_val > INVENTR_MAX_CURRENT_ADC_VAL)
+	//							{
+	//								adc_val = INVENTR_MAX_CURRENT_ADC_VAL;
+	//							}
+	//							
+	//							current = (float)INVENTR_MAX_CURRENT_MA * ((float)adc_val / (float)INVENTR_MAX_CURRENT_ADC_VAL);
+							}
+						}
+						
+						memset(Usart4RxBuf,0,Usart4FrameLen);
+						
+						i = 1;
+					}
 				}
 			}
+			
+			InventrBusy = 0;
 		}
 		
 		if(xSchedulerRunning == 1)
@@ -254,78 +276,85 @@ float InventrGetOutPutVoltage(void)
 	u8 revc_buf[10];
 //	u16 adc_val = 0;
 	
-	if(InventrBusy == 0)
+	if(InventrDisable == 0)
 	{
 		if(xSchedulerRunning == 1)
 		{
 			xSemaphoreTake(xMutex_INVENTR, portMAX_DELAY);
 		}
 		
-		memset(send_buf,0,8);
-		
-		send_buf[0] = 0x3A;
-		send_buf[1] = 0x3A;
-		send_buf[2] = 0x01;
-		send_buf[3] = 0x01;
-		send_buf[4] = 0x02;
-		send_buf[6] = 0x0D;
-		send_buf[7] = 0x0A;
-		
-		for(i = 1; i <= 4; i ++)
+		if(InventrBusy == 0)
 		{
-			send_buf[5] += send_buf[i];
-		}
-		
-		UsartSendString(UART4,send_buf,8);
-		
-		i = 10;
-		
-		while(i --)
-		{
-			delay_ms(100);
+			InventrBusy = 1;
 			
-			if(Usart4RecvEnd == 0xAA)
+			memset(send_buf,0,8);
+			
+			send_buf[0] = 0x3A;
+			send_buf[1] = 0x3A;
+			send_buf[2] = 0x01;
+			send_buf[3] = 0x01;
+			send_buf[4] = 0x02;
+			send_buf[6] = 0x0D;
+			send_buf[7] = 0x0A;
+			
+			for(i = 1; i <= 4; i ++)
 			{
-				Usart4RecvEnd = 0;
+				send_buf[5] += send_buf[i];
+			}
+			
+			UsartSendString(UART4,send_buf,8);
+			
+			i = 10;
+			
+			while(i --)
+			{
+				delay_ms(100);
 				
-				if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
+				if(Usart4RecvEnd == 0xAA)
 				{
-					memset(Usart4RxBuf,0,Usart4FrameLen);
-				}
-				else
-				{
-					memset(revc_buf,0,10);
+					Usart4RecvEnd = 0;
 					
-					if(Usart4FrameLen <= 10)
+					if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
 					{
-						memcpy(revc_buf,Usart4RxBuf,Usart4FrameLen);
-						
-						
-						for(i = 1; i < Usart4FrameLen - 3; i ++)
-						{
-							sum_cal += revc_buf[i];
-						}
-						
-						sum_recv = revc_buf[Usart4FrameLen - 3];
-						
-						if(sum_cal == sum_recv)
-						{
-							voltage = (float)((((u16)revc_buf[4]) << 8) + (u16)revc_buf[5]);				//新的通讯协议，读出来的值无需转换，直接是电压值V
-							
-//							if(adc_val > INVENTR_MAX_VOLTAGE_ADC_VAL)
-//							{
-//								adc_val = INVENTR_MAX_VOLTAGE_ADC_VAL;
-//							}
-//							
-//							voltage = (float)INVENTR_MAX_VOLTAGE_V * ((float)adc_val / (float)INVENTR_MAX_VOLTAGE_ADC_VAL);
-						}
+						memset(Usart4RxBuf,0,Usart4FrameLen);
 					}
-					
-					memset(Usart4RxBuf,0,Usart4FrameLen);
-					
-					i = 1;
+					else
+					{
+						memset(revc_buf,0,10);
+						
+						if(Usart4FrameLen <= 10)
+						{
+							memcpy(revc_buf,Usart4RxBuf,Usart4FrameLen);
+							
+							
+							for(i = 1; i < Usart4FrameLen - 3; i ++)
+							{
+								sum_cal += revc_buf[i];
+							}
+							
+							sum_recv = revc_buf[Usart4FrameLen - 3];
+							
+							if(sum_cal == sum_recv)
+							{
+								voltage = (float)((((u16)revc_buf[4]) << 8) + (u16)revc_buf[5]);				//新的通讯协议，读出来的值无需转换，直接是电压值V
+								
+	//							if(adc_val > INVENTR_MAX_VOLTAGE_ADC_VAL)
+	//							{
+	//								adc_val = INVENTR_MAX_VOLTAGE_ADC_VAL;
+	//							}
+	//							
+	//							voltage = (float)INVENTR_MAX_VOLTAGE_V * ((float)adc_val / (float)INVENTR_MAX_VOLTAGE_ADC_VAL);
+							}
+						}
+						
+						memset(Usart4RxBuf,0,Usart4FrameLen);
+						
+						i = 1;
+					}
 				}
 			}
+			
+			InventrBusy = 0;
 		}
 		
 		if(xSchedulerRunning == 1)
@@ -344,52 +373,59 @@ u8 InventrGetDeviceInfo(void)
 	u8 i = 0;
 	u8 send_buf[8];
 	
-	if(InventrBusy == 0)
+	if(InventrDisable == 0)
 	{
 		if(xSchedulerRunning == 1)
 		{
 			xSemaphoreTake(xMutex_INVENTR, portMAX_DELAY);
 		}
 		
-		memset(send_buf,0,8);
-		
-		send_buf[0] = 0x3A;
-		send_buf[1] = 0x35;
-		send_buf[2] = 0x0B;
-		send_buf[3] = 0x01;
-		send_buf[4] = 0x05;
-		send_buf[6] = 0x0D;
-		send_buf[7] = 0x0A;
-		
-		for(i = 1; i <= 4; i ++)
+		if(InventrBusy == 0)
 		{
-			send_buf[5] += send_buf[i];
-		}
-		
-		UsartSendString(UART4,send_buf,8);
-		
-		i = 10;
-		
-		while(i --)
-		{
-			delay_ms(100);
+			InventrBusy = 1;
 			
-			if(Usart4RecvEnd == 0xAA)
+			memset(send_buf,0,8);
+			
+			send_buf[0] = 0x3A;
+			send_buf[1] = 0x35;
+			send_buf[2] = 0x0B;
+			send_buf[3] = 0x01;
+			send_buf[4] = 0x05;
+			send_buf[6] = 0x0D;
+			send_buf[7] = 0x0A;
+			
+			for(i = 1; i <= 4; i ++)
 			{
-				Usart4RecvEnd = 0;
+				send_buf[5] += send_buf[i];
+			}
+			
+			UsartSendString(UART4,send_buf,8);
+			
+			i = 10;
+			
+			while(i --)
+			{
+				delay_ms(100);
 				
-				if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
+				if(Usart4RecvEnd == 0xAA)
 				{
-					memset(Usart4RxBuf,0,Usart4FrameLen);
-				}
-				else
-				{
-					memset(Usart4RxBuf,0,Usart4FrameLen);
+					Usart4RecvEnd = 0;
 					
-					i = 1;
-					ret = 1;
+					if(MyStrstr(Usart4RxBuf, send_buf, Usart4FrameLen, 8) != 0xFFFF)
+					{
+						memset(Usart4RxBuf,0,Usart4FrameLen);
+					}
+					else
+					{
+						memset(Usart4RxBuf,0,Usart4FrameLen);
+						
+						i = 1;
+						ret = 1;
+					}
 				}
 			}
+			
+			InventrBusy = 0;
 		}
 		
 		if(xSchedulerRunning == 1)

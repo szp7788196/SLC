@@ -11,6 +11,7 @@
 
 
 extern u8 InventrBusy;
+extern u8 InventrDisable;
 
 extern float InventrInPutCurrent;
 extern float InventrInPutVoltage;

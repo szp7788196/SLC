@@ -730,7 +730,7 @@ u8 AT_CommandPORT(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 		
 		if(get_str1(inbuf, "\"", 1, "\"", 2, &content[1]))
 		{
-			content[0] = strlen((char *)content);
+			content[0] = strlen((char *)&content[1]);
 			
 			if(content[0] < 6)
 			{
@@ -1097,7 +1097,7 @@ u8 AT_CommandPWRCTL(u8 cmd_id,u8 *inbuf,u16 inbuf_len,u8 *respbuf)
 		
 		if(content < 2)
 		{
-			InventrBusy = !content;
+			InventrDisable = !content;
 			
 			ret = 0;
 		}

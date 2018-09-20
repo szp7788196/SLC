@@ -49,6 +49,10 @@
 
 #define DEBUG_LOG								//是否打印调试信息
 
+#define MAX_FW_VER					9999
+#define MAX_FW_BAG_NUM				896
+#define MAX_FW_LAST_BAG_NUM			134
+
 
 #define MAX_GROUP_NUM				36
 #define HOLD_REG_LEN				512
@@ -110,6 +114,12 @@
 
 #define OTA_INFO_ADD				301			//OTA信息存储地址
 #define OTA_INFO_LEN				9
+
+#define FIRM_WARE_FLAG_S_ADD		301			//新固件标识存储地址
+#define FIRM_WARE_STORE_ADD_S_ADD	302			//新固件Flash地址存储地址
+#define FIRM_WARE_VER_S_ADD			303			//新固件版本号存储地址
+#define FIRM_WARE_BAG_NUM_S_ADD		305			//新固件总包数存储地址
+#define LAST_BAG_BYTE_NUM_S_ADD		307			//新固件末包字节数存储地址
 
 #define TIME_GROUP_NUM_ADD			361			//策略组数存储地址
 #define TIME_GROUP_NUM_LEN			3
@@ -385,6 +395,8 @@ u8 ReadUpLoadINVL(void);
 u8 ReadPowerINTFCC(void);
 u8 ReadTimeZone(void);
 u8 ReadTimeGroupNumber(void);
+void WriteOTAInfo(u8 *hold_reg,u8 reset);
+u8 ReadOTAInfo(u8 *hold_reg);
 u8 ReadRegularTimeGroups(void);
 
 void ReadParametersFromEEPROM(void);
