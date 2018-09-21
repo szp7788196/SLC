@@ -125,6 +125,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	static u8 hard_inited = 0;
 	u8 ret = 0;
 	u8 fail_time = 0;
+	u8 qiact_fail_times = 0;
 	u8 buf[64];
 
 	if(hard_inited == 0)
@@ -260,12 +261,20 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	}
 	delay_ms(100);
 	
+	if(qiact_fail_times >= 3)
+	{
+		qiact_fail_times = 0;
+		
+		delay_ms(20000);
+	}
+	
 	fail_time = 0;
 	while(!(*bg96)->set_AT_QIACT(bg96))
 	{
 		fail_time ++;
 		if(fail_time >= 1)
 		{
+			qiact_fail_times ++;
 			goto RE_HARD_RESET;
 		}
 	}
