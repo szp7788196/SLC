@@ -70,7 +70,14 @@ float Sht2xReadTemperature(void)
 		
 		times ++;
 		if(times >= 100)
+		{
+			if(xSchedulerRunning == 1)
+			{
+				xSemaphoreGive(xMutex_IIC1);
+			}
+			
 			return wendu_val;
+		}
 	}
 	while(ack);
 
@@ -128,7 +135,14 @@ float Sht2xReadHumidity(void)
 		
 		times ++;
 		if(times >= 100)
+		{
+			if(xSchedulerRunning == 1)
+			{
+				xSemaphoreGive(xMutex_IIC1);
+			}
+			
 			return sdd;
+		}
 	}
 	while(ack==1);
 

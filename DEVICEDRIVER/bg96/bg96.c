@@ -120,6 +120,7 @@ void BG96_UnInit(pBg96 *bg96)
 	myfree(*bg96);
 }
 
+u8 signal = 0;
 unsigned char BG96_InitStep2(pBg96 *bg96)
 {
 	static u8 hard_inited = 0;
@@ -274,6 +275,7 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 		fail_time ++;
 		if(fail_time >= 1)
 		{
+			signal = (*bg96)->get_AT_CSQ(bg96);
 			qiact_fail_times ++;
 			goto RE_HARD_RESET;
 		}

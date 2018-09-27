@@ -5,8 +5,8 @@
 #include "rtc.h"
 #include "usart.h"
 
-//u16 i = 0;
-//u8 eepbuf[256];
+u16 i = 0;
+u8 eepbuf[256];
 u16 cnt = 0;
 u8 led_s = 0;
 RCC_ClocksTypeDef RCC_Clocks;
