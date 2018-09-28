@@ -17,9 +17,11 @@ void vTaskSENSOR(void *pvParameters)
 {
 	time_t times_sec = 0;
 	u8 push_data_to_net = 0;
-	
+
+#ifndef SMALLER_BOARD	
 	SHT2x_Init();
 	Bh1750_Init();
+#endif
 	
 	p_tSensorMsg = (SensorMsg_S *)mymalloc(sizeof(SensorMsg_S));
 	
@@ -30,7 +32,8 @@ void vTaskSENSOR(void *pvParameters)
 			times_sec = GetSysTick1s();
 			push_data_to_net = 1;
 		}
-		
+
+#ifndef SMALLER_BOARD			
 		Temperature = Sht2xReadTemperature();				//读取温度
 		Humidity = Sht2xReadHumidity();						//读取湿度
 		Illumination = Bh1750ReadIllumination();			//读取光照
@@ -39,6 +42,9 @@ void vTaskSENSOR(void *pvParameters)
 		delay_ms(500);
 		InventrOutPutVoltage = InventrGetOutPutVoltage();	//读取电源输出电压
 		delay_ms(500);
+#else
+		delay_ms(1000);
+#endif
 		
 		if(push_data_to_net == 1)
 		{
