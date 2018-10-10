@@ -18,13 +18,13 @@ void vTaskSENSOR(void *pvParameters)
 	time_t times_sec = 0;
 	u8 push_data_to_net = 0;
 
-#ifndef SMALLER_BOARD	
+#ifndef SMALLER_BOARD
 	SHT2x_Init();
 	Bh1750_Init();
 #endif
-	
+
 	p_tSensorMsg = (SensorMsg_S *)mymalloc(sizeof(SensorMsg_S));
-	
+
 	while(1)
 	{
 		if(GetSysTick1s() - times_sec >= UpLoadINCL)		//每隔UpLoadINCL秒向网络任务推送一次传感器数据
@@ -33,37 +33,37 @@ void vTaskSENSOR(void *pvParameters)
 			push_data_to_net = 1;
 		}
 
-#ifndef SMALLER_BOARD			
+#ifndef SMALLER_BOARD
 		Temperature = Sht2xReadTemperature();				//读取温度
 		Humidity = Sht2xReadHumidity();						//读取湿度
 		Illumination = Bh1750ReadIllumination();			//读取光照
+#endif
 		
 		InventrOutPutCurrent = InventrGetOutPutCurrent();	//读取电源输出电流
 		delay_ms(500);
 		InventrOutPutVoltage = InventrGetOutPutVoltage();	//读取电源输出电压
 		delay_ms(500);
-#else
-		delay_ms(1000);
-#endif
-		
+
 		if(push_data_to_net == 1)
 		{
 			push_data_to_net = 0;
-			
+
 			if(ConnectState == ON_SERVER)					//设备此时是在线状态
 			{
+#ifndef	SMALLER_BOARD
 				p_tSensorMsg->temperature = (u16)(Temperature * 10.0f + 0.5f);
 				p_tSensorMsg->humidity = (u16)(Humidity * 10.0f + 0.5f);
 				p_tSensorMsg->illumination = (u16)(Illumination + 0.5f);
+#endif				
 				p_tSensorMsg->out_put_current = (u16)(InventrOutPutCurrent + 0.5f);
 				p_tSensorMsg->out_put_voltage = (u16)(InventrOutPutVoltage + 0.5f);
 				p_tSensorMsg->signal_intensity = SignalIntensity;
 				p_tSensorMsg->hour = calendar.hour;
 				p_tSensorMsg->minute = calendar.min;
 				p_tSensorMsg->second = calendar.sec;
-				
+
 				memset(p_tSensorMsg->gps,0,32);
-				
+
 				if(GpsInfo != NULL && strlen((char *)GpsInfo) <= 32)
 				{
 					memcpy(p_tSensorMsg->gps,GpsInfo,strlen((char *)GpsInfo));

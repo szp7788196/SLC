@@ -1086,6 +1086,7 @@ u8 ReadRegularTimeGroups(void)
 	return ret;
 }
 
+//在EEPROM中读取运行参数
 void ReadParametersFromEEPROM(void)
 {
 	ReadBootLoaderVersion();
@@ -1160,6 +1161,24 @@ u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf)
 
 	if(msg != NULL)
 	{
+#ifdef SMALLER_BOARD
+		*(buf + 0) = (u8)(msg->out_put_current >> 8);
+		*(buf + 1) = (u8)(msg->out_put_current & 0x00FF);
+		
+		*(buf + 2) = (u8)(msg->out_put_voltage >> 8);
+		*(buf + 3) = (u8)(msg->out_put_voltage & 0x00FF);
+		
+		*(buf + 4) = msg->signal_intensity;
+		*(buf + 5) = msg->hour;
+		*(buf + 6) = msg->minute;
+		*(buf + 7) = msg->second;
+
+		len = strlen(msg->gps);
+
+		memcpy(buf + 8,msg->gps,len);
+
+		len = len + 8;
+#else
 		*(buf + 0) = (u8)(msg->temperature >> 8);
 		*(buf + 1) = (u8)(msg->temperature & 0x00FF);
 		*(buf + 2) = (u8)(msg->humidity >> 8);
@@ -1183,6 +1202,7 @@ u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf)
 		memcpy(buf + 14,msg->gps,len);
 
 		len = len + 14;
+#endif
 	}
 
 	return len;

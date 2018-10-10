@@ -369,7 +369,7 @@ u16 SetRegularTimeGroups(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 	return out_len;
 }
 
-//控制灯的亮度
+//控制设备的工作模式
 u16 SetDeviceWorkMode(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 {
 	u8 out_len = 0;

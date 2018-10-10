@@ -65,7 +65,7 @@ void vTaskMAIN(void *pvParameters)
 	}
 }
 
-
+//ÂÖÑ¯Ê±¼ä²ßÂÔ
 void AutoLoopRegularTimeGroups(u8 *percent)
 {
 	u8 i = 0;

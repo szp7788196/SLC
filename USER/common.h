@@ -56,7 +56,7 @@
 #define MAX_FW_LAST_BAG_NUM			134
 
 
-#define MAX_GROUP_NUM				36
+#define MAX_GROUP_NUM				29		//(255 - 11 - 6 - 36) / 7
 #define HOLD_REG_LEN				512
 #define TIME_BUF_LEN				256
 
