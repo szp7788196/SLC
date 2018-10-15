@@ -43,7 +43,6 @@ void vTaskNET(void *pvParameters)
 //				{
 //					bg96->get_AT_QIDNSGIP(&bg96,(char *)ServerDomain, &IpAddress);
 //				}
-
 			}
 		}
 		else
@@ -151,6 +150,10 @@ void SendSensorData_HeartBeatPacket(void)
 
 		send_len = PackNetData(0xE1,sensor_buf,0,send_buf);
 	}
+//	else if(GetTimeOK == 3)				//发送对时请求
+//	{
+//		send_len = PackNetData(0xF1,sensor_buf,0,send_buf);
+//	}
 
 	if(send_len >= 1)
 	{
@@ -205,28 +208,31 @@ u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
 					strcat((char *)*gps_info,(char *)jing);
 					strcat((char *)*gps_info,(char *)wei);
 
-					*gps_flag = 1;
+//					*gps_flag = 1;
 
 					ret = 1;
 				}
 
-				buf_len = strlen((char *)buf);
+				if(*time_flag != 1)
+				{
+					buf_len = strlen((char *)buf);
 
-				tm_time.tm_year = 2000 + (buf[buf_len - 5] - 0x30) * 10 + buf[buf_len - 4] - 0x30 - 1900;
-				tm_time.tm_mon = (buf[buf_len - 7] - 0x30) * 10 + buf[buf_len - 6] - 0x30 - 1;
-				tm_time.tm_mday = (buf[buf_len - 9] - 0x30) * 10 + buf[buf_len - 8] - 0x30;
+					tm_time.tm_year = 2000 + (buf[buf_len - 5] - 0x30) * 10 + buf[buf_len - 4] - 0x30 - 1900;
+					tm_time.tm_mon = (buf[buf_len - 7] - 0x30) * 10 + buf[buf_len - 6] - 0x30 - 1;
+					tm_time.tm_mday = (buf[buf_len - 9] - 0x30) * 10 + buf[buf_len - 8] - 0x30;
 
-				tm_time.tm_hour = (buf[0] - 0x30) * 10 + buf[1] - 0x30;
-				tm_time.tm_min = (buf[2] - 0x30) * 10 + buf[3] - 0x30;
-				tm_time.tm_sec = (buf[4] - 0x30) * 10 + buf[5] - 0x30;
+					tm_time.tm_hour = (buf[0] - 0x30) * 10 + buf[1] - 0x30;
+					tm_time.tm_min = (buf[2] - 0x30) * 10 + buf[3] - 0x30;
+					tm_time.tm_sec = (buf[4] - 0x30) * 10 + buf[5] - 0x30;
 
-				time_s = mktime(&tm_time);
+					time_s = mktime(&tm_time);
 
-				time_s = time_s + (8 * 3600);
+					time_s = time_s + (8 * 3600);
 
-				SyncTimeFromNet(time_s);
+					SyncTimeFromNet(time_s);
 
-				*time_flag = 1;
+					*time_flag = 1;
+				}
 			}
 		}
 	}
@@ -266,6 +272,11 @@ u8 GetTimeInfo(char *server,u8 port, u8 *flag)
 			ret = 1;
 		}
 	}
+	
+//	if(*flag != 1)
+//	{
+//		*flag = 3;
+//	}
 
 	return ret;
 }

@@ -104,7 +104,6 @@ void AutoLoopRegularTimeGroups(u8 *percent)
 							}
 						}
 					}
-
 				break;
 
 				case TYPE_WEEKEND:		//周六至周日

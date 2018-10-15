@@ -14,7 +14,7 @@ int main(void)
 {
 //	SCB->VTOR = FLASH_BASE | 0x08000; /* Vector Table Relocation in Internal FLASH. */
 	IWDG_Init(IWDG_Prescaler_128,625);	//128分频 312.5HZ 625为2秒
-	
+
 	RCC_GetClocksFreq(&RCC_Clocks);		//查看各个总线的时钟频率
 	__set_PRIMASK(1);	//关闭全局中断
 
@@ -39,7 +39,6 @@ int main(void)
 //		eepbuf[i] = AT24CXX_ReadOneByte(i);
 //	}
 //	AT24CXX_WriteOneByte(UU_ID_ADD,255);
-
 
 	mem_init();
 

@@ -98,6 +98,10 @@ u16 NetDataAnalysis(u8 *buf,u16 len,u8 *outbuf,u8 *hold_reg)
 					case 0xF0:									//设置设备UUID，固定64个字节
 						ret = SetDeviceUUID(cmd_code,buf + 10,data_len,outbuf);
 					break;
+					
+					case 0xF1:									//从服务器获取时间戳
+						ret = GetTimeDateFromServer(cmd_code,buf + 10,data_len,outbuf);
+					break;
 
 					case 0x80:									//应答，下行,上行在别处处理
 						UnPackAckPacket(cmd_code,buf + 10,data_len);
@@ -430,7 +434,49 @@ u16 SetDeviceUUID(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 	return out_len;
 }
 
+//从服务器获取时间戳
+u16 GetTimeDateFromServer(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
+{
+	u8 out_len = 0;
+	u8 data_buf[2] = {0,0};
+	u8 year = 0;
+	u8 mon = 0;
+	u8 day = 0;
+	u8 hour = 0;
+	u8 min = 0;
+	u8 sec = 0;
 
+	data_buf[0] = cmd_code;
+
+	if(len == 12)												//数据长度必须是64
+	{
+		year = *(buf + 0);
+		mon  = *(buf + 1);
+		day  = *(buf + 2);
+		hour = *(buf + 3);
+		min  = *(buf + 4);
+		sec  = *(buf + 5);
+		
+		if(year >= 18 && mon <= 12 && day <= 31 && hour <= 23 && min <= 59 && sec <= 59)
+		{
+			RTC_Set(year + 2000,mon,day,hour,min,sec);
+			
+			GetTimeOK = 1;
+		}
+		else
+		{
+			data_buf[1] = 1;
+		}
+	}
+	else
+	{
+		data_buf[1] = 2;
+	}
+
+	out_len = PackAckPacket(cmd_code,data_buf,outbuf);
+
+	return out_len;
+}
 
 
 

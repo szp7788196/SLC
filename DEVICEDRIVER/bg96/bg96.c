@@ -1012,6 +1012,8 @@ unsigned char bg96_set_AT_QISEND(pBg96 *bg96,unsigned char *buffer, unsigned int
             if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "SEND OK") != -1)
             {
                 state = 2;
+				
+				ret = 1;
             }
         }
 		else
