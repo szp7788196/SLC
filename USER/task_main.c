@@ -21,46 +21,39 @@ void vTaskMAIN(void *pvParameters)
 
 	while(1)
 	{
-		switch(DeviceWorkMode)
+		if(DeviceWorkMode == MODE_AUTO)						//只有在自动模式下才进行策略判断
 		{
-			case MODE_AUTO:
-				if(GetSysTick1s() - times_sec >= 1)
-				{
-					times_sec = GetSysTick1s();
+			if(GetSysTick1s() - times_sec >= 1)
+			{
+				times_sec = GetSysTick1s();
 
-					AutoLoopRegularTimeGroups(&LightLevelPercent);
-				}
-			break;
+				AutoLoopRegularTimeGroups(&LightLevelPercent);
+			}
+		}
+		
+		if(MirrorLightLevelPercent != LightLevelPercent)
+		{
+			MirrorLightLevelPercent = LightLevelPercent;
 
-			case MODE_MANUAL:
-				if(MirrorLightLevelPercent != LightLevelPercent)
-				{
-					MirrorLightLevelPercent = LightLevelPercent;
-
-					InventrSetLightLevel(LightLevelPercent);
-				}
-			break;
-
-			default:
-
-			break;
+			InventrSetLightLevel(LightLevelPercent);
 		}
 
-		if(GetSysTick1s() - times_sync >= 3600)		//每隔1h同步一次时间
+		if(GetSysTick1s() - times_sync >= 3600)				//每隔1h同步一次时间
 		{
 			times_sync = GetSysTick1s();
 
 			GetTimeOK = 2;
 		}
 
-		if(NeedToReset == 1)			//接收到重启的命令
+		if(NeedToReset == 1)								//接收到重启的命令
 		{
 			NeedToReset = 0;
 			delay_ms(1000);
 
-			__disable_fault_irq();		//重启指令
+			__disable_fault_irq();							//重启指令
 			NVIC_SystemReset();
 		}
+		
 		delay_ms(100);
 	}
 }
