@@ -185,16 +185,16 @@ unsigned char BG96_InitStep2(pBg96 *bg96)
 	}
 	delay_ms(100);
 	
-	fail_time = 0;
-	while(!(*bg96)->set_AT_QCFG1(bg96))
-	{
-		fail_time ++;
-		if(fail_time >= 3)
-		{
-			goto RE_HARD_RESET;
-		}
-	}
-	delay_ms(100);
+//	fail_time = 0;
+//	while(!(*bg96)->set_AT_QCFG1(bg96))
+//	{
+//		fail_time ++;
+//		if(fail_time >= 3)
+//		{
+//			goto RE_HARD_RESET;
+//		}
+//	}
+//	delay_ms(100);
 	
 	fail_time = 0;
 	while(!(*bg96)->set_AT_QCFG2(bg96))
@@ -800,7 +800,7 @@ unsigned char bg96_set_AT_QICSGP(pBg96 *bg96,unsigned char operators)
 		break;
 		
 		case 1:		//联通卡
-			printf("AT+QICSGP=1,1,\"CMNBIOT\",\"\",\"\",0\r\n");
+			printf("AT+QICSGP=1,1,\"NBIOT\",\"\",\"\",0\r\n");
 		break;
 		
 		case 2:		//电信卡

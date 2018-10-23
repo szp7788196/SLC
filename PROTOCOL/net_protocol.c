@@ -193,7 +193,7 @@ u16 SetUpdateFirmWareInfo(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 	u8 data_buf[2] = {0,0};
 	data_buf[0] = cmd_code;
 
-	if(len == 1)
+	if(len == 5)
 	{
 		NewFirmWareVer    = (((u16)(*(buf + 0))) << 8) + (u16)(*(buf + 1));
 		NewFirmWareBagNum = (((u16)(*(buf + 2))) << 8) + (u16)(*(buf + 3));
@@ -448,7 +448,7 @@ u16 GetTimeDateFromServer(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 
 	data_buf[0] = cmd_code;
 
-	if(len == 12)												//数据长度必须是64
+	if(len == 6)												//数据长度必须是64
 	{
 		year = *(buf + 0);
 		mon  = *(buf + 1);

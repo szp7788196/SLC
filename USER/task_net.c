@@ -218,12 +218,12 @@ u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
 					buf_len = strlen((char *)buf);
 
 					tm_time.tm_year = 2000 + (buf[buf_len - 5] - 0x30) * 10 + buf[buf_len - 4] - 0x30 - 1900;
-					tm_time.tm_mon = (buf[buf_len - 7] - 0x30) * 10 + buf[buf_len - 6] - 0x30 - 1;
+					tm_time.tm_mon  = (buf[buf_len - 7] - 0x30) * 10 + buf[buf_len - 6] - 0x30 - 1;
 					tm_time.tm_mday = (buf[buf_len - 9] - 0x30) * 10 + buf[buf_len - 8] - 0x30;
 
 					tm_time.tm_hour = (buf[0] - 0x30) * 10 + buf[1] - 0x30;
-					tm_time.tm_min = (buf[2] - 0x30) * 10 + buf[3] - 0x30;
-					tm_time.tm_sec = (buf[4] - 0x30) * 10 + buf[5] - 0x30;
+					tm_time.tm_min  = (buf[2] - 0x30) * 10 + buf[3] - 0x30;
+					tm_time.tm_sec  = (buf[4] - 0x30) * 10 + buf[5] - 0x30;
 
 					time_s = mktime(&tm_time);
 

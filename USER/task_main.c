@@ -66,7 +66,7 @@ void AutoLoopRegularTimeGroups(u8 *percent)
 	time_t seconds_24h = 86400;
 	time_t seconds_00h = 0;
 
-	if(GetTimeOK != 0)
+//	if(GetTimeOK != 0)
 	{
 		seconds_now = calendar.hour * 3600 + calendar.min * 60 + calendar.sec;	//获取当前时分秒对应的秒数
 
