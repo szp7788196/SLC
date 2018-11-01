@@ -169,7 +169,9 @@ u16 ControlLightLevel(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 			LightLevelPercent = 2 * level;
 
 			DeviceWorkMode = MODE_MANUAL;		//强制转换为手动模式
-
+			
+			memcpy(&HoldReg[LIGHT_LEVEL_ADD],&LightLevelPercent,LIGHT_LEVEL_LEN - 2);
+			WriteDataFromHoldBufToEeprom(&HoldReg[LIGHT_LEVEL_ADD],LIGHT_LEVEL_ADD, LIGHT_LEVEL_LEN - 2);
 		}
 		else
 		{

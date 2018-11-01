@@ -182,7 +182,7 @@ u8 GetGpsInfo(u8 **gps_info,u8 *gps_flag,u8 *time_flag)
 		{
 			if(bg96->set_AT_QGPSLOC(&bg96,(char *)buf))		//获取信息
 			{
-				bg96_set_AT_QGPSEND(&bg96);					//关闭GPS
+//				bg96_set_AT_QGPSEND(&bg96);					//关闭GPS
 
 				memset(jing,0,16);
 				memset(wei,0,16);

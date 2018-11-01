@@ -928,6 +928,28 @@ u8 ReadTimeZone(void)
 	return ret;
 }
 
+//读取亮度百分比
+u8 ReadLightLevelPercent(void)
+{
+	u8 ret = 0;
+
+	ret = ReadDataFromEepromToHoldBuf(HoldReg,LIGHT_LEVEL_ADD, LIGHT_LEVEL_LEN);
+
+	if(ret)
+	{
+		if(HoldReg[LIGHT_LEVEL_ADD] <= 200)
+		{
+			LightLevelPercent = HoldReg[LIGHT_LEVEL_ADD];
+		}
+		else
+		{
+			LightLevelPercent = 0;
+		}
+	}
+
+	return ret;
+}
+
 //读取时间策略组数
 u8 ReadTimeGroupNumber(void)
 {
@@ -1103,6 +1125,7 @@ void ReadParametersFromEEPROM(void)
 	ReadUpLoadINVL();
 	ReadPowerINTFCC();
 	ReadTimeZone();
+	ReadLightLevelPercent();
 	ReadRegularTimeGroups();
 	ReadOTAInfo(HoldReg);
 }

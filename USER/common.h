@@ -47,7 +47,7 @@
 
 #define SOFT_WARE_VRESION			101			//软件版本号
 
-#define SMALLER_BOARD							//单灯控制器PCB板类型
+//#define SMALLER_BOARD							//单灯控制器PCB板类型
 
 #define DEBUG_LOG								//是否打印调试信息
 
@@ -113,6 +113,9 @@
 
 #define TIME_ZONE_ADD				263			//时区偏移量存储地址
 #define TIME_ZONE_LEN				3
+
+#define LIGHT_LEVEL_ADD				266			//亮度百分比存储地址
+#define LIGHT_LEVEL_LEN				3
 
 #define OTA_INFO_ADD				301			//OTA信息存储地址
 #define OTA_INFO_LEN				9
@@ -395,6 +398,7 @@ u8 ReadServerIP(void);
 u8 ReadServerPort(void);
 u8 ReadUpLoadINVL(void);
 u8 ReadPowerINTFCC(void);
+u8 ReadLightLevelPercent(void);
 u8 ReadTimeZone(void);
 u8 ReadTimeGroupNumber(void);
 void WriteOTAInfo(u8 *hold_reg,u8 reset);
