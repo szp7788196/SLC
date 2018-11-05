@@ -13,11 +13,12 @@ u8 SignalIntensity = 99;						//bg96的信号强度
 
 SensorMsg_S *p_tSensorMsgNet = NULL;			//用于装在传感器数据的结构体变量
 
-
-
+u8 perccennnt = 0;
 //u8 *IpAddress = NULL;
+unsigned portBASE_TYPE NET_Satck;
 void vTaskNET(void *pvParameters)
 {
+	s8 res = 0;
 	time_t times_sec = 0;
 
 	BG96_InitStep1(&bg96);
@@ -54,11 +55,18 @@ void vTaskNET(void *pvParameters)
 		switch((u8)ConnectState)
 		{
 			case (u8)UNKNOW_ERROR:					//未知错误，重启模块
+				RE_RESET:
+				ConnectState = UNKNOW_ERROR;
 				BG96_InitStep2(&bg96);
 			break;
 
 			case (u8)GET_READY:						//模块已经就绪
-				TryToConnectToServer();
+				res = TryToConnectToServer();
+			
+				if(res == 0)						//打开链接失败
+				{
+					goto RE_RESET;					//复位模块
+				}
 			break;
 
 			case (u8)NEED_CLOSE:					//需要关闭移动场景
@@ -70,7 +78,12 @@ void vTaskNET(void *pvParameters)
 			break;
 
 			case (u8)ON_SERVER:						//已经连接到服务器
-				OnServerHandle();
+				res = OnServerHandle();
+				
+				if(res == -1)
+				{
+					goto RE_RESET;					//复位模块
+				}
 			break;
 
 			default:
@@ -79,6 +92,9 @@ void vTaskNET(void *pvParameters)
 		}
 
 		delay_ms(100);
+		
+		perccennnt = mem_perused();
+		NET_Satck = uxTaskGetStackHighWaterMark(NULL);
 	}
 }
 
@@ -96,9 +112,10 @@ u8 TryToConnectToServer(void)
 }
 
 //在线处理进程
-void OnServerHandle(void)
+s8 OnServerHandle(void)
 {
-	u8 len = 0;
+	s8 ret = 0;
+	s16 len = 0;
 	u8 out_buf[512];
 
 	SendSensorData_HeartBeatPacket();								//向服务器定时发送传感器数据和心跳包
@@ -109,6 +126,12 @@ void OnServerHandle(void)
 	{
 		len = tcp->send(&tcp, out_buf, len);						//把数据发送到服务器
 	}
+	else if(len < 0)
+	{
+		ret = -1;													//一分钟内没有收到数据，强行关闭连接
+	}
+	
+	return ret;
 }
 
 //向服务器定时发送传感器数据和心跳包

@@ -33,8 +33,8 @@ void HardFault_Handler(void)
 {
   /* Go to infinite loop when Hard Fault exception occurs */
 	
-	__disable_fault_irq();
-	NVIC_SystemReset();
+//	__disable_fault_irq();
+//	NVIC_SystemReset();
 	if(CoreDebug->DHCSR & 1)
 	{
 		__breakpoint(0);

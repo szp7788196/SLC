@@ -17,7 +17,7 @@
 /	
 /
 ******************************************************************************************/
-u16 NetDataFrameHandle(pTcp *tcp,u8 *outbuf,u8 *hold_reg,CONNECT_STATE_E connect_state);
+s16 NetDataFrameHandle(pTcp *tcp,u8 *outbuf,u8 *hold_reg,CONNECT_STATE_E connect_state);
 u16 NetDataAnalysis(u8 *buf,u16 len,u8 *outbuf,u8 *hold_reg);
 
 

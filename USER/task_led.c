@@ -5,7 +5,7 @@
 
 
 TaskHandle_t xHandleTaskLED = NULL;
-
+unsigned portBASE_TYPE LED_Satck;
 void vTaskLED(void *pvParameters)
 {
 	u32 cnt = 0;
@@ -49,6 +49,8 @@ void vTaskLED(void *pvParameters)
 		cnt = (cnt + 1) & 0xFFFFFFFF;
 		
 		delay_ms(10);
+		
+		LED_Satck = uxTaskGetStackHighWaterMark(NULL);
 	}
 }
 

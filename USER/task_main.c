@@ -8,7 +8,7 @@
 TaskHandle_t xHandleTaskMAIN = NULL;
 
 u8 MirrorLightLevelPercent = 0;
-
+unsigned portBASE_TYPE MAIN_Satck;
 
 void vTaskMAIN(void *pvParameters)
 {
@@ -30,7 +30,7 @@ void vTaskMAIN(void *pvParameters)
 				AutoLoopRegularTimeGroups(&LightLevelPercent);
 			}
 		}
-		
+
 		if(MirrorLightLevelPercent != LightLevelPercent)
 		{
 			MirrorLightLevelPercent = LightLevelPercent;
@@ -53,8 +53,9 @@ void vTaskMAIN(void *pvParameters)
 			__disable_fault_irq();							//÷ÿ∆Ù÷∏¡Ó
 			NVIC_SystemReset();
 		}
-		
+
 		delay_ms(100);
+		MAIN_Satck = uxTaskGetStackHighWaterMark(NULL);
 	}
 }
 
