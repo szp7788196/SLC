@@ -60,7 +60,7 @@ void vTaskSENSOR(void *pvParameters)
 #endif				
 				p_tSensorMsg->out_put_current = (u16)(InventrOutPutCurrent + 0.5f);
 				p_tSensorMsg->out_put_voltage = (u16)(InventrOutPutVoltage + 0.5f);
-				p_tSensorMsg->signal_intensity = SignalIntensity;
+				p_tSensorMsg->signal_intensity = 113 - (SignalIntensity * 2);
 				p_tSensorMsg->hour = calendar.hour;
 				p_tSensorMsg->minute = calendar.min;
 				p_tSensorMsg->second = calendar.sec;
