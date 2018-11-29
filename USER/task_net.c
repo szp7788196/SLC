@@ -32,7 +32,7 @@ void vTaskNET(void *pvParameters)
 	{
 		if(ConnectState == ON_SERVER)
 		{
-			if(GetSysTick1s() - times_sec >= 5)
+			if(GetSysTick1s() - times_sec >= 10)
 			{
 				times_sec = GetSysTick1s();
 				ConnectState = bg96->get_connect_state(&bg96);
@@ -173,10 +173,10 @@ void SendSensorData_HeartBeatPacket(void)
 
 		send_len = PackNetData(0xE1,sensor_buf,0,send_buf);
 	}
-//	else if(GetTimeOK == 3)				//发送对时请求
-//	{
-//		send_len = PackNetData(0xF1,sensor_buf,0,send_buf);
-//	}
+	else if(GetTimeOK == 0)				//发送对时请求
+	{
+		send_len = PackNetData(0xF1,sensor_buf,0,send_buf);
+	}
 
 	if(send_len >= 1)
 	{

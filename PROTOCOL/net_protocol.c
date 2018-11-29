@@ -480,7 +480,7 @@ u16 GetTimeDateFromServer(u8 cmd_code,u8 *buf,u8 len,u8 *outbuf)
 		{
 			RTC_Set(year + 2000,mon,day,hour,min,sec);
 			
-			GetTimeOK = 1;
+			GetTimeOK = 2;
 		}
 		else
 		{
