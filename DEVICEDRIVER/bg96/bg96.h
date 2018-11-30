@@ -68,6 +68,7 @@
 #define TIMEOUT_175S 175000
 #define TIMEOUT_180S 180000
 
+#define IMEI_LEN	15
 
 #define NET_NULL 0x00000000
 
@@ -108,13 +109,13 @@ typedef enum
 	NEED_DOU,
 	NEED_0D,
 	NEED_0A,
-	
+
     NEED_ID_DATA,
     NEED_LEN_DATA,
     NEED_COLON ,
     NEED_USER_DATA ,
     STATE_ERROR ,
-	
+
 } NET_DATA_STATE_E;
 
 //BG96的连接状态 只有在就绪状态才可以连接
@@ -152,7 +153,7 @@ struct BG96
 {
 	char        	*rx_cmd_buf;
     unsigned short  rx_cnt;
-	
+
 	void			(*hard_init)(pBg96 *bg96);
 	void			(*hard_enable)(pBg96 *bg96);
 	void			(*hard_disable)(pBg96 *bg96);
@@ -201,7 +202,7 @@ struct BG96
 	unsigned char 	(*set_AT_QGPS)(pBg96 *bg96);
 	unsigned char 	(*set_AT_QGPSLOC)(pBg96 *bg96,char *msg);
 	unsigned char 	(*set_AT_QGPSEND)(pBg96 *bg96);
-	
+
 	unsigned char 	(*set_AT_QNTP)(pBg96 *bg96,char *server,unsigned short port,char *msg);
 
     pRingBuf     	net_buf;
@@ -229,7 +230,7 @@ struct BG96
 	CIP_MUX_MODE	cip_mux_mode;
 
 	USART_TypeDef* 	USARTx;
-	
+
 	char   			*imei;
 
 	void 			(*uart_interrupt_event)(pBg96 *bg96);

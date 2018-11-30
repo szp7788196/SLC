@@ -1,5 +1,6 @@
 #include "common.h"
 #include "24cxx.h"
+#include "bg96.h"
 
 
 u8 HoldReg[HOLD_REG_LEN];						//保持寄存器
@@ -707,7 +708,7 @@ u8 ReadDeviceID(void)
 		}
 
 		memset(DeviceID,0,6);
-		
+
 		DeviceID[4] = 0x00;		//代表方形单灯控制器
 		DeviceID[5] = 0x01;		//代表单灯控制器
 	}
@@ -980,7 +981,7 @@ void WriteOTAInfo(u8 *hold_reg,u8 reset)
 {
 	u16 crc_code = 0;
 	u16 i = 0;
-	
+
 	if(reset == 1)
 	{
 		HaveNewFirmWare   = 0;
@@ -988,12 +989,12 @@ void WriteOTAInfo(u8 *hold_reg,u8 reset)
 		NewFirmWareVer    = 101;
 		LastBagByteNum    = 0;
 	}
-	
+
 	if(NewFirmWareAdd != 0xAA && NewFirmWareAdd != 0x55)
 	{
 		NewFirmWareAdd = 0xAA;
 	}
-	
+
 	*(hold_reg + FIRM_WARE_FLAG_S_ADD) 			= HaveNewFirmWare;
 	*(hold_reg + FIRM_WARE_STORE_ADD_S_ADD) 	= NewFirmWareAdd;
 	*(hold_reg + FIRM_WARE_VER_S_ADD + 0) 		= (u8)((NewFirmWareVer >> 8) & 0x00FF);
@@ -1017,9 +1018,9 @@ void WriteOTAInfo(u8 *hold_reg,u8 reset)
 u8 ReadOTAInfo(u8 *hold_reg)
 {
 	u8 ret = 0;
-	
+
 	ret = ReadDataFromEepromToHoldBuf(hold_reg,OTA_INFO_ADD,OTA_INFO_LEN);
-	
+
 	if(ret == 1)
 	{
 		HaveNewFirmWare 	= *(hold_reg + FIRM_WARE_FLAG_S_ADD);
@@ -1034,7 +1035,7 @@ u8 ReadOTAInfo(u8 *hold_reg)
 	{
 		WriteOTAInfo(HoldReg,1);		//复位OTA信息
 	}
-	
+
 	return ret;
 }
 
@@ -1142,35 +1143,43 @@ u16 PackNetData(u8 fun_code,u8 *inbuf,u16 inbuf_len,u8 *outbuf)
 
 	if(DeviceID != NULL)
 	{
-		memcpy(outbuf + 1,DeviceID,DEVICE_ID_LEN - 2);			//设备ID
+		memcpy(outbuf + 1,DeviceID,DEVICE_ID_LEN - 2);					//设备ID
 
 		*(outbuf + 7) = 0x68;
 		*(outbuf + 8) = fun_code;
-		*(outbuf + 9) = inbuf_len + UU_ID_LEN - 2;
+		*(outbuf + 9) = inbuf_len + UU_ID_LEN - 2 + IMEI_LEN;
 
 		if(DeviceUUID != NULL)
 		{
-			memcpy(outbuf + 10,DeviceUUID,UU_ID_LEN - 2);		//UUID
+			memcpy(outbuf + 10,DeviceUUID,UU_ID_LEN - 2);				//UUID
 		}
 		else
 		{
-			memcpy(outbuf + 10,"000000000000000000000000000000000000",UU_ID_LEN - 2);	//默认UUID
+			memset(outbuf + 10,'0',UU_ID_LEN - 2);						//默认UUID
+		}
+		if(bg96->imei != NULL)
+		{
+			memcpy(outbuf + 10 + UU_ID_LEN - 2,bg96->imei,IMEI_LEN);	//IMEI
+		}
+		else
+		{
+			memset(outbuf + 10 + UU_ID_LEN - 2,'0',IMEI_LEN);			//默认IMEI
 		}
 
-		memcpy(outbuf + 10 + UU_ID_LEN - 2,inbuf,inbuf_len);	//具体数据内容
+		memcpy(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN,inbuf,inbuf_len);	//具体数据内容
 
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len) = CalCheckSum(outbuf, 10 + inbuf_len + UU_ID_LEN - 2);
+		*(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len) = CalCheckSum(outbuf, 10 + inbuf_len + UU_ID_LEN - 2 + IMEI_LEN);
 
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 1) = 0x16;
+		*(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len + 1) = 0x16;
 
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 2) = 0xFE;
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 3) = 0xFD;
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 4) = 0xFC;
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 5) = 0xFB;
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 6) = 0xFA;
-		*(outbuf + 10 + UU_ID_LEN - 2 + inbuf_len + 7) = 0xF9;
+		*(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len + 2) = 0xFE;
+		*(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len + 3) = 0xFD;
+		*(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len + 4) = 0xFC;
+		*(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len + 5) = 0xFB;
+		*(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len + 6) = 0xFA;
+		*(outbuf + 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len + 7) = 0xF9;
 
-		len = 10 + UU_ID_LEN - 2 + inbuf_len + 7 + 1;
+		len = 10 + UU_ID_LEN - 2 + IMEI_LEN + inbuf_len + 7 + 1;
 	}
 	else
 	{
@@ -1190,10 +1199,10 @@ u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf)
 #ifdef SMALLER_BOARD
 		*(buf + 0) = (u8)(msg->out_put_current >> 8);
 		*(buf + 1) = (u8)(msg->out_put_current & 0x00FF);
-		
+
 		*(buf + 2) = (u8)(msg->out_put_voltage >> 8);
 		*(buf + 3) = (u8)(msg->out_put_voltage & 0x00FF);
-		
+
 		*(buf + 4) = msg->signal_intensity;
 		*(buf + 5) = msg->hour;
 		*(buf + 6) = msg->minute;
@@ -1211,13 +1220,13 @@ u16 UnPackSensorData(SensorMsg_S *msg,u8 *buf)
 		*(buf + 3) = (u8)(msg->humidity & 0x00FF);
 		*(buf + 4) = (u8)(msg->illumination >> 8);
 		*(buf + 5) = (u8)(msg->illumination & 0x00FF);
-		
+
 		*(buf + 6) = (u8)(msg->out_put_current >> 8);
 		*(buf + 7) = (u8)(msg->out_put_current & 0x00FF);
-		
+
 		*(buf + 8) = (u8)(msg->out_put_voltage >> 8);
 		*(buf + 9) = (u8)(msg->out_put_voltage & 0x00FF);
-		
+
 		*(buf + 10) = msg->signal_intensity;
 		*(buf + 11) = msg->hour;
 		*(buf + 12) = msg->minute;
