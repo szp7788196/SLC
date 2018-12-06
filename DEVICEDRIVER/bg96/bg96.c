@@ -1211,14 +1211,13 @@ unsigned char bg96_get_AT_GSN(pBg96 *bg96)
 				if((*bg96)->imei == NULL)
 				{
 					(*bg96)->imei = (char *)mymalloc(sizeof(char) * 16);
+				}
+				if((*bg96)->imei != NULL)
+				{
+					memset((*bg96)->imei,0,16);
+					memcpy((*bg96)->imei,buf,15);
 					
-					if((*bg96)->imei != NULL)
-					{
-						memset((*bg96)->imei,0,16);
-						memcpy((*bg96)->imei,buf,15);
-						
-						ret = 1;
-					}
+					ret = 1;
 				}
 			}
 		}

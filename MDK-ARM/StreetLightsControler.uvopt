@@ -390,6 +390,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>send_buf</ItemText>
         </Ww>
+        <Ww>
+          <count>45</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>p_tSensorMsg</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -455,11 +460,11 @@
       <FileNumber>1</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>2</TopLine>
-      <CurrentLine>19</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -471,11 +476,11 @@
       <FileNumber>2</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1159</TopLine>
-      <CurrentLine>1210</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\common.c</PathWithFileName>
       <FilenameWithoutPath>common.c</FilenameWithoutPath>
@@ -487,11 +492,11 @@
       <FileNumber>3</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>43</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\rtos_task.c</PathWithFileName>
       <FilenameWithoutPath>rtos_task.c</FilenameWithoutPath>
@@ -503,11 +508,11 @@
       <FileNumber>4</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>11</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>25</TopLine>
-      <CurrentLine>53</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\task_led.c</PathWithFileName>
       <FilenameWithoutPath>task_led.c</FilenameWithoutPath>
@@ -519,11 +524,11 @@
       <FileNumber>5</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>13</TopLine>
-      <CurrentLine>23</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\task_hci.c</PathWithFileName>
       <FilenameWithoutPath>task_hci.c</FilenameWithoutPath>
@@ -535,11 +540,11 @@
       <FileNumber>6</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>18</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>44</TopLine>
-      <CurrentLine>65</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\task_sensor.c</PathWithFileName>
       <FilenameWithoutPath>task_sensor.c</FilenameWithoutPath>
@@ -551,11 +556,11 @@
       <FileNumber>7</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>134</TopLine>
-      <CurrentLine>160</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\task_net.c</PathWithFileName>
       <FilenameWithoutPath>task_net.c</FilenameWithoutPath>
@@ -567,11 +572,11 @@
       <FileNumber>8</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>19</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>6</TopLine>
-      <CurrentLine>15</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\task_main.c</PathWithFileName>
       <FilenameWithoutPath>task_main.c</FilenameWithoutPath>
@@ -583,11 +588,11 @@
       <FileNumber>9</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>22</TopLine>
-      <CurrentLine>40</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\stm32f10x_it.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_it.c</FilenameWithoutPath>
@@ -607,11 +612,11 @@
       <FileNumber>10</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\CORE\core_cm3.c</PathWithFileName>
       <FilenameWithoutPath>core_cm3.c</FilenameWithoutPath>
@@ -623,11 +628,11 @@
       <FileNumber>11</FileNumber>
       <FileType>2</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>142</TopLine>
-      <CurrentLine>158</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\CORE\startup_stm32f10x_hd.s</PathWithFileName>
       <FilenameWithoutPath>startup_stm32f10x_hd.s</FilenameWithoutPath>
@@ -639,11 +644,11 @@
       <FileNumber>12</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\CORE\system_stm32f10x.c</PathWithFileName>
       <FilenameWithoutPath>system_stm32f10x.c</FilenameWithoutPath>
@@ -663,11 +668,11 @@
       <FileNumber>13</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>72</TopLine>
-      <CurrentLine>86</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\SYSTEM\delay\delay.c</PathWithFileName>
       <FilenameWithoutPath>delay.c</FilenameWithoutPath>
@@ -679,11 +684,11 @@
       <FileNumber>14</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\SYSTEM\sys\sys.c</PathWithFileName>
       <FilenameWithoutPath>sys.c</FilenameWithoutPath>
@@ -703,11 +708,11 @@
       <FileNumber>15</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>12</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\PERIPHERAL\iic1\iic1.c</PathWithFileName>
       <FilenameWithoutPath>iic1.c</FilenameWithoutPath>
@@ -719,11 +724,11 @@
       <FileNumber>16</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\PERIPHERAL\iic2\iic2.c</PathWithFileName>
       <FilenameWithoutPath>iic2.c</FilenameWithoutPath>
@@ -735,11 +740,11 @@
       <FileNumber>17</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\PERIPHERAL\rtc\rtc.c</PathWithFileName>
       <FilenameWithoutPath>rtc.c</FilenameWithoutPath>
@@ -751,11 +756,11 @@
       <FileNumber>18</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>47</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\PERIPHERAL\usart\usart.c</PathWithFileName>
       <FilenameWithoutPath>usart.c</FilenameWithoutPath>
@@ -775,11 +780,11 @@
       <FileNumber>19</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>1</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\DEVICEDRIVER\24cxx\24cxx.c</PathWithFileName>
       <FilenameWithoutPath>24cxx.c</FilenameWithoutPath>
@@ -791,11 +796,11 @@
       <FileNumber>20</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\DEVICEDRIVER\sht2x\sht2x.c</PathWithFileName>
       <FilenameWithoutPath>sht2x.c</FilenameWithoutPath>
@@ -807,11 +812,11 @@
       <FileNumber>21</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\DEVICEDRIVER\bh1750\bh1750.c</PathWithFileName>
       <FilenameWithoutPath>bh1750.c</FilenameWithoutPath>
@@ -823,11 +828,11 @@
       <FileNumber>22</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\DEVICEDRIVER\led\led.c</PathWithFileName>
       <FilenameWithoutPath>led.c</FilenameWithoutPath>
@@ -839,11 +844,11 @@
       <FileNumber>23</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>14</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\DEVICEDRIVER\bg96\bg96.c</PathWithFileName>
       <FilenameWithoutPath>bg96.c</FilenameWithoutPath>
@@ -855,11 +860,11 @@
       <FileNumber>24</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>4</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\DEVICEDRIVER\power\inventr.c</PathWithFileName>
       <FilenameWithoutPath>inventr.c</FilenameWithoutPath>
@@ -879,11 +884,11 @@
       <FileNumber>25</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\misc.c</PathWithFileName>
       <FilenameWithoutPath>misc.c</FilenameWithoutPath>
@@ -895,11 +900,11 @@
       <FileNumber>26</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_adc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_adc.c</FilenameWithoutPath>
@@ -911,11 +916,11 @@
       <FileNumber>27</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_bkp.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_bkp.c</FilenameWithoutPath>
@@ -927,11 +932,11 @@
       <FileNumber>28</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_can.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_can.c</FilenameWithoutPath>
@@ -943,11 +948,11 @@
       <FileNumber>29</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_cec.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_cec.c</FilenameWithoutPath>
@@ -959,11 +964,11 @@
       <FileNumber>30</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_crc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_crc.c</FilenameWithoutPath>
@@ -975,11 +980,11 @@
       <FileNumber>31</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_dac.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_dac.c</FilenameWithoutPath>
@@ -991,11 +996,11 @@
       <FileNumber>32</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_dbgmcu.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_dbgmcu.c</FilenameWithoutPath>
@@ -1007,11 +1012,11 @@
       <FileNumber>33</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_dma.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_dma.c</FilenameWithoutPath>
@@ -1023,11 +1028,11 @@
       <FileNumber>34</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_exti.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_exti.c</FilenameWithoutPath>
@@ -1039,11 +1044,11 @@
       <FileNumber>35</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_flash.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_flash.c</FilenameWithoutPath>
@@ -1055,11 +1060,11 @@
       <FileNumber>36</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_fsmc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_fsmc.c</FilenameWithoutPath>
@@ -1071,11 +1076,11 @@
       <FileNumber>37</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_gpio.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_gpio.c</FilenameWithoutPath>
@@ -1087,11 +1092,11 @@
       <FileNumber>38</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_i2c.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_i2c.c</FilenameWithoutPath>
@@ -1103,11 +1108,11 @@
       <FileNumber>39</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_iwdg.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_iwdg.c</FilenameWithoutPath>
@@ -1119,11 +1124,11 @@
       <FileNumber>40</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_pwr.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_pwr.c</FilenameWithoutPath>
@@ -1135,11 +1140,11 @@
       <FileNumber>41</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_rcc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_rcc.c</FilenameWithoutPath>
@@ -1151,11 +1156,11 @@
       <FileNumber>42</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_rtc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_rtc.c</FilenameWithoutPath>
@@ -1167,11 +1172,11 @@
       <FileNumber>43</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_sdio.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_sdio.c</FilenameWithoutPath>
@@ -1183,11 +1188,11 @@
       <FileNumber>44</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_spi.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_spi.c</FilenameWithoutPath>
@@ -1199,11 +1204,11 @@
       <FileNumber>45</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_tim.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_tim.c</FilenameWithoutPath>
@@ -1215,11 +1220,11 @@
       <FileNumber>46</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_usart.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_usart.c</FilenameWithoutPath>
@@ -1231,11 +1236,11 @@
       <FileNumber>47</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FWLIB\src\stm32f10x_wwdg.c</PathWithFileName>
       <FilenameWithoutPath>stm32f10x_wwdg.c</FilenameWithoutPath>
@@ -1255,11 +1260,11 @@
       <FileNumber>48</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>5</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>457</TopLine>
-      <CurrentLine>489</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\PROTOCOL\net_protocol.c</PathWithFileName>
       <FilenameWithoutPath>net_protocol.c</FilenameWithoutPath>
@@ -1271,11 +1276,11 @@
       <FileNumber>49</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>13</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\PROTOCOL\at_protoco.c</PathWithFileName>
       <FilenameWithoutPath>at_protoco.c</FilenameWithoutPath>
@@ -1295,11 +1300,11 @@
       <FileNumber>50</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>3</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>31</TopLine>
-      <CurrentLine>57</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\MALLOC\malloc.c</PathWithFileName>
       <FilenameWithoutPath>malloc.c</FilenameWithoutPath>
@@ -1319,11 +1324,11 @@
       <FileNumber>51</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\NET\ringbuf.c</PathWithFileName>
       <FilenameWithoutPath>ringbuf.c</FilenameWithoutPath>
@@ -1335,11 +1340,11 @@
       <FileNumber>52</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>25</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>40</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\NET\tcp.c</PathWithFileName>
       <FilenameWithoutPath>tcp.c</FilenameWithoutPath>
@@ -1359,11 +1364,11 @@
       <FileNumber>53</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FREERTOS\src\croutine.c</PathWithFileName>
       <FilenameWithoutPath>croutine.c</FilenameWithoutPath>
@@ -1375,11 +1380,11 @@
       <FileNumber>54</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FREERTOS\src\event_groups.c</PathWithFileName>
       <FilenameWithoutPath>event_groups.c</FilenameWithoutPath>
@@ -1391,11 +1396,11 @@
       <FileNumber>55</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FREERTOS\src\list.c</PathWithFileName>
       <FilenameWithoutPath>list.c</FilenameWithoutPath>
@@ -1407,11 +1412,11 @@
       <FileNumber>56</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FREERTOS\src\port.c</PathWithFileName>
       <FilenameWithoutPath>port.c</FilenameWithoutPath>
@@ -1423,11 +1428,11 @@
       <FileNumber>57</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FREERTOS\src\queue.c</PathWithFileName>
       <FilenameWithoutPath>queue.c</FilenameWithoutPath>
@@ -1439,11 +1444,11 @@
       <FileNumber>58</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1695</TopLine>
-      <CurrentLine>1696</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FREERTOS\src\tasks.c</PathWithFileName>
       <FilenameWithoutPath>tasks.c</FilenameWithoutPath>
@@ -1455,11 +1460,11 @@
       <FileNumber>59</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <ColumnNumber>8197228</ColumnNumber>
+      <Focus>1</Focus>
+      <ColumnNumber>50008524</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\FREERTOS\src\timers.c</PathWithFileName>
       <FilenameWithoutPath>timers.c</FilenameWithoutPath>
