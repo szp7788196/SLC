@@ -87,6 +87,10 @@ void AutoLoopRegularTimeGroups(u8 *percent)
 
 								i = TimeGroupNumber / 2;
 							}
+							else
+							{
+								*percent = 0;
+							}
 						}
 						else if(RegularTimeStruct[i].s_seconds < RegularTimeStruct[i].e_seconds)	//起始时间和结束时间是同一天
 						{
@@ -95,6 +99,10 @@ void AutoLoopRegularTimeGroups(u8 *percent)
 								*percent = RegularTimeStruct[i].percent * 2;
 
 								i = TimeGroupNumber / 2;
+							}
+							else
+							{
+								*percent = 0;
 							}
 						}
 					}
@@ -112,6 +120,10 @@ void AutoLoopRegularTimeGroups(u8 *percent)
 
 								i = TimeGroupNumber / 2;
 							}
+							else
+							{
+								*percent = 0;
+							}
 						}
 						else if(RegularTimeStruct[i].s_seconds < RegularTimeStruct[i].e_seconds)	//起始时间和结束时间是同一天
 						{
@@ -120,6 +132,10 @@ void AutoLoopRegularTimeGroups(u8 *percent)
 								*percent = RegularTimeStruct[i].percent * 2;
 
 								i = TimeGroupNumber / 2;
+							}
+							else
+							{
+								*percent = 0;
 							}
 						}
 					}
@@ -139,6 +155,10 @@ void AutoLoopRegularTimeGroups(u8 *percent)
 
 								i = TimeGroupNumber / 2;
 							}
+							else
+							{
+								*percent = 0;
+							}
 						}
 						else if(RegularTimeStruct[i].s_seconds < RegularTimeStruct[i].e_seconds)	//起始时间和结束时间是同一天
 						{
@@ -147,6 +167,10 @@ void AutoLoopRegularTimeGroups(u8 *percent)
 								*percent = RegularTimeStruct[i].percent * 2;
 
 								i = TimeGroupNumber / 2;
+							}
+							else
+							{
+								*percent = 0;
 							}
 						}
 					}
