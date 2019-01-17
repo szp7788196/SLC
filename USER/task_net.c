@@ -277,7 +277,7 @@ u8 GetTimeInfo(char *server,u8 port, u8 *flag)
 
 		if(bg96->set_AT_QNTP(&bg96,server,port,buf))
 		{
-			tm_time.tm_year = (buf[0] - 0x30) * 1000 + (buf[1] - 0x30) * 100 + (buf[2] - 0x30) * 10 + buf[3] - 0x30 - 1990;
+			tm_time.tm_year = (buf[0] - 0x30) * 1000 + (buf[1] - 0x30) * 100 + (buf[2] - 0x30) * 10 + buf[3] - 0x30 - 1900;
 			tm_time.tm_mon = (buf[5] - 0x30) * 10 + buf[6] - 0x30 - 1;
 			tm_time.tm_mday = (buf[8] - 0x30) * 10 + buf[9] - 0x30;
 

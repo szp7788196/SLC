@@ -17,7 +17,9 @@ void vTaskMAIN(void *pvParameters)
 
 	times_sync = GetSysTick1s();
 
-	InventrSetLightLevel(LightLevelPercent);				//上电默认上次关机前的亮度
+	InventrSetLightLevel(0);
+	delay_ms(1000);
+	InventrSetLightLevel(INIT_LIGHT_LEVEL);
 
 	while(1)
 	{

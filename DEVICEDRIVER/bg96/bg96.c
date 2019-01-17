@@ -355,15 +355,15 @@ void bg96_hard_reset(pBg96 *bg96)
 	BG96_PWREN_LOW;						//关闭电源
 	delay_ms(300);
 	BG96_PWREN_HIGH;					//打开电源
-	
+
 	delay_ms(100);
-	
+
 	BG96_RST_HIGH;						//硬件复位
 	delay_ms(300);
 	BG96_RST_LOW;
 
 	delay_ms(100);
-	
+
 	if(READ_BG96_STATUS == 1)			//关机状态
 	{
 		(*bg96)->hard_enable(bg96);		//发送开机脉冲
@@ -1203,9 +1203,9 @@ unsigned char bg96_get_AT_GSN(pBg96 *bg96)
         if(search_str((unsigned char *)(*bg96)->rx_cmd_buf, "OK") != -1)
 		{
 			memset(buf,0,32);
-			
+
 			get_str1((unsigned char *)(*bg96)->rx_cmd_buf, "\r\n", 1, "\r\n", 2, (unsigned char *)buf);
-			
+
 			if(strlen(buf) == 15)
 			{
 				if((*bg96)->imei == NULL)
@@ -1216,7 +1216,7 @@ unsigned char bg96_get_AT_GSN(pBg96 *bg96)
 				{
 					memset((*bg96)->imei,0,16);
 					memcpy((*bg96)->imei,buf,15);
-					
+
 					ret = 1;
 				}
 			}

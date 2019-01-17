@@ -47,7 +47,7 @@
 
 #define SOFT_WARE_VRESION			101			//软件版本号
 
-//#define SMALLER_BOARD							//单灯控制器PCB板类型
+#define SMALLER_BOARD							//单灯控制器PCB板类型
 
 #define DEBUG_LOG								//是否打印调试信息
 
